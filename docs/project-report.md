@@ -96,6 +96,8 @@ Screenshots of the dashboard for each environment are in [`screenshots/`](screen
 | **Staging** | **Production** |
 | ![staging](screenshots/dashboard-staging.png) | ![prod](screenshots/dashboard-prod.png) |
 
+A silent 2-minute demo video is in [`demo-video.mp4`](demo-video.mp4).
+
 These were taken from Docker containers started with each environment's settings. For the report, consider replacing them with screenshots taken from your own Minikube deployment (the runtime panel will then show real pod names), plus screenshots of `helm list -A`, `helm history`, `kubectl get pods -A` and the green GitHub Actions run.
 
 ## 10. Conclusion

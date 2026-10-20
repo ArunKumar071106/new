@@ -10,6 +10,8 @@ A DevOps mini-project that deploys **one** containerised Flask application to **
 
 ![Production dashboard](docs/screenshots/dashboard-prod.png)
 
+**Demo video:** [`docs/demo-video.mp4`](docs/demo-video.mp4) – 2 minutes, 1080p, silent with no captions so you can narrate it live. Scenes: architecture → chart files and dev-vs-prod differences → pytest, Helm validation and schema rejections → rendered ConfigMap → Docker build and the four environments running → the four dashboards → CI deployment to Kubernetes with live tests, upgrade and rollback → all four dashboards side by side.
+
 ---
 
 ## Contents
@@ -423,6 +425,7 @@ The full output is in [`docs/test-results.md`](docs/test-results.md). In summary
 
 - **Minikube itself.** The chart was deployed to kind (also a real Kubernetes cluster), not Minikube. The sandbox used to build this project cannot run nested containers. The Minikube-specific commands (`minikube start`, `minikube image build`, `minikube service`) and `scripts/minikube-setup.sh` were not executed.
 - **Windows and macOS.** All commands ran on Linux. The PowerShell variants in this README were not executed.
+- **Demo video:** the terminal and browser scenes are real runs recorded in the development sandbox (Docker, not Minikube). The Kubernetes deploy/upgrade/rollback scene replays an excerpt of the actual GitHub Actions log from the kind cluster, not a local terminal session.
 - **Dashboard screenshots** in `docs/screenshots/` were taken from Docker containers started with each environment's values (not from pods), so the runtime panel shows `local` instead of pod names.
 
 ## 19. Future enhancements
