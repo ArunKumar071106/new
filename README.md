@@ -155,6 +155,7 @@ Inside every namespace Helm creates the same three objects:
 │   ├── validate-helm.sh              # lint + template + kubeconform for every env
 │   ├── test-environments.sh          # live checks against the running cluster
 │   ├── upgrade-rollback-demo.sh      # upgrade -> history -> rollback
+│   ├── docker-demo.sh                # all 4 environments in plain Docker (no Kubernetes)
 │   └── cleanup.sh
 ├── tests/
 │   ├── conftest.py
@@ -248,6 +249,14 @@ docker run --rm -p 5000:5000 -e APP_ENV=testing multi-env-app:1.0.0
 ```
 
 Open http://localhost:5000. Any setting can be passed with `-e`, for example `-e LOG_LEVEL=DEBUG -e MAX_CONNECTIONS=25`.
+
+To run **all four environments side by side** with the exact settings from the Helm values files (handy as a fallback demo when Minikube is not available):
+
+```bash
+pip install pyyaml                 # already installed if you used requirements-dev.txt
+./scripts/docker-demo.sh up        # dev: http://localhost:8081, test: 8082, staging: 8083, prod: 8084
+./scripts/docker-demo.sh down
+```
 
 ## 11. Deploy to Minikube with Helm
 
@@ -405,6 +414,7 @@ The full output is in [`docs/test-results.md`](docs/test-results.md). In summary
 | `validate-helm.sh` (lint --strict, template, kubeconform for K8s 1.31) | sandbox and GitHub Actions | 4/4 environments valid, 4/4 resources valid each |
 | Schema rejects invalid values | sandbox and GitHub Actions | 5/5 rejected |
 | Docker build, non-root user, HEALTHCHECK, endpoints | sandbox and GitHub Actions | passed (`healthy`, uid 10001) |
+| `scripts/docker-demo.sh up` (4 environments in Docker) | sandbox | all 4 containers `healthy`, each reports its own environment |
 | Deploy all 4 environments to a real Kubernetes cluster (kind, K8s v1.31) | GitHub Actions | all releases `deployed`, pods `Running` (1/1/2/3 replicas) |
 | Live environment checks + `helm test` | GitHub Actions on kind | 26 passed, 0 failed |
 | Upgrade 1.0.0 → 1.1.0, then rollback to revision 1 | GitHub Actions on kind | version 1.1.0 after upgrade, 1.0.0 after rollback |
