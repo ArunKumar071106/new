@@ -67,7 +67,7 @@ See [`architecture.md`](architecture.md) and the diagram [`architecture.png`](ar
 - **Configuration as environment variables:** the app never reads files or contains environment-specific code; everything comes from the ConfigMap, following the Twelve-Factor App principle.
 - **Schema validation:** `values.schema.json` restricts `environment` to four names, `replicaCount` to 1–10, `LOG_LEVEL` to standard levels and forbids secret keys inside `config`.
 - **Automatic rollout on configuration change:** a SHA-256 checksum of the ConfigMap is stored as a pod annotation.
-- **Production safeguards:** 3 replicas, zero-downtime rolling updates, resource limits, `SECRET_KEY` from a Kubernetes Secret, debug disabled (enforced by tests).
+- **Production safeguards:** 3 replicas, rolling updates that never remove capacity before the new Pod is ready (maxUnavailable 0), resource limits, `SECRET_KEY` from a Kubernetes Secret, debug disabled (enforced by tests).
 - **Visual feedback:** each environment has its own colour on the dashboard, so the audience can see which environment is shown.
 
 ## 8. Testing

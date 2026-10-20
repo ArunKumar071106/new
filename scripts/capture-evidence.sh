@@ -18,11 +18,11 @@ require_cmd kubectl helm curl python3
 
 OUT="${1:-${PROJECT_ROOT}/docs/evidence}"
 BROWSER="${BROWSER:-$(command -v google-chrome || command -v chromium || command -v chromium-browser || true)}"
-PROBE_SECONDS="${PROBE_SECONDS:-60}"
+PROBE_SECONDS="${PROBE_SECONDS:-45}"
 CHART="./helm/multi-env-app"
 
 mkdir -p "$OUT"
-rm -f "$OUT"/*.txt "$OUT"/*.png "$OUT"/*.json 2>/dev/null
+rm -f "$OUT"/*.txt "$OUT"/*.png "$OUT"/*.json "$OUT"/*.csv 2>/dev/null
 cd "$PROJECT_ROOT"
 
 strip_ansi() { sed 's/\x1b\[[0-9;]*m//g'; }
@@ -95,6 +95,8 @@ capture 04-logs.txt 'kubectl logs -n prod deploy/myapp-prod-multi-env-app --tail
 section "Live environment tests"
 ./scripts/test-environments.sh all 2>&1 | strip_ansi > "${OUT}/05-live-tests.txt"
 
+capture 05-helm-test.txt 'helm test myapp-prod -n prod'
+
 section "Dashboard screenshots"
 shoot dashboard-dev     dev     myapp-dev     18081
 shoot dashboard-test    test    myapp-test    18082
@@ -146,8 +148,9 @@ helm uninstall demo-prod -n demo >/dev/null 2>&1
 kubectl delete namespace demo --wait=false >/dev/null 2>&1
 
 # ---------------------------------------------------------------------------
-# Availability during a rolling update: a busybox pod requests /ready about ten
-# times a second while the release is changed; every failed request is logged.
+# Availability during rolling updates: a busybox pod requests /ready about eight
+# times a second while the release is changed. Every failed request is logged and
+# the totals are appended to 08-availability.csv (scenario,run,requests,failed,rollout_seconds).
 read -r -d '' PROBE_SCRIPT <<'EOF'
 start=$(date +%s); n=0; f=0
 while [ $(( $(date +%s) - start )) -lt __DURATION__ ]; do
@@ -160,10 +163,13 @@ done
 echo "requests=$n failed=$f"
 EOF
 
-# measure_rollout <title> <namespace> <release> <helm upgrade options...>
+echo "scenario,run,requests,failed,rollout_seconds" > "${OUT}/08-availability.csv"
+
+# measure_rollout <scenario> <run> <title> <namespace> <release> [helm upgrade options...]
+# With no helm options the probe simply runs for the same time (control: no rollout).
 measure_rollout() {
-  local title="$1" ns="$2" release="$3"; shift 3
-  local svc="${release}-multi-env-app" script t0 t1
+  local scenario="$1" run="$2" title="$3" ns="$4" release="$5"; shift 5
+  local svc="${release}-multi-env-app" script t0 t1 result totals req failed
   script="${PROBE_SCRIPT//__DURATION__/$PROBE_SECONDS}"; script="${script//__SERVICE__/$svc}"
   kubectl delete pod probe -n "$ns" --ignore-not-found >/dev/null 2>&1
   kubectl run probe -n "$ns" --image=busybox:1.36 --image-pull-policy=IfNotPresent --restart=Never \
@@ -171,27 +177,59 @@ measure_rollout() {
   kubectl wait --for=condition=Ready pod/probe -n "$ns" --timeout=60s >/dev/null 2>&1
   sleep 8
   t0=$(date +%s)
-  helm upgrade "$release" "$CHART" -n "$ns" -f "helm/multi-env-app/values-${ns}.yaml" "$@" --wait --timeout 3m >/dev/null 2>&1
+  if [[ $# -gt 0 ]]; then
+    helm upgrade "$release" "$CHART" -n "$ns" -f "helm/multi-env-app/values-${ns}.yaml" "$@" --wait --timeout 3m >/dev/null 2>&1
+  fi
   t1=$(date +%s)
-  kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/probe -n "$ns" --timeout=$((PROBE_SECONDS + 90)) >/dev/null 2>&1
+  kubectl wait --for=jsonpath='{.status.phase}'=Succeeded pod/probe -n "$ns" --timeout="$((PROBE_SECONDS + 90))s" >/dev/null 2>&1
+  result="$(kubectl logs probe -n "$ns" 2>&1)"
   {
-    echo "### ${title}"
-    printf '$ helm upgrade %s %s -n %s -f helm/multi-env-app/values-%s.yaml %s --wait\n' "$release" "$CHART" "$ns" "$ns" "$*"
+    echo "### ${scenario}${run}: ${title}"
+    if [[ $# -gt 0 ]]; then
+      printf '$ helm upgrade %s %s -n %s -f helm/multi-env-app/values-%s.yaml %s --wait\n' "$release" "$CHART" "$ns" "$ns" "$*"
+    fi
     echo "rollout finished in $((t1 - t0)) s"
-    echo "probe output:"
-    kubectl logs probe -n "$ns" 2>&1
+    echo "$result"
     echo
   } >> "${OUT}/08-availability.txt"
+  totals="$(echo "$result" | grep '^requests=' | tail -1)"
+  req="${totals#requests=}"; req="${req%% *}"; failed="${totals##*failed=}"
+  echo "${scenario},${run},${req:-NA},${failed:-NA},$((t1 - t0))" >> "${OUT}/08-availability.csv"
   kubectl delete pod probe -n "$ns" --ignore-not-found >/dev/null 2>&1
+  sleep 5
 }
 
 section "Availability during rolling updates"
-measure_rollout "A: staging (2 replicas), chart strategy maxSurge=1 maxUnavailable=0" staging myapp-staging \
-  --set-string config.CACHE_TTL_SECONDS=130
-measure_rollout "B: test (1 replica), chart strategy maxSurge=1 maxUnavailable=0" test myapp-test \
-  --set-string config.CACHE_TTL_SECONDS=31
-measure_rollout "C: test (1 replica), alternative strategy maxSurge=0 maxUnavailable=1" test myapp-test \
-  --set-string config.CACHE_TTL_SECONDS=32 --set strategy.rollingUpdate.maxSurge=0 --set strategy.rollingUpdate.maxUnavailable=1
+measure_rollout Z 1 "control: test (1 replica), no change of the release" test myapp-test
+for i in 1 2 3; do
+  measure_rollout A "$i" "staging (2 replicas), chart strategy maxSurge=1 maxUnavailable=0" staging myapp-staging \
+    --set-string "config.CACHE_TTL_SECONDS=13${i}"
+done
+for i in 1 2 3; do
+  measure_rollout B "$i" "test (1 replica), chart strategy maxSurge=1 maxUnavailable=0" test myapp-test \
+    --set-string "config.CACHE_TTL_SECONDS=3${i}"
+done
+for i in 1 2 3; do
+  measure_rollout C "$i" "test (1 replica), alternative strategy maxSurge=0 maxUnavailable=1" test myapp-test \
+    --set-string "config.CACHE_TTL_SECONDS=4${i}" --set strategy.rollingUpdate.maxSurge=0 --set strategy.rollingUpdate.maxUnavailable=1
+done
+
+# Mitigation experiment (not part of the chart): a 5 s preStop delay keeps the old Pod serving
+# while the endpoints are updated. It is added to the live Deployment with kubectl patch.
+section "Mitigation experiment: preStop delay"
+kubectl patch deployment myapp-test-multi-env-app -n test --type=json \
+  -p='[{"op":"add","path":"/spec/template/spec/containers/0/lifecycle","value":{"preStop":{"exec":{"command":["sleep","5"]}}}}]' >/dev/null
+kubectl rollout status deployment/myapp-test-multi-env-app -n test --timeout=120s >/dev/null 2>&1
+{
+  echo "### D: preStop hook added with kubectl patch (not part of the chart)"
+  echo '$ kubectl get deployment myapp-test-multi-env-app -n test -o jsonpath={.spec.template.spec.containers[0].lifecycle}'
+  kubectl get deployment myapp-test-multi-env-app -n test -o jsonpath='{.spec.template.spec.containers[0].lifecycle}'
+  echo; echo
+} >> "${OUT}/08-availability.txt"
+for i in 1 2 3; do
+  measure_rollout D "$i" "test (1 replica), chart strategy plus preStop sleep 5 (experiment)" test myapp-test \
+    --set-string "config.CACHE_TTL_SECONDS=5${i}"
+done
 
 # ---------------------------------------------------------------------------
 section "Final state"

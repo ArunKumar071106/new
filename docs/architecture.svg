@@ -102,7 +102,7 @@
   <text class="text" x="688" y="606">Secret: multi-env-app-secrets (SECRET_KEY, created at deploy time)</text>
   <text class="text" x="688" y="628">Deployment: 3 replicas, maxUnavailable 0   resources: 100m / 128Mi</text>
   <text class="text" x="688" y="650">Service (NodePort) -&gt; Pods :5000</text>
-  <text class="small" x="688" y="672">Rolling updates with zero downtime</text>
+  <text class="small" x="688" y="672">Rolling update keeps full capacity</text>
 
   <!-- User -->
   <rect class="box" x="30" y="560" width="250" height="140"/>
