@@ -24,7 +24,7 @@ metadata:
   annotations:
     meta.helm.sh/release-name: myapp-prod
     meta.helm.sh/release-namespace: prod
-  creationTimestamp: "2026-10-20T18:00:09Z"
+  creationTimestamp: "2026-10-20T18:11:37Z"
   labels:
     app.kubernetes.io/environment: production
     app.kubernetes.io/instance: myapp-prod
@@ -34,13 +34,13 @@ metadata:
     helm.sh/chart: multi-env-app-1.0.0
   name: myapp-prod-multi-env-app-config
   namespace: prod
-  resourceVersion: "636"
-  uid: dc020805-76b2-4a1e-9668-a10158838038
+  resourceVersion: "660"
+  uid: c884a2c3-d24c-4842-a7a6-cf85003bcb36
 
 $ kubectl describe deployment myapp-prod-multi-env-app -n prod
 Name:                   myapp-prod-multi-env-app
 Namespace:              prod
-CreationTimestamp:      Tue, 20 Oct 2026 18:00:09 +0000
+CreationTimestamp:      Tue, 20 Oct 2026 18:11:37 +0000
 Labels:                 app.kubernetes.io/environment=production
                         app.kubernetes.io/instance=myapp-prod
                         app.kubernetes.io/managed-by=Helm

@@ -1,11 +1,11 @@
 $ helm history myapp-dev -n dev
 REVISION	UPDATED                 	STATUS  	CHART              	APP VERSION	DESCRIPTION     
-1       	Tue Oct 20 17:59:42 2026	deployed	multi-env-app-1.0.0	1.0.0      	Install complete
+1       	Tue Oct 20 18:11:05 2026	deployed	multi-env-app-1.0.0	1.0.0      	Install complete
 
 $ helm upgrade myapp-dev ./helm/multi-env-app -n dev -f helm/multi-env-app/values-dev.yaml --set app.version=1.1.0 --set config.LOG_LEVEL=INFO --atomic --wait --timeout 5m | sed -n 1,8p
 Release "myapp-dev" has been upgraded. Happy Helming!
 NAME: myapp-dev
-LAST DEPLOYED: Tue Oct 20 18:00:38 2026
+LAST DEPLOYED: Tue Oct 20 18:12:08 2026
 NAMESPACE: dev
 STATUS: deployed
 REVISION: 2
@@ -14,14 +14,14 @@ Multi-Env Config Dashboard (DEV) has been deployed.
 
 $ helm history myapp-dev -n dev
 REVISION	UPDATED                 	STATUS    	CHART              	APP VERSION	DESCRIPTION     
-1       	Tue Oct 20 17:59:42 2026	superseded	multi-env-app-1.0.0	1.0.0      	Install complete
-2       	Tue Oct 20 18:00:38 2026	deployed  	multi-env-app-1.0.0	1.0.0      	Upgrade complete
+1       	Tue Oct 20 18:11:05 2026	superseded	multi-env-app-1.0.0	1.0.0      	Install complete
+2       	Tue Oct 20 18:12:08 2026	deployed  	multi-env-app-1.0.0	1.0.0      	Upgrade complete
 
 $ kubectl get pods -n dev
 NAME                                       READY   STATUS      RESTARTS   AGE
-myapp-dev-multi-env-app-576769ffc9-hfzjf   0/1     Completed   0          70s
-myapp-dev-multi-env-app-6dcc8fb977-qntwf   1/1     Running     0          14s
-myapp-dev-multi-env-app-test-connection    0/1     Completed   0          33s
+myapp-dev-multi-env-app-576769ffc9-gr8ld   0/1     Completed   0          77s
+myapp-dev-multi-env-app-6dcc8fb977-snzrp   1/1     Running     0          14s
+myapp-dev-multi-env-app-test-connection    0/1     Completed   0          35s
 
 $ helm get values myapp-dev -n dev
 USER-SUPPLIED VALUES:
@@ -54,7 +54,7 @@ Rollback was a success! Happy Helming!
 
 $ helm history myapp-dev -n dev
 REVISION	UPDATED                 	STATUS    	CHART              	APP VERSION	DESCRIPTION     
-1       	Tue Oct 20 17:59:42 2026	superseded	multi-env-app-1.0.0	1.0.0      	Install complete
-2       	Tue Oct 20 18:00:38 2026	superseded	multi-env-app-1.0.0	1.0.0      	Upgrade complete
-3       	Tue Oct 20 18:00:54 2026	deployed  	multi-env-app-1.0.0	1.0.0      	Rollback to 1   
+1       	Tue Oct 20 18:11:05 2026	superseded	multi-env-app-1.0.0	1.0.0      	Install complete
+2       	Tue Oct 20 18:12:08 2026	superseded	multi-env-app-1.0.0	1.0.0      	Upgrade complete
+3       	Tue Oct 20 18:12:24 2026	deployed  	multi-env-app-1.0.0	1.0.0      	Rollback to 1   
 

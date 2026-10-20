@@ -8,7 +8,7 @@
                 "annotations": {
                     "checksum/config": "a36e621c071f2c2bd77b55dd9aff5a6ff345417abb758870d2f060df7b50e7cb"
                 },
-                "creationTimestamp": "2026-10-20T18:00:09Z",
+                "creationTimestamp": "2026-10-20T18:11:37Z",
                 "generateName": "myapp-prod-multi-env-app-78c6bddb45-",
                 "generation": 1,
                 "labels": {
@@ -20,7 +20,7 @@
                     "helm.sh/chart": "multi-env-app-1.0.0",
                     "pod-template-hash": "78c6bddb45"
                 },
-                "name": "myapp-prod-multi-env-app-78c6bddb45-4sqwc",
+                "name": "myapp-prod-multi-env-app-78c6bddb45-4xx97",
                 "namespace": "prod",
                 "ownerReferences": [
                     {
@@ -29,11 +29,11 @@
                         "controller": true,
                         "kind": "ReplicaSet",
                         "name": "myapp-prod-multi-env-app-78c6bddb45",
-                        "uid": "3a5145d7-8d17-4064-9d8e-07c4eba400c2"
+                        "uid": "95fc5f94-03bd-4347-b052-9b828c78646a"
                     }
                 ],
-                "resourceVersion": "700",
-                "uid": "6a8dea29-d14a-477a-afb3-480530f65c7e"
+                "resourceVersion": "720",
+                "uid": "38574495-c85c-4962-9688-17313c558d2e"
             },
             "spec": {
                 "containers": [
@@ -140,7 +140,7 @@
                         "volumeMounts": [
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-thpvx",
+                                "name": "kube-api-access-5wx4v",
                                 "readOnly": true
                             }
                         ]
@@ -177,7 +177,7 @@
                 ],
                 "volumes": [
                     {
-                        "name": "kube-api-access-thpvx",
+                        "name": "kube-api-access-5wx4v",
                         "projected": {
                             "defaultMode": 420,
                             "sources": [
@@ -220,35 +220,35 @@
                 "conditions": [
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:10Z",
+                        "lastTransitionTime": "2026-10-20T18:11:38Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodReadyToStartContainers"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:09Z",
+                        "lastTransitionTime": "2026-10-20T18:11:37Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Initialized"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:16Z",
+                        "lastTransitionTime": "2026-10-20T18:11:44Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Ready"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:16Z",
+                        "lastTransitionTime": "2026-10-20T18:11:44Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "ContainersReady"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:09Z",
+                        "lastTransitionTime": "2026-10-20T18:11:37Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodScheduled"
@@ -260,9 +260,9 @@
                             "cpu": "100m",
                             "memory": "128Mi"
                         },
-                        "containerID": "containerd://cdbaae80ca27964db32464271408c24cf13ffb8b7a437786761330c03262a563",
+                        "containerID": "containerd://87a4c5c9e13f74e2cbb08cb6597d97f41c41031d0c1a942ab0c6af56e532bd35",
                         "image": "docker.io/library/multi-env-app:1.0.0",
-                        "imageID": "sha256:300a93a38842eb1e48384b2a7604c4aef4a0163af5647ea837da66ea47f0d604",
+                        "imageID": "sha256:da616d29287d2482406f7fea70161bda69bf15ebbd1db8e669ae1bf2de2cb49c",
                         "lastState": {},
                         "name": "multi-env-app",
                         "ready": true,
@@ -280,7 +280,7 @@
                         "started": true,
                         "state": {
                             "running": {
-                                "startedAt": "2026-10-20T18:00:10Z"
+                                "startedAt": "2026-10-20T18:11:37Z"
                             }
                         },
                         "user": {
@@ -295,645 +295,7 @@
                         "volumeMounts": [
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-thpvx",
-                                "readOnly": true,
-                                "recursiveReadOnly": "Disabled"
-                            }
-                        ]
-                    }
-                ],
-                "hostIP": "172.18.0.2",
-                "hostIPs": [
-                    {
-                        "ip": "172.18.0.2"
-                    }
-                ],
-                "observedGeneration": 1,
-                "phase": "Running",
-                "podIP": "10.244.0.11",
-                "podIPs": [
-                    {
-                        "ip": "10.244.0.11"
-                    }
-                ],
-                "qosClass": "Burstable",
-                "startTime": "2026-10-20T18:00:09Z"
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "Pod",
-            "metadata": {
-                "annotations": {
-                    "checksum/config": "a36e621c071f2c2bd77b55dd9aff5a6ff345417abb758870d2f060df7b50e7cb"
-                },
-                "creationTimestamp": "2026-10-20T18:00:09Z",
-                "generateName": "myapp-prod-multi-env-app-78c6bddb45-",
-                "generation": 1,
-                "labels": {
-                    "app.kubernetes.io/environment": "production",
-                    "app.kubernetes.io/instance": "myapp-prod",
-                    "app.kubernetes.io/managed-by": "Helm",
-                    "app.kubernetes.io/name": "multi-env-app",
-                    "app.kubernetes.io/version": "1.0.0",
-                    "helm.sh/chart": "multi-env-app-1.0.0",
-                    "pod-template-hash": "78c6bddb45"
-                },
-                "name": "myapp-prod-multi-env-app-78c6bddb45-5ct52",
-                "namespace": "prod",
-                "ownerReferences": [
-                    {
-                        "apiVersion": "apps/v1",
-                        "blockOwnerDeletion": true,
-                        "controller": true,
-                        "kind": "ReplicaSet",
-                        "name": "myapp-prod-multi-env-app-78c6bddb45",
-                        "uid": "3a5145d7-8d17-4064-9d8e-07c4eba400c2"
-                    }
-                ],
-                "resourceVersion": "691",
-                "uid": "6c887d71-1641-4042-bedc-a62ce58db70c"
-            },
-            "spec": {
-                "containers": [
-                    {
-                        "env": [
-                            {
-                                "name": "PORT",
-                                "value": "5000"
-                            },
-                            {
-                                "name": "POD_NAME",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "apiVersion": "v1",
-                                        "fieldPath": "metadata.name"
-                                    }
-                                }
-                            },
-                            {
-                                "name": "POD_NAMESPACE",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "apiVersion": "v1",
-                                        "fieldPath": "metadata.namespace"
-                                    }
-                                }
-                            },
-                            {
-                                "name": "NODE_NAME",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "apiVersion": "v1",
-                                        "fieldPath": "spec.nodeName"
-                                    }
-                                }
-                            }
-                        ],
-                        "envFrom": [
-                            {
-                                "configMapRef": {
-                                    "name": "myapp-prod-multi-env-app-config"
-                                }
-                            },
-                            {
-                                "secretRef": {
-                                    "name": "multi-env-app-secrets"
-                                }
-                            }
-                        ],
-                        "image": "multi-env-app:1.0.0",
-                        "imagePullPolicy": "IfNotPresent",
-                        "livenessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/health",
-                                "port": "http",
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 5,
-                            "periodSeconds": 10,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 1
-                        },
-                        "name": "multi-env-app",
-                        "ports": [
-                            {
-                                "containerPort": 5000,
-                                "name": "http",
-                                "protocol": "TCP"
-                            }
-                        ],
-                        "readinessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/ready",
-                                "port": "http",
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 3,
-                            "periodSeconds": 5,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 1
-                        },
-                        "resources": {
-                            "limits": {
-                                "cpu": "500m",
-                                "memory": "256Mi"
-                            },
-                            "requests": {
-                                "cpu": "100m",
-                                "memory": "128Mi"
-                            }
-                        },
-                        "securityContext": {
-                            "allowPrivilegeEscalation": false,
-                            "capabilities": {
-                                "drop": [
-                                    "ALL"
-                                ]
-                            }
-                        },
-                        "terminationMessagePath": "/dev/termination-log",
-                        "terminationMessagePolicy": "File",
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-kjcxc",
-                                "readOnly": true
-                            }
-                        ]
-                    }
-                ],
-                "dnsPolicy": "ClusterFirst",
-                "enableServiceLinks": true,
-                "nodeName": "evidence-control-plane",
-                "preemptionPolicy": "PreemptLowerPriority",
-                "priority": 0,
-                "restartPolicy": "Always",
-                "schedulerName": "default-scheduler",
-                "securityContext": {
-                    "fsGroup": 10001,
-                    "runAsNonRoot": true,
-                    "runAsUser": 10001
-                },
-                "serviceAccount": "default",
-                "serviceAccountName": "default",
-                "terminationGracePeriodSeconds": 30,
-                "tolerations": [
-                    {
-                        "effect": "NoExecute",
-                        "key": "node.kubernetes.io/not-ready",
-                        "operator": "Exists",
-                        "tolerationSeconds": 300
-                    },
-                    {
-                        "effect": "NoExecute",
-                        "key": "node.kubernetes.io/unreachable",
-                        "operator": "Exists",
-                        "tolerationSeconds": 300
-                    }
-                ],
-                "volumes": [
-                    {
-                        "name": "kube-api-access-kjcxc",
-                        "projected": {
-                            "defaultMode": 420,
-                            "sources": [
-                                {
-                                    "serviceAccountToken": {
-                                        "expirationSeconds": 3607,
-                                        "path": "token"
-                                    }
-                                },
-                                {
-                                    "configMap": {
-                                        "items": [
-                                            {
-                                                "key": "ca.crt",
-                                                "path": "ca.crt"
-                                            }
-                                        ],
-                                        "name": "kube-root-ca.crt"
-                                    }
-                                },
-                                {
-                                    "downwardAPI": {
-                                        "items": [
-                                            {
-                                                "fieldRef": {
-                                                    "apiVersion": "v1",
-                                                    "fieldPath": "metadata.namespace"
-                                                },
-                                                "path": "namespace"
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "status": {
-                "conditions": [
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:10Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "PodReadyToStartContainers"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:09Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "Initialized"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:16Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "Ready"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:16Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "ContainersReady"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:09Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "PodScheduled"
-                    }
-                ],
-                "containerStatuses": [
-                    {
-                        "allocatedResources": {
-                            "cpu": "100m",
-                            "memory": "128Mi"
-                        },
-                        "containerID": "containerd://7585533008b76686d71603d8cad8d19d461321c58c6c252c82a1a9cfb0f16ef4",
-                        "image": "docker.io/library/multi-env-app:1.0.0",
-                        "imageID": "sha256:300a93a38842eb1e48384b2a7604c4aef4a0163af5647ea837da66ea47f0d604",
-                        "lastState": {},
-                        "name": "multi-env-app",
-                        "ready": true,
-                        "resources": {
-                            "limits": {
-                                "cpu": "500m",
-                                "memory": "256Mi"
-                            },
-                            "requests": {
-                                "cpu": "100m",
-                                "memory": "128Mi"
-                            }
-                        },
-                        "restartCount": 0,
-                        "started": true,
-                        "state": {
-                            "running": {
-                                "startedAt": "2026-10-20T18:00:10Z"
-                            }
-                        },
-                        "user": {
-                            "linux": {
-                                "gid": 10001,
-                                "supplementalGroups": [
-                                    10001
-                                ],
-                                "uid": 10001
-                            }
-                        },
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-kjcxc",
-                                "readOnly": true,
-                                "recursiveReadOnly": "Disabled"
-                            }
-                        ]
-                    }
-                ],
-                "hostIP": "172.18.0.2",
-                "hostIPs": [
-                    {
-                        "ip": "172.18.0.2"
-                    }
-                ],
-                "observedGeneration": 1,
-                "phase": "Running",
-                "podIP": "10.244.0.10",
-                "podIPs": [
-                    {
-                        "ip": "10.244.0.10"
-                    }
-                ],
-                "qosClass": "Burstable",
-                "startTime": "2026-10-20T18:00:09Z"
-            }
-        },
-        {
-            "apiVersion": "v1",
-            "kind": "Pod",
-            "metadata": {
-                "annotations": {
-                    "checksum/config": "a36e621c071f2c2bd77b55dd9aff5a6ff345417abb758870d2f060df7b50e7cb"
-                },
-                "creationTimestamp": "2026-10-20T18:00:09Z",
-                "generateName": "myapp-prod-multi-env-app-78c6bddb45-",
-                "generation": 1,
-                "labels": {
-                    "app.kubernetes.io/environment": "production",
-                    "app.kubernetes.io/instance": "myapp-prod",
-                    "app.kubernetes.io/managed-by": "Helm",
-                    "app.kubernetes.io/name": "multi-env-app",
-                    "app.kubernetes.io/version": "1.0.0",
-                    "helm.sh/chart": "multi-env-app-1.0.0",
-                    "pod-template-hash": "78c6bddb45"
-                },
-                "name": "myapp-prod-multi-env-app-78c6bddb45-67gvt",
-                "namespace": "prod",
-                "ownerReferences": [
-                    {
-                        "apiVersion": "apps/v1",
-                        "blockOwnerDeletion": true,
-                        "controller": true,
-                        "kind": "ReplicaSet",
-                        "name": "myapp-prod-multi-env-app-78c6bddb45",
-                        "uid": "3a5145d7-8d17-4064-9d8e-07c4eba400c2"
-                    }
-                ],
-                "resourceVersion": "695",
-                "uid": "e6932840-cdd0-4643-b50d-0195a44e88de"
-            },
-            "spec": {
-                "containers": [
-                    {
-                        "env": [
-                            {
-                                "name": "PORT",
-                                "value": "5000"
-                            },
-                            {
-                                "name": "POD_NAME",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "apiVersion": "v1",
-                                        "fieldPath": "metadata.name"
-                                    }
-                                }
-                            },
-                            {
-                                "name": "POD_NAMESPACE",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "apiVersion": "v1",
-                                        "fieldPath": "metadata.namespace"
-                                    }
-                                }
-                            },
-                            {
-                                "name": "NODE_NAME",
-                                "valueFrom": {
-                                    "fieldRef": {
-                                        "apiVersion": "v1",
-                                        "fieldPath": "spec.nodeName"
-                                    }
-                                }
-                            }
-                        ],
-                        "envFrom": [
-                            {
-                                "configMapRef": {
-                                    "name": "myapp-prod-multi-env-app-config"
-                                }
-                            },
-                            {
-                                "secretRef": {
-                                    "name": "multi-env-app-secrets"
-                                }
-                            }
-                        ],
-                        "image": "multi-env-app:1.0.0",
-                        "imagePullPolicy": "IfNotPresent",
-                        "livenessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/health",
-                                "port": "http",
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 5,
-                            "periodSeconds": 10,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 1
-                        },
-                        "name": "multi-env-app",
-                        "ports": [
-                            {
-                                "containerPort": 5000,
-                                "name": "http",
-                                "protocol": "TCP"
-                            }
-                        ],
-                        "readinessProbe": {
-                            "failureThreshold": 3,
-                            "httpGet": {
-                                "path": "/ready",
-                                "port": "http",
-                                "scheme": "HTTP"
-                            },
-                            "initialDelaySeconds": 3,
-                            "periodSeconds": 5,
-                            "successThreshold": 1,
-                            "timeoutSeconds": 1
-                        },
-                        "resources": {
-                            "limits": {
-                                "cpu": "500m",
-                                "memory": "256Mi"
-                            },
-                            "requests": {
-                                "cpu": "100m",
-                                "memory": "128Mi"
-                            }
-                        },
-                        "securityContext": {
-                            "allowPrivilegeEscalation": false,
-                            "capabilities": {
-                                "drop": [
-                                    "ALL"
-                                ]
-                            }
-                        },
-                        "terminationMessagePath": "/dev/termination-log",
-                        "terminationMessagePolicy": "File",
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-vl4vb",
-                                "readOnly": true
-                            }
-                        ]
-                    }
-                ],
-                "dnsPolicy": "ClusterFirst",
-                "enableServiceLinks": true,
-                "nodeName": "evidence-control-plane",
-                "preemptionPolicy": "PreemptLowerPriority",
-                "priority": 0,
-                "restartPolicy": "Always",
-                "schedulerName": "default-scheduler",
-                "securityContext": {
-                    "fsGroup": 10001,
-                    "runAsNonRoot": true,
-                    "runAsUser": 10001
-                },
-                "serviceAccount": "default",
-                "serviceAccountName": "default",
-                "terminationGracePeriodSeconds": 30,
-                "tolerations": [
-                    {
-                        "effect": "NoExecute",
-                        "key": "node.kubernetes.io/not-ready",
-                        "operator": "Exists",
-                        "tolerationSeconds": 300
-                    },
-                    {
-                        "effect": "NoExecute",
-                        "key": "node.kubernetes.io/unreachable",
-                        "operator": "Exists",
-                        "tolerationSeconds": 300
-                    }
-                ],
-                "volumes": [
-                    {
-                        "name": "kube-api-access-vl4vb",
-                        "projected": {
-                            "defaultMode": 420,
-                            "sources": [
-                                {
-                                    "serviceAccountToken": {
-                                        "expirationSeconds": 3607,
-                                        "path": "token"
-                                    }
-                                },
-                                {
-                                    "configMap": {
-                                        "items": [
-                                            {
-                                                "key": "ca.crt",
-                                                "path": "ca.crt"
-                                            }
-                                        ],
-                                        "name": "kube-root-ca.crt"
-                                    }
-                                },
-                                {
-                                    "downwardAPI": {
-                                        "items": [
-                                            {
-                                                "fieldRef": {
-                                                    "apiVersion": "v1",
-                                                    "fieldPath": "metadata.namespace"
-                                                },
-                                                "path": "namespace"
-                                            }
-                                        ]
-                                    }
-                                }
-                            ]
-                        }
-                    }
-                ]
-            },
-            "status": {
-                "conditions": [
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:10Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "PodReadyToStartContainers"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:09Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "Initialized"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:16Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "Ready"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:16Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "ContainersReady"
-                    },
-                    {
-                        "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:09Z",
-                        "observedGeneration": 1,
-                        "status": "True",
-                        "type": "PodScheduled"
-                    }
-                ],
-                "containerStatuses": [
-                    {
-                        "allocatedResources": {
-                            "cpu": "100m",
-                            "memory": "128Mi"
-                        },
-                        "containerID": "containerd://7f1f0f00674977ccc3426e19ce8362e9ceaf051a6bba6932b35e23b7372da826",
-                        "image": "docker.io/library/multi-env-app:1.0.0",
-                        "imageID": "sha256:300a93a38842eb1e48384b2a7604c4aef4a0163af5647ea837da66ea47f0d604",
-                        "lastState": {},
-                        "name": "multi-env-app",
-                        "ready": true,
-                        "resources": {
-                            "limits": {
-                                "cpu": "500m",
-                                "memory": "256Mi"
-                            },
-                            "requests": {
-                                "cpu": "100m",
-                                "memory": "128Mi"
-                            }
-                        },
-                        "restartCount": 0,
-                        "started": true,
-                        "state": {
-                            "running": {
-                                "startedAt": "2026-10-20T18:00:10Z"
-                            }
-                        },
-                        "user": {
-                            "linux": {
-                                "gid": 10001,
-                                "supplementalGroups": [
-                                    10001
-                                ],
-                                "uid": 10001
-                            }
-                        },
-                        "volumeMounts": [
-                            {
-                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-vl4vb",
+                                "name": "kube-api-access-5wx4v",
                                 "readOnly": true,
                                 "recursiveReadOnly": "Disabled"
                             }
@@ -955,7 +317,645 @@
                     }
                 ],
                 "qosClass": "Burstable",
-                "startTime": "2026-10-20T18:00:09Z"
+                "startTime": "2026-10-20T18:11:37Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "checksum/config": "a36e621c071f2c2bd77b55dd9aff5a6ff345417abb758870d2f060df7b50e7cb"
+                },
+                "creationTimestamp": "2026-10-20T18:11:37Z",
+                "generateName": "myapp-prod-multi-env-app-78c6bddb45-",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/environment": "production",
+                    "app.kubernetes.io/instance": "myapp-prod",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "multi-env-app",
+                    "app.kubernetes.io/version": "1.0.0",
+                    "helm.sh/chart": "multi-env-app-1.0.0",
+                    "pod-template-hash": "78c6bddb45"
+                },
+                "name": "myapp-prod-multi-env-app-78c6bddb45-j2t8b",
+                "namespace": "prod",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "myapp-prod-multi-env-app-78c6bddb45",
+                        "uid": "95fc5f94-03bd-4347-b052-9b828c78646a"
+                    }
+                ],
+                "resourceVersion": "724",
+                "uid": "21de9fe6-e6c6-485c-99c4-f942b11a991e"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "env": [
+                            {
+                                "name": "PORT",
+                                "value": "5000"
+                            },
+                            {
+                                "name": "POD_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NODE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "spec.nodeName"
+                                    }
+                                }
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "configMapRef": {
+                                    "name": "myapp-prod-multi-env-app-config"
+                                }
+                            },
+                            {
+                                "secretRef": {
+                                    "name": "multi-env-app-secrets"
+                                }
+                            }
+                        ],
+                        "image": "multi-env-app:1.0.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": "http",
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "multi-env-app",
+                        "ports": [
+                            {
+                                "containerPort": 5000,
+                                "name": "http",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/ready",
+                                "port": "http",
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 3,
+                            "periodSeconds": 5,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "128Mi"
+                            }
+                        },
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-wnc59",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "evidence-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 10001,
+                    "runAsNonRoot": true,
+                    "runAsUser": 10001
+                },
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-wnc59",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:38Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:37Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:37Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "128Mi"
+                        },
+                        "containerID": "containerd://071bab07c32b24274f170caa78afbcd1fdb79d9286d741acb6a830b020e79b7f",
+                        "image": "docker.io/library/multi-env-app:1.0.0",
+                        "imageID": "sha256:da616d29287d2482406f7fea70161bda69bf15ebbd1db8e669ae1bf2de2cb49c",
+                        "lastState": {},
+                        "name": "multi-env-app",
+                        "ready": true,
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "128Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-10-20T18:11:38Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 10001,
+                                "supplementalGroups": [
+                                    10001
+                                ],
+                                "uid": 10001
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-wnc59",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.18.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.18.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.11",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.11"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "startTime": "2026-10-20T18:11:37Z"
+            }
+        },
+        {
+            "apiVersion": "v1",
+            "kind": "Pod",
+            "metadata": {
+                "annotations": {
+                    "checksum/config": "a36e621c071f2c2bd77b55dd9aff5a6ff345417abb758870d2f060df7b50e7cb"
+                },
+                "creationTimestamp": "2026-10-20T18:11:37Z",
+                "generateName": "myapp-prod-multi-env-app-78c6bddb45-",
+                "generation": 1,
+                "labels": {
+                    "app.kubernetes.io/environment": "production",
+                    "app.kubernetes.io/instance": "myapp-prod",
+                    "app.kubernetes.io/managed-by": "Helm",
+                    "app.kubernetes.io/name": "multi-env-app",
+                    "app.kubernetes.io/version": "1.0.0",
+                    "helm.sh/chart": "multi-env-app-1.0.0",
+                    "pod-template-hash": "78c6bddb45"
+                },
+                "name": "myapp-prod-multi-env-app-78c6bddb45-nm9nv",
+                "namespace": "prod",
+                "ownerReferences": [
+                    {
+                        "apiVersion": "apps/v1",
+                        "blockOwnerDeletion": true,
+                        "controller": true,
+                        "kind": "ReplicaSet",
+                        "name": "myapp-prod-multi-env-app-78c6bddb45",
+                        "uid": "95fc5f94-03bd-4347-b052-9b828c78646a"
+                    }
+                ],
+                "resourceVersion": "716",
+                "uid": "b747a90d-d85c-491c-959c-6824b1ef5fa9"
+            },
+            "spec": {
+                "containers": [
+                    {
+                        "env": [
+                            {
+                                "name": "PORT",
+                                "value": "5000"
+                            },
+                            {
+                                "name": "POD_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.name"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "POD_NAMESPACE",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "metadata.namespace"
+                                    }
+                                }
+                            },
+                            {
+                                "name": "NODE_NAME",
+                                "valueFrom": {
+                                    "fieldRef": {
+                                        "apiVersion": "v1",
+                                        "fieldPath": "spec.nodeName"
+                                    }
+                                }
+                            }
+                        ],
+                        "envFrom": [
+                            {
+                                "configMapRef": {
+                                    "name": "myapp-prod-multi-env-app-config"
+                                }
+                            },
+                            {
+                                "secretRef": {
+                                    "name": "multi-env-app-secrets"
+                                }
+                            }
+                        ],
+                        "image": "multi-env-app:1.0.0",
+                        "imagePullPolicy": "IfNotPresent",
+                        "livenessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/health",
+                                "port": "http",
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 5,
+                            "periodSeconds": 10,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "name": "multi-env-app",
+                        "ports": [
+                            {
+                                "containerPort": 5000,
+                                "name": "http",
+                                "protocol": "TCP"
+                            }
+                        ],
+                        "readinessProbe": {
+                            "failureThreshold": 3,
+                            "httpGet": {
+                                "path": "/ready",
+                                "port": "http",
+                                "scheme": "HTTP"
+                            },
+                            "initialDelaySeconds": 3,
+                            "periodSeconds": 5,
+                            "successThreshold": 1,
+                            "timeoutSeconds": 1
+                        },
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "128Mi"
+                            }
+                        },
+                        "securityContext": {
+                            "allowPrivilegeEscalation": false,
+                            "capabilities": {
+                                "drop": [
+                                    "ALL"
+                                ]
+                            }
+                        },
+                        "terminationMessagePath": "/dev/termination-log",
+                        "terminationMessagePolicy": "File",
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-jqggm",
+                                "readOnly": true
+                            }
+                        ]
+                    }
+                ],
+                "dnsPolicy": "ClusterFirst",
+                "enableServiceLinks": true,
+                "nodeName": "evidence-control-plane",
+                "preemptionPolicy": "PreemptLowerPriority",
+                "priority": 0,
+                "restartPolicy": "Always",
+                "schedulerName": "default-scheduler",
+                "securityContext": {
+                    "fsGroup": 10001,
+                    "runAsNonRoot": true,
+                    "runAsUser": 10001
+                },
+                "serviceAccount": "default",
+                "serviceAccountName": "default",
+                "terminationGracePeriodSeconds": 30,
+                "tolerations": [
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/not-ready",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    },
+                    {
+                        "effect": "NoExecute",
+                        "key": "node.kubernetes.io/unreachable",
+                        "operator": "Exists",
+                        "tolerationSeconds": 300
+                    }
+                ],
+                "volumes": [
+                    {
+                        "name": "kube-api-access-jqggm",
+                        "projected": {
+                            "defaultMode": 420,
+                            "sources": [
+                                {
+                                    "serviceAccountToken": {
+                                        "expirationSeconds": 3607,
+                                        "path": "token"
+                                    }
+                                },
+                                {
+                                    "configMap": {
+                                        "items": [
+                                            {
+                                                "key": "ca.crt",
+                                                "path": "ca.crt"
+                                            }
+                                        ],
+                                        "name": "kube-root-ca.crt"
+                                    }
+                                },
+                                {
+                                    "downwardAPI": {
+                                        "items": [
+                                            {
+                                                "fieldRef": {
+                                                    "apiVersion": "v1",
+                                                    "fieldPath": "metadata.namespace"
+                                                },
+                                                "path": "namespace"
+                                            }
+                                        ]
+                                    }
+                                }
+                            ]
+                        }
+                    }
+                ]
+            },
+            "status": {
+                "conditions": [
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:38Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodReadyToStartContainers"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:37Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Initialized"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "Ready"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:44Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "ContainersReady"
+                    },
+                    {
+                        "lastProbeTime": null,
+                        "lastTransitionTime": "2026-10-20T18:11:37Z",
+                        "observedGeneration": 1,
+                        "status": "True",
+                        "type": "PodScheduled"
+                    }
+                ],
+                "containerStatuses": [
+                    {
+                        "allocatedResources": {
+                            "cpu": "100m",
+                            "memory": "128Mi"
+                        },
+                        "containerID": "containerd://78de51225717b28bf52f62e3121676986af38bb863a1d6bd51b94ed0da96bf18",
+                        "image": "docker.io/library/multi-env-app:1.0.0",
+                        "imageID": "sha256:da616d29287d2482406f7fea70161bda69bf15ebbd1db8e669ae1bf2de2cb49c",
+                        "lastState": {},
+                        "name": "multi-env-app",
+                        "ready": true,
+                        "resources": {
+                            "limits": {
+                                "cpu": "500m",
+                                "memory": "256Mi"
+                            },
+                            "requests": {
+                                "cpu": "100m",
+                                "memory": "128Mi"
+                            }
+                        },
+                        "restartCount": 0,
+                        "started": true,
+                        "state": {
+                            "running": {
+                                "startedAt": "2026-10-20T18:11:38Z"
+                            }
+                        },
+                        "user": {
+                            "linux": {
+                                "gid": 10001,
+                                "supplementalGroups": [
+                                    10001
+                                ],
+                                "uid": 10001
+                            }
+                        },
+                        "volumeMounts": [
+                            {
+                                "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
+                                "name": "kube-api-access-jqggm",
+                                "readOnly": true,
+                                "recursiveReadOnly": "Disabled"
+                            }
+                        ]
+                    }
+                ],
+                "hostIP": "172.18.0.2",
+                "hostIPs": [
+                    {
+                        "ip": "172.18.0.2"
+                    }
+                ],
+                "observedGeneration": 1,
+                "phase": "Running",
+                "podIP": "10.244.0.10",
+                "podIPs": [
+                    {
+                        "ip": "10.244.0.10"
+                    }
+                ],
+                "qosClass": "Burstable",
+                "startTime": "2026-10-20T18:11:37Z"
             }
         }
     ],

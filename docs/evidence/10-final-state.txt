@@ -1,21 +1,21 @@
 $ helm list -A
 NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
-myapp-dev    	dev      	3       	2026-10-20 18:00:54.58418604 +0000 UTC 	deployed	multi-env-app-1.0.0	1.0.0      
-myapp-prod   	prod     	1       	2026-10-20 18:00:09.62778087 +0000 UTC 	deployed	multi-env-app-1.0.0	1.0.0      
-myapp-staging	staging  	2       	2026-10-20 18:03:03.193117074 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
-myapp-test   	test     	5       	2026-10-20 18:04:45.474920079 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-dev    	dev      	3       	2026-10-20 18:12:24.225367547 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-prod   	prod     	1       	2026-10-20 18:11:37.132801039 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-staging	staging  	4       	2026-10-20 18:17:07.31345327 +0000 UTC 	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-test   	test     	12      	2026-10-20 18:25:01.604929049 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
 
 $ kubectl get pods -A -l app.kubernetes.io/name=multi-env-app
-NAMESPACE   NAME                                           READY   STATUS      RESTARTS   AGE
-dev         myapp-dev-multi-env-app-576769ffc9-xxlr4       1/1     Running     0          4m24s
-dev         myapp-dev-multi-env-app-test-connection        0/1     Completed   0          4m59s
-prod        myapp-prod-multi-env-app-78c6bddb45-4sqwc      1/1     Running     0          5m9s
-prod        myapp-prod-multi-env-app-78c6bddb45-5ct52      1/1     Running     0          5m9s
-prod        myapp-prod-multi-env-app-78c6bddb45-67gvt      1/1     Running     0          5m9s
-prod        myapp-prod-multi-env-app-test-connection       0/1     Completed   0          4m50s
-staging     myapp-staging-multi-env-app-6749f7d798-27w6s   1/1     Running     0          2m15s
-staging     myapp-staging-multi-env-app-6749f7d798-l5fdv   1/1     Running     0          2m8s
-staging     myapp-staging-multi-env-app-test-connection    0/1     Completed   0          4m53s
-test        myapp-test-multi-env-app-5cb64b86c5-xkk5z      1/1     Running     0          33s
-test        myapp-test-multi-env-app-test-connection       0/1     Completed   0          4m56s
+NAMESPACE   NAME                                          READY   STATUS      RESTARTS   AGE
+dev         myapp-dev-multi-env-app-576769ffc9-pqx8k      1/1     Running     0          13m
+dev         myapp-dev-multi-env-app-test-connection       0/1     Completed   0          13m
+prod        myapp-prod-multi-env-app-78c6bddb45-4xx97     1/1     Running     0          14m
+prod        myapp-prod-multi-env-app-78c6bddb45-j2t8b     1/1     Running     0          14m
+prod        myapp-prod-multi-env-app-78c6bddb45-nm9nv     1/1     Running     0          14m
+prod        myapp-prod-multi-env-app-test-connection      0/1     Completed   0          13m
+staging     myapp-staging-multi-env-app-8f7b7c5f8-gxw55   1/1     Running     0          8m37s
+staging     myapp-staging-multi-env-app-8f7b7c5f8-jntww   1/1     Running     0          8m29s
+staging     myapp-staging-multi-env-app-test-connection   0/1     Completed   0          13m
+test        myapp-test-multi-env-app-78b6b8477f-5sxfm     1/1     Running     0          43s
+test        myapp-test-multi-env-app-test-connection      0/1     Completed   0          13m
 

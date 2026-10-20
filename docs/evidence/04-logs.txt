@@ -1,23 +1,23 @@
 $ kubectl logs -n dev deploy/myapp-dev-multi-env-app --tail=12
-[2026-10-20 17:59:48 +0000] [15] [INFO] Booting worker with pid: 15
-2026-10-20 17:59:50,541 INFO [multi-env-app] Starting Multi-Env Config Dashboard (DEV) v1.0.0 in development environment
-10.244.0.1 - - [20/Oct/2026:17:59:50 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
-2026-10-20 17:59:51,142 INFO [multi-env-app] Starting Multi-Env Config Dashboard (DEV) v1.0.0 in development environment
-10.244.0.1 - - [20/Oct/2026:17:59:52 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:17:59:55 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:18:00:00 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:18:00:02 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:18:00:05 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:18:00:10 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:18:00:12 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
-10.244.0.1 - - [20/Oct/2026:18:00:15 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+2026-10-20 18:11:15,549 INFO [multi-env-app] Starting Multi-Env Config Dashboard (DEV) v1.0.0 in development environment
+10.244.0.1 - - [20/Oct/2026:18:11:15 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:16 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:18 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:23 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:26 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:28 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:33 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:36 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:38 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:43 +0000] "GET /ready HTTP/1.1" 200 47 "-" "kube-probe/1.35"
+10.244.0.1 - - [20/Oct/2026:18:11:46 +0000] "GET /health HTTP/1.1" 200 16 "-" "kube-probe/1.35"
 
 $ kubectl logs -n prod deploy/myapp-prod-multi-env-app --tail=12
-Found 3 pods, using pod/myapp-prod-multi-env-app-78c6bddb45-4sqwc
-[2026-10-20 18:00:11 +0000] [1] [INFO] Starting gunicorn 23.0.0
-[2026-10-20 18:00:11 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
-[2026-10-20 18:00:11 +0000] [1] [INFO] Using worker: sync
-[2026-10-20 18:00:11 +0000] [15] [INFO] Booting worker with pid: 15
-[2026-10-20 18:00:11 +0000] [16] [INFO] Booting worker with pid: 16
-10.244.0.1 - - [20/Oct/2026:18:00:16 +0000] "GET /ready HTTP/1.1" 200 46 "-" "kube-probe/1.35"
+Found 3 pods, using pod/myapp-prod-multi-env-app-78c6bddb45-4xx97
+[2026-10-20 18:11:39 +0000] [1] [INFO] Starting gunicorn 23.0.0
+[2026-10-20 18:11:39 +0000] [1] [INFO] Listening at: http://0.0.0.0:5000 (1)
+[2026-10-20 18:11:39 +0000] [1] [INFO] Using worker: sync
+[2026-10-20 18:11:39 +0000] [14] [INFO] Booting worker with pid: 14
+[2026-10-20 18:11:39 +0000] [15] [INFO] Booting worker with pid: 15
+10.244.0.1 - - [20/Oct/2026:18:11:44 +0000] "GET /ready HTTP/1.1" 200 46 "-" "kube-probe/1.35"
 

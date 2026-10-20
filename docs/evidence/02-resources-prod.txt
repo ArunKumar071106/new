@@ -1,16 +1,16 @@
 $ kubectl get deploy,svc,cm,pods -n prod -o wide
 NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS      IMAGES                SELECTOR
-deployment.apps/myapp-prod-multi-env-app   3/3     3            3           9s    multi-env-app   multi-env-app:1.0.0   app.kubernetes.io/instance=myapp-prod,app.kubernetes.io/name=multi-env-app
+deployment.apps/myapp-prod-multi-env-app   3/3     3            3           8s    multi-env-app   multi-env-app:1.0.0   app.kubernetes.io/instance=myapp-prod,app.kubernetes.io/name=multi-env-app
 
-NAME                               TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE   SELECTOR
-service/myapp-prod-multi-env-app   NodePort   10.96.82.39   <none>        80:30084/TCP   9s    app.kubernetes.io/instance=myapp-prod,app.kubernetes.io/name=multi-env-app
+NAME                               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+service/myapp-prod-multi-env-app   NodePort   10.96.74.160   <none>        80:30084/TCP   8s    app.kubernetes.io/instance=myapp-prod,app.kubernetes.io/name=multi-env-app
 
 NAME                                        DATA   AGE
 configmap/kube-root-ca.crt                  1      9s
-configmap/myapp-prod-multi-env-app-config   13     9s
+configmap/myapp-prod-multi-env-app-config   13     8s
 
 NAME                                            READY   STATUS    RESTARTS   AGE   IP            NODE                     NOMINATED NODE   READINESS GATES
-pod/myapp-prod-multi-env-app-78c6bddb45-4sqwc   1/1     Running   0          9s    10.244.0.11   evidence-control-plane   <none>           <none>
-pod/myapp-prod-multi-env-app-78c6bddb45-5ct52   1/1     Running   0          9s    10.244.0.10   evidence-control-plane   <none>           <none>
-pod/myapp-prod-multi-env-app-78c6bddb45-67gvt   1/1     Running   0          9s    10.244.0.9    evidence-control-plane   <none>           <none>
+pod/myapp-prod-multi-env-app-78c6bddb45-4xx97   1/1     Running   0          8s    10.244.0.9    evidence-control-plane   <none>           <none>
+pod/myapp-prod-multi-env-app-78c6bddb45-j2t8b   1/1     Running   0          8s    10.244.0.11   evidence-control-plane   <none>           <none>
+pod/myapp-prod-multi-env-app-78c6bddb45-nm9nv   1/1     Running   0          8s    10.244.0.10   evidence-control-plane   <none>           <none>
 

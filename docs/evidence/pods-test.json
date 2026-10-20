@@ -8,7 +8,7 @@
                 "annotations": {
                     "checksum/config": "5e80c0134cf8753eefc61c51557dfd9ee0c47e170126a29b0ab966e0947c89f5"
                 },
-                "creationTimestamp": "2026-10-20T17:59:52Z",
+                "creationTimestamp": "2026-10-20T18:11:20Z",
                 "generateName": "myapp-test-multi-env-app-df8d675b7-",
                 "generation": 1,
                 "labels": {
@@ -20,7 +20,7 @@
                     "helm.sh/chart": "multi-env-app-1.0.0",
                     "pod-template-hash": "df8d675b7"
                 },
-                "name": "myapp-test-multi-env-app-df8d675b7-5xvqn",
+                "name": "myapp-test-multi-env-app-df8d675b7-25z2b",
                 "namespace": "test",
                 "ownerReferences": [
                     {
@@ -29,11 +29,11 @@
                         "controller": true,
                         "kind": "ReplicaSet",
                         "name": "myapp-test-multi-env-app-df8d675b7",
-                        "uid": "3b82d78b-b95e-4c83-bbd0-6ccf460e7fec"
+                        "uid": "b3ea2476-e9ef-4603-9f89-b7b327b20016"
                     }
                 ],
-                "resourceVersion": "561",
-                "uid": "d4357444-5512-46f2-8e73-ab308d55ce00"
+                "resourceVersion": "584",
+                "uid": "1aff7764-6539-4ec3-aa28-06608c322637"
             },
             "spec": {
                 "containers": [
@@ -135,7 +135,7 @@
                         "volumeMounts": [
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-srsgq",
+                                "name": "kube-api-access-648h7",
                                 "readOnly": true
                             }
                         ]
@@ -172,7 +172,7 @@
                 ],
                 "volumes": [
                     {
-                        "name": "kube-api-access-srsgq",
+                        "name": "kube-api-access-648h7",
                         "projected": {
                             "defaultMode": 420,
                             "sources": [
@@ -215,35 +215,35 @@
                 "conditions": [
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T17:59:54Z",
+                        "lastTransitionTime": "2026-10-20T18:11:21Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodReadyToStartContainers"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T17:59:52Z",
+                        "lastTransitionTime": "2026-10-20T18:11:20Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Initialized"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:00Z",
+                        "lastTransitionTime": "2026-10-20T18:11:27Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "Ready"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T18:00:00Z",
+                        "lastTransitionTime": "2026-10-20T18:11:27Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "ContainersReady"
                     },
                     {
                         "lastProbeTime": null,
-                        "lastTransitionTime": "2026-10-20T17:59:52Z",
+                        "lastTransitionTime": "2026-10-20T18:11:20Z",
                         "observedGeneration": 1,
                         "status": "True",
                         "type": "PodScheduled"
@@ -255,9 +255,9 @@
                             "cpu": "50m",
                             "memory": "64Mi"
                         },
-                        "containerID": "containerd://738a36f79636bb36f34d09544092837b0f2cbd786a24abe13c07056392dc4651",
+                        "containerID": "containerd://3fd1c3f7ec966cf39dab35ed9e240f48d36923ff7b8f55714fe2771c68645938",
                         "image": "docker.io/library/multi-env-app:1.0.0",
-                        "imageID": "sha256:300a93a38842eb1e48384b2a7604c4aef4a0163af5647ea837da66ea47f0d604",
+                        "imageID": "sha256:da616d29287d2482406f7fea70161bda69bf15ebbd1db8e669ae1bf2de2cb49c",
                         "lastState": {},
                         "name": "multi-env-app",
                         "ready": true,
@@ -275,7 +275,7 @@
                         "started": true,
                         "state": {
                             "running": {
-                                "startedAt": "2026-10-20T17:59:53Z"
+                                "startedAt": "2026-10-20T18:11:21Z"
                             }
                         },
                         "user": {
@@ -290,7 +290,7 @@
                         "volumeMounts": [
                             {
                                 "mountPath": "/var/run/secrets/kubernetes.io/serviceaccount",
-                                "name": "kube-api-access-srsgq",
+                                "name": "kube-api-access-648h7",
                                 "readOnly": true,
                                 "recursiveReadOnly": "Disabled"
                             }
@@ -312,7 +312,7 @@
                     }
                 ],
                 "qosClass": "Burstable",
-                "startTime": "2026-10-20T17:59:52Z"
+                "startTime": "2026-10-20T18:11:20Z"
             }
         }
     ],

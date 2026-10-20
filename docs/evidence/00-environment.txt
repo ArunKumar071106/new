@@ -1,5 +1,5 @@
 $ uname -srm
-Linux 6.17.0-1022-azure x86_64
+Linux 7.0.0-1017-azure x86_64
 
 $ lscpu | grep 'Model name'
 Model name:                              AMD EPYC 7763 64-Core Processor
@@ -9,7 +9,7 @@ $ nproc
 
 $ free -h | sed -n 1,2p
                total        used        free      shared  buff/cache   available
-Mem:            15Gi       1.9Gi       8.9Gi        55Mi       5.2Gi        13Gi
+Mem:            15Gi       1.9Gi       8.9Gi        53Mi       5.2Gi        13Gi
 
 $ docker --version
 Docker version 28.0.4, build b8034c0
@@ -26,28 +26,28 @@ $ helm version --short
 v3.16.2+g13654a5
 
 $ kubectl get nodes -o wide
-NAME                     STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION      CONTAINER-RUNTIME
-evidence-control-plane   Ready    control-plane   34s   v1.35.0   172.18.0.2    <none>        Debian GNU/Linux 12 (bookworm)   6.17.0-1022-azure   containerd://2.2.0
+NAME                     STATUS   ROLES           AGE   VERSION   INTERNAL-IP   EXTERNAL-IP   OS-IMAGE                         KERNEL-VERSION     CONTAINER-RUNTIME
+evidence-control-plane   Ready    control-plane   34s   v1.35.0   172.18.0.2    <none>        Debian GNU/Linux 12 (bookworm)   7.0.0-1017-azure   containerd://2.2.0
 
 $ "/usr/bin/google-chrome" --version
-Google Chrome 155.0.8059.39 
+Google Chrome 155.0.8059.84 
 
 $ docker image ls multi-env-app
 REPOSITORY      TAG       IMAGE ID       CREATED         SIZE
-multi-env-app   1.0.0     300a93a38842   6 seconds ago   126MB
+multi-env-app   1.0.0     da616d29287d   5 seconds ago   126MB
 
 $ docker history multi-env-app:1.0.0
 IMAGE          CREATED         CREATED BY                                      SIZE      COMMENT
-300a93a38842   6 seconds ago   CMD ["sh" "-c" "exec gunicorn --bind 0.0.0.0…   0B        buildkit.dockerfile.v0
-<missing>      6 seconds ago   HEALTHCHECK &{["CMD-SHELL" "python -c \"impo…   0B        buildkit.dockerfile.v0
-<missing>      6 seconds ago   EXPOSE map[5000/tcp:{}]                         0B        buildkit.dockerfile.v0
-<missing>      6 seconds ago   USER 10001                                      0B        buildkit.dockerfile.v0
-<missing>      6 seconds ago   RUN /bin/sh -c useradd --uid 10001 --no-crea…   15.2kB    buildkit.dockerfile.v0
-<missing>      6 seconds ago   COPY app/ . # buildkit                          11.3kB    buildkit.dockerfile.v0
-<missing>      6 seconds ago   RUN /bin/sh -c pip install --no-cache-dir -r…   6.39MB    buildkit.dockerfile.v0
-<missing>      9 seconds ago   COPY app/requirements.txt . # buildkit          30B       buildkit.dockerfile.v0
-<missing>      9 seconds ago   WORKDIR /app                                    0B        buildkit.dockerfile.v0
-<missing>      9 seconds ago   ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFER…   0B        buildkit.dockerfile.v0
+da616d29287d   5 seconds ago   CMD ["sh" "-c" "exec gunicorn --bind 0.0.0.0…   0B        buildkit.dockerfile.v0
+<missing>      5 seconds ago   HEALTHCHECK &{["CMD-SHELL" "python -c \"impo…   0B        buildkit.dockerfile.v0
+<missing>      5 seconds ago   EXPOSE map[5000/tcp:{}]                         0B        buildkit.dockerfile.v0
+<missing>      5 seconds ago   USER 10001                                      0B        buildkit.dockerfile.v0
+<missing>      5 seconds ago   RUN /bin/sh -c useradd --uid 10001 --no-crea…   15.2kB    buildkit.dockerfile.v0
+<missing>      5 seconds ago   COPY app/ . # buildkit                          11.3kB    buildkit.dockerfile.v0
+<missing>      5 seconds ago   RUN /bin/sh -c pip install --no-cache-dir -r…   6.39MB    buildkit.dockerfile.v0
+<missing>      8 seconds ago   COPY app/requirements.txt . # buildkit          30B       buildkit.dockerfile.v0
+<missing>      8 seconds ago   WORKDIR /app                                    0B        buildkit.dockerfile.v0
+<missing>      8 seconds ago   ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFER…   0B        buildkit.dockerfile.v0
 <missing>      2 weeks ago     CMD ["python3"]                                 0B        buildkit.dockerfile.v0
 <missing>      2 weeks ago     RUN /bin/sh -c set -eux;  for src in idle3 p…   0B        buildkit.dockerfile.v0
 <missing>      2 weeks ago     RUN /bin/sh -c set -eux;   savedAptMark="$(a…   36.8MB    buildkit.dockerfile.v0

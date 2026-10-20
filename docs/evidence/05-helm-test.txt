@@ -1,0 +1,27 @@
+$ helm test myapp-prod -n prod
+NAME: myapp-prod
+LAST DEPLOYED: Tue Oct 20 18:11:37 2026
+NAMESPACE: prod
+STATUS: deployed
+REVISION: 1
+TEST SUITE:     myapp-prod-multi-env-app-test-connection
+Last Started:   Tue Oct 20 18:11:58 2026
+Last Completed: Tue Oct 20 18:12:00 2026
+Phase:          Succeeded
+NOTES:
+Multi-Env Config Dashboard has been deployed.
+
+  Release     : myapp-prod (revision 1)
+  Namespace   : prod
+  Environment : production
+  Version     : 1.0.0
+  Replicas    : 3
+
+Open the dashboard:
+  minikube service myapp-prod-multi-env-app -n prod --url
+  kubectl port-forward -n prod svc/myapp-prod-multi-env-app 8080:80
+  then browse to http://localhost:8080
+
+Verify the release:
+  helm test myapp-prod -n prod
+

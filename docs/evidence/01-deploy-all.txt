@@ -2,7 +2,7 @@
 ==> Deploying myapp-dev to namespace dev using values-dev.yaml
 Release "myapp-dev" does not exist. Installing it now.
 NAME: myapp-dev
-LAST DEPLOYED: Tue Oct 20 17:59:42 2026
+LAST DEPLOYED: Tue Oct 20 18:11:05 2026
 NAMESPACE: dev
 STATUS: deployed
 REVISION: 1
@@ -23,21 +23,21 @@ Open the dashboard:
 Verify the release:
   helm test myapp-dev -n dev
 NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/myapp-dev-multi-env-app   1/1     1            1           10s
+deployment.apps/myapp-dev-multi-env-app   1/1     1            1           15s
 
 NAME                              TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-service/myapp-dev-multi-env-app   NodePort   10.96.69.21   <none>        80:30081/TCP   10s
+service/myapp-dev-multi-env-app   NodePort   10.96.91.99   <none>        80:30081/TCP   15s
 
 NAME                                       DATA   AGE
-configmap/myapp-dev-multi-env-app-config   13     10s
+configmap/myapp-dev-multi-env-app-config   13     15s
 
 NAME                                           READY   STATUS    RESTARTS   AGE
-pod/myapp-dev-multi-env-app-576769ffc9-hfzjf   1/1     Running   0          10s
+pod/myapp-dev-multi-env-app-576769ffc9-gr8ld   1/1     Running   0          15s
 
 ==> Deploying myapp-test to namespace test using values-test.yaml
 Release "myapp-test" does not exist. Installing it now.
 NAME: myapp-test
-LAST DEPLOYED: Tue Oct 20 17:59:52 2026
+LAST DEPLOYED: Tue Oct 20 18:11:20 2026
 NAMESPACE: test
 STATUS: deployed
 REVISION: 1
@@ -58,21 +58,21 @@ Open the dashboard:
 Verify the release:
   helm test myapp-test -n test
 NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
-deployment.apps/myapp-test-multi-env-app   1/1     1            1           9s
+deployment.apps/myapp-test-multi-env-app   1/1     1            1           8s
 
 NAME                               TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-service/myapp-test-multi-env-app   NodePort   10.96.237.3   <none>        80:30082/TCP   9s
+service/myapp-test-multi-env-app   NodePort   10.96.88.93   <none>        80:30082/TCP   8s
 
 NAME                                        DATA   AGE
-configmap/myapp-test-multi-env-app-config   13     9s
+configmap/myapp-test-multi-env-app-config   13     8s
 
 NAME                                           READY   STATUS    RESTARTS   AGE
-pod/myapp-test-multi-env-app-df8d675b7-5xvqn   1/1     Running   0          9s
+pod/myapp-test-multi-env-app-df8d675b7-25z2b   1/1     Running   0          8s
 
 ==> Deploying myapp-staging to namespace staging using values-staging.yaml
 Release "myapp-staging" does not exist. Installing it now.
 NAME: myapp-staging
-LAST DEPLOYED: Tue Oct 20 18:00:01 2026
+LAST DEPLOYED: Tue Oct 20 18:11:28 2026
 NAMESPACE: staging
 STATUS: deployed
 REVISION: 1
@@ -96,14 +96,14 @@ NAME                                          READY   UP-TO-DATE   AVAILABLE   A
 deployment.apps/myapp-staging-multi-env-app   2/2     2            2           8s
 
 NAME                                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
-service/myapp-staging-multi-env-app   NodePort   10.96.65.200   <none>        80:30083/TCP   8s
+service/myapp-staging-multi-env-app   NodePort   10.96.220.40   <none>        80:30083/TCP   8s
 
 NAME                                           DATA   AGE
 configmap/myapp-staging-multi-env-app-config   13     8s
 
 NAME                                               READY   STATUS    RESTARTS   AGE
-pod/myapp-staging-multi-env-app-598477f467-pvrpr   1/1     Running   0          8s
-pod/myapp-staging-multi-env-app-598477f467-v84qx   1/1     Running   0          8s
+pod/myapp-staging-multi-env-app-598477f467-2t8sc   1/1     Running   0          8s
+pod/myapp-staging-multi-env-app-598477f467-wq95b   1/1     Running   0          8s
 
 ==> Deploying myapp-prod to namespace prod using values-prod.yaml
 
@@ -111,7 +111,7 @@ pod/myapp-staging-multi-env-app-598477f467-v84qx   1/1     Running   0          
 secret/multi-env-app-secrets created
 Release "myapp-prod" does not exist. Installing it now.
 NAME: myapp-prod
-LAST DEPLOYED: Tue Oct 20 18:00:09 2026
+LAST DEPLOYED: Tue Oct 20 18:11:37 2026
 NAMESPACE: prod
 STATUS: deployed
 REVISION: 1
@@ -134,14 +134,14 @@ Verify the release:
 NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
 deployment.apps/myapp-prod-multi-env-app   3/3     3            3           8s
 
-NAME                               TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
-service/myapp-prod-multi-env-app   NodePort   10.96.82.39   <none>        80:30084/TCP   8s
+NAME                               TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+service/myapp-prod-multi-env-app   NodePort   10.96.74.160   <none>        80:30084/TCP   8s
 
 NAME                                        DATA   AGE
 configmap/myapp-prod-multi-env-app-config   13     8s
 
 NAME                                            READY   STATUS    RESTARTS   AGE
-pod/myapp-prod-multi-env-app-78c6bddb45-4sqwc   1/1     Running   0          8s
-pod/myapp-prod-multi-env-app-78c6bddb45-5ct52   1/1     Running   0          8s
-pod/myapp-prod-multi-env-app-78c6bddb45-67gvt   1/1     Running   0          8s
-deploy.sh all finished in 35 s
+pod/myapp-prod-multi-env-app-78c6bddb45-4xx97   1/1     Running   0          8s
+pod/myapp-prod-multi-env-app-78c6bddb45-j2t8b   1/1     Running   0          8s
+pod/myapp-prod-multi-env-app-78c6bddb45-nm9nv   1/1     Running   0          8s
+deploy.sh all finished in 40 s

@@ -1,14 +1,14 @@
 $ kubectl get deploy,svc,cm,pods -n dev -o wide
 NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS      IMAGES                SELECTOR
-deployment.apps/myapp-dev-multi-env-app   1/1     1            1           35s   multi-env-app   multi-env-app:1.0.0   app.kubernetes.io/instance=myapp-dev,app.kubernetes.io/name=multi-env-app
+deployment.apps/myapp-dev-multi-env-app   1/1     1            1           40s   multi-env-app   multi-env-app:1.0.0   app.kubernetes.io/instance=myapp-dev,app.kubernetes.io/name=multi-env-app
 
 NAME                              TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE   SELECTOR
-service/myapp-dev-multi-env-app   NodePort   10.96.69.21   <none>        80:30081/TCP   35s   app.kubernetes.io/instance=myapp-dev,app.kubernetes.io/name=multi-env-app
+service/myapp-dev-multi-env-app   NodePort   10.96.91.99   <none>        80:30081/TCP   40s   app.kubernetes.io/instance=myapp-dev,app.kubernetes.io/name=multi-env-app
 
 NAME                                       DATA   AGE
-configmap/kube-root-ca.crt                 1      35s
-configmap/myapp-dev-multi-env-app-config   13     35s
+configmap/kube-root-ca.crt                 1      40s
+configmap/myapp-dev-multi-env-app-config   13     40s
 
 NAME                                           READY   STATUS    RESTARTS   AGE   IP           NODE                     NOMINATED NODE   READINESS GATES
-pod/myapp-dev-multi-env-app-576769ffc9-hfzjf   1/1     Running   0          35s   10.244.0.5   evidence-control-plane   <none>           <none>
+pod/myapp-dev-multi-env-app-576769ffc9-gr8ld   1/1     Running   0          40s   10.244.0.5   evidence-control-plane   <none>           <none>
 
