@@ -1,0 +1,117 @@
+name: Helm Chart Validation
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+env:
+  HELM_VERSION: v3.16.2
+  KUBECONFORM_VERSION: v0.6.7
+  KUBERNETES_VERSION: 1.31.0
+  IMAGE: multi-env-app:1.0.0
+
+jobs:
+  python-tests:
+    name: Unit & configuration tests (pytest)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Install dependencies
+        run: pip install -r requirements-dev.txt
+
+      - name: Run pytest (app + per-environment Helm config tests)
+        run: python -m pytest -v
+
+  helm-validate:
+    name: Helm lint / template / kubeconform
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Install kubeconform
+        run: |
+          curl -sSL "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz" \
+            | tar -xz -C /usr/local/bin kubeconform
+          kubeconform -v
+
+      - name: Validate chart for dev, test, staging and prod
+        run: ./scripts/validate-helm.sh
+
+      - name: Upload rendered manifests
+        uses: actions/upload-artifact@v4
+        with:
+          name: rendered-manifests
+          path: dist/rendered/
+
+  docker-build:
+    name: Docker build & smoke test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t "$IMAGE" .
+
+      - name: Run container and check endpoints
+        run: |
+          docker run -d --name smoke -p 5000:5000 -e APP_ENV=testing "$IMAGE"
+          for i in $(seq 1 20); do curl -fs http://127.0.0.1:5000/health && break; sleep 1; done
+          curl -fs http://127.0.0.1:5000/api/config | tee /tmp/config.json
+          python3 -c "import json; d=json.load(open('/tmp/config.json')); assert d['environment']=='testing', d"
+          curl -fs http://127.0.0.1:5000/ | grep -q 'id="app-env"'
+          docker rm -f smoke
+
+  deploy-kind:
+    name: Deploy all environments to a kind cluster
+    runs-on: ubuntu-latest
+    needs: [python-tests, helm-validate, docker-build]
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: chart-testing
+
+      - name: Build image and load it into kind
+        run: |
+          docker build -t "$IMAGE" .
+          kind load docker-image "$IMAGE" --name chart-testing
+          docker pull busybox:1.36
+          kind load docker-image busybox:1.36 --name chart-testing
+
+      - name: Deploy dev, test, staging and prod
+        run: ./scripts/deploy.sh all
+
+      - name: Verify environment-specific configuration (live)
+        run: ./scripts/test-environments.sh all
+
+      - name: Upgrade and rollback (dev)
+        run: ./scripts/upgrade-rollback-demo.sh dev
+
+      - name: Show cluster state
+        if: always()
+        run: |
+          helm list -A
+          kubectl get pods -A -l app.kubernetes.io/name=multi-env-app -o wide

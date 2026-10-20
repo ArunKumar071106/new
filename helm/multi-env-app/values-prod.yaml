@@ -1,0 +1,43 @@
+# Production: high availability, minimal logging, debug disabled.
+# Sensitive values (SECRET_KEY) come from a pre-created Kubernetes Secret.
+environment: production
+
+replicaCount: 3
+
+image:
+  pullPolicy: IfNotPresent
+
+app:
+  name: "Multi-Env Config Dashboard"
+
+config:
+  LOG_LEVEL: "WARNING"
+  DEBUG_MODE: "false"
+  FEATURE_BETA_BANNER: "false"
+  MAX_CONNECTIONS: "200"
+  CACHE_TTL_SECONDS: "300"
+  DATABASE_HOST: "postgres.prod.svc.cluster.local"
+  API_BASE_URL: "https://multi-env-app.example.com/api"
+
+# Create before installing (see README):
+#   kubectl create secret generic multi-env-app-secrets -n prod \
+#     --from-literal=SECRET_KEY="$(openssl rand -hex 32)"
+existingSecret: "multi-env-app-secrets"
+
+service:
+  type: NodePort
+  nodePort: 30084
+
+strategy:
+  type: RollingUpdate
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 128Mi
+  limits:
+    cpu: 500m
+    memory: 256Mi

@@ -1,0 +1,17 @@
+{{ .Values.app.name }} has been deployed.
+
+  Release     : {{ .Release.Name }} (revision {{ .Release.Revision }})
+  Namespace   : {{ .Release.Namespace }}
+  Environment : {{ .Values.environment }}
+  Version     : {{ include "multi-env-app.appVersion" . }}
+  Replicas    : {{ .Values.replicaCount }}
+
+Open the dashboard:
+{{- if eq .Values.service.type "NodePort" }}
+  minikube service {{ include "multi-env-app.fullname" . }} -n {{ .Release.Namespace }} --url
+{{- end }}
+  kubectl port-forward -n {{ .Release.Namespace }} svc/{{ include "multi-env-app.fullname" . }} 8080:{{ .Values.service.port }}
+  then browse to http://localhost:8080
+
+Verify the release:
+  helm test {{ .Release.Name }} -n {{ .Release.Namespace }}

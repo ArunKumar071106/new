@@ -1,0 +1,28 @@
+# Staging: production-like (no debug, no beta) with 2 replicas for HA testing.
+environment: staging
+
+replicaCount: 2
+
+app:
+  name: "Multi-Env Config Dashboard (STAGING)"
+
+config:
+  LOG_LEVEL: "INFO"
+  DEBUG_MODE: "false"
+  FEATURE_BETA_BANNER: "false"
+  MAX_CONNECTIONS: "50"
+  CACHE_TTL_SECONDS: "120"
+  DATABASE_HOST: "postgres.staging.svc.cluster.local"
+  API_BASE_URL: "https://staging.multi-env-app.example.com/api"
+
+service:
+  type: NodePort
+  nodePort: 30083
+
+resources:
+  requests:
+    cpu: 100m
+    memory: 96Mi
+  limits:
+    cpu: 250m
+    memory: 192Mi

@@ -1,0 +1,18 @@
+apiVersion: v2
+name: multi-env-app
+description: >-
+  Reusable Helm chart that deploys the Multi-Environment Config Dashboard
+  (Flask) to Development, Testing, Staging and Production using
+  environment-specific values files.
+type: application
+# Chart version - bump whenever the chart templates change.
+version: 1.0.0
+# Application version - used as the default image tag and APP_VERSION.
+appVersion: "1.0.0"
+keywords:
+  - flask
+  - multi-environment
+  - configuration-management
+maintainers:
+  - name: Arun Kumar T
+  - name: Priyan M

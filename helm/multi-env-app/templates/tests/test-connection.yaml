@@ -1,0 +1,27 @@
+# Run with: helm test <release> -n <namespace>
+# Checks that the Service answers and that the pod reports the expected environment.
+apiVersion: v1
+kind: Pod
+metadata:
+  name: {{ include "multi-env-app.fullname" . }}-test-connection
+  labels:
+    {{- include "multi-env-app.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+    "helm.sh/hook-delete-policy": before-hook-creation
+spec:
+  restartPolicy: Never
+  containers:
+    - name: check-environment
+      image: {{ .Values.tests.image }}
+      imagePullPolicy: IfNotPresent
+      command: ["sh", "-c"]
+      args:
+        - |
+          set -e
+          URL="http://{{ include "multi-env-app.fullname" . }}:{{ .Values.service.port }}"
+          wget -qO- "$URL/health"
+          BODY="$(wget -qO- "$URL/api/config")"
+          echo "$BODY"
+          echo "$BODY" | grep -Eq '"environment": ?"{{ .Values.environment }}"'
+          echo "OK: service reachable and environment is {{ .Values.environment }}"

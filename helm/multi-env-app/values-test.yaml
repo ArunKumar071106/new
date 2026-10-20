@@ -1,0 +1,28 @@
+# Testing: mirrors dev features but with INFO logging for QA test runs.
+environment: testing
+
+replicaCount: 1
+
+app:
+  name: "Multi-Env Config Dashboard (TEST)"
+
+config:
+  LOG_LEVEL: "INFO"
+  DEBUG_MODE: "false"
+  FEATURE_BETA_BANNER: "true"
+  MAX_CONNECTIONS: "10"
+  CACHE_TTL_SECONDS: "30"
+  DATABASE_HOST: "postgres.test.svc.cluster.local"
+  API_BASE_URL: "http://test.multi-env-app.local/api"
+
+service:
+  type: NodePort
+  nodePort: 30082
+
+resources:
+  requests:
+    cpu: 50m
+    memory: 64Mi
+  limits:
+    cpu: 150m
+    memory: 128Mi

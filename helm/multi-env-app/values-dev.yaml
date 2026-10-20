@@ -1,0 +1,28 @@
+# Development: fast feedback, verbose logging, single replica, beta features on.
+environment: development
+
+replicaCount: 1
+
+app:
+  name: "Multi-Env Config Dashboard (DEV)"
+
+config:
+  LOG_LEVEL: "DEBUG"
+  DEBUG_MODE: "true"
+  FEATURE_BETA_BANNER: "true"
+  MAX_CONNECTIONS: "5"
+  CACHE_TTL_SECONDS: "10"
+  DATABASE_HOST: "postgres.dev.svc.cluster.local"
+  API_BASE_URL: "http://dev.multi-env-app.local/api"
+
+service:
+  type: NodePort
+  nodePort: 30081
+
+resources:
+  requests:
+    cpu: 25m
+    memory: 64Mi
+  limits:
+    cpu: 100m
+    memory: 128Mi

@@ -1,0 +1,43 @@
+/* Custom styles layered on top of Bootstrap 5. */
+
+body {
+  background-color: #f4f6f9;
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+}
+
+.env-banner {
+  padding-top: 0.9rem;
+  padding-bottom: 0.9rem;
+}
+
+.stat-card {
+  border-width: 0 0 0 5px;
+  border-style: solid;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+}
+
+.stat-label {
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: #6c757d;
+}
+
+.stat-value {
+  font-size: 1.35rem;
+  font-weight: 600;
+  word-break: break-word;
+}
+
+.config-table td:first-child {
+  width: 45%;
+}
+
+/* Production gets a subtle warning stripe so it is never mistaken for dev. */
+body.env-production .env-banner {
+  background-image: repeating-linear-gradient(
+    45deg,
+    rgba(255, 255, 255, 0.06) 0 12px,
+    transparent 12px 24px
+  );
+}
