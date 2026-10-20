@@ -1,0 +1,39 @@
+### A: staging (2 replicas), chart strategy maxSurge=1 maxUnavailable=0
+$ helm upgrade myapp-staging ./helm/multi-env-app -n staging -f helm/multi-env-app/values-staging.yaml --set-string config.CACHE_TTL_SECONDS=130 --wait
+rollout finished in 14 s
+probe output:
+wget: download timed out
+t=19s request 163 failed
+wget: error getting response: Connection reset by peer
+t=23s request 204 failed
+
+### B: test (1 replica), chart strategy maxSurge=1 maxUnavailable=0
+$ helm upgrade myapp-test ./helm/multi-env-app -n test -f helm/multi-env-app/values-test.yaml --set-string config.CACHE_TTL_SECONDS=31 --wait
+rollout finished in 8 s
+probe output:
+wget: error getting response: Connection reset by peer
+t=17s request 160 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=17s request 161 failed
+
+### C: test (1 replica), alternative strategy maxSurge=0 maxUnavailable=1
+$ helm upgrade myapp-test ./helm/multi-env-app -n test -f helm/multi-env-app/values-test.yaml --set-string config.CACHE_TTL_SECONDS=32 --set strategy.rollingUpdate.maxSurge=0 --set strategy.rollingUpdate.maxUnavailable=1 --wait
+rollout finished in 2 s
+probe output:
+wget: error getting response: Connection reset by peer
+t=8s request 85 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 86 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 87 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 88 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 89 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 90 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 91 failed
+wget: can't connect to remote host (10.96.237.3): Connection refused
+t=9s request 92 failed
+

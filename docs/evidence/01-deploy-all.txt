@@ -1,0 +1,147 @@
+
+==> Deploying myapp-dev to namespace dev using values-dev.yaml
+Release "myapp-dev" does not exist. Installing it now.
+NAME: myapp-dev
+LAST DEPLOYED: Tue Oct 20 17:59:42 2026
+NAMESPACE: dev
+STATUS: deployed
+REVISION: 1
+NOTES:
+Multi-Env Config Dashboard (DEV) has been deployed.
+
+  Release     : myapp-dev (revision 1)
+  Namespace   : dev
+  Environment : development
+  Version     : 1.0.0
+  Replicas    : 1
+
+Open the dashboard:
+  minikube service myapp-dev-multi-env-app -n dev --url
+  kubectl port-forward -n dev svc/myapp-dev-multi-env-app 8080:80
+  then browse to http://localhost:8080
+
+Verify the release:
+  helm test myapp-dev -n dev
+NAME                                      READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp-dev-multi-env-app   1/1     1            1           10s
+
+NAME                              TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+service/myapp-dev-multi-env-app   NodePort   10.96.69.21   <none>        80:30081/TCP   10s
+
+NAME                                       DATA   AGE
+configmap/myapp-dev-multi-env-app-config   13     10s
+
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/myapp-dev-multi-env-app-576769ffc9-hfzjf   1/1     Running   0          10s
+
+==> Deploying myapp-test to namespace test using values-test.yaml
+Release "myapp-test" does not exist. Installing it now.
+NAME: myapp-test
+LAST DEPLOYED: Tue Oct 20 17:59:52 2026
+NAMESPACE: test
+STATUS: deployed
+REVISION: 1
+NOTES:
+Multi-Env Config Dashboard (TEST) has been deployed.
+
+  Release     : myapp-test (revision 1)
+  Namespace   : test
+  Environment : testing
+  Version     : 1.0.0
+  Replicas    : 1
+
+Open the dashboard:
+  minikube service myapp-test-multi-env-app -n test --url
+  kubectl port-forward -n test svc/myapp-test-multi-env-app 8080:80
+  then browse to http://localhost:8080
+
+Verify the release:
+  helm test myapp-test -n test
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp-test-multi-env-app   1/1     1            1           9s
+
+NAME                               TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+service/myapp-test-multi-env-app   NodePort   10.96.237.3   <none>        80:30082/TCP   9s
+
+NAME                                        DATA   AGE
+configmap/myapp-test-multi-env-app-config   13     9s
+
+NAME                                           READY   STATUS    RESTARTS   AGE
+pod/myapp-test-multi-env-app-df8d675b7-5xvqn   1/1     Running   0          9s
+
+==> Deploying myapp-staging to namespace staging using values-staging.yaml
+Release "myapp-staging" does not exist. Installing it now.
+NAME: myapp-staging
+LAST DEPLOYED: Tue Oct 20 18:00:01 2026
+NAMESPACE: staging
+STATUS: deployed
+REVISION: 1
+NOTES:
+Multi-Env Config Dashboard (STAGING) has been deployed.
+
+  Release     : myapp-staging (revision 1)
+  Namespace   : staging
+  Environment : staging
+  Version     : 1.0.0
+  Replicas    : 2
+
+Open the dashboard:
+  minikube service myapp-staging-multi-env-app -n staging --url
+  kubectl port-forward -n staging svc/myapp-staging-multi-env-app 8080:80
+  then browse to http://localhost:8080
+
+Verify the release:
+  helm test myapp-staging -n staging
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp-staging-multi-env-app   2/2     2            2           8s
+
+NAME                                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE
+service/myapp-staging-multi-env-app   NodePort   10.96.65.200   <none>        80:30083/TCP   8s
+
+NAME                                           DATA   AGE
+configmap/myapp-staging-multi-env-app-config   13     8s
+
+NAME                                               READY   STATUS    RESTARTS   AGE
+pod/myapp-staging-multi-env-app-598477f467-pvrpr   1/1     Running   0          8s
+pod/myapp-staging-multi-env-app-598477f467-v84qx   1/1     Running   0          8s
+
+==> Deploying myapp-prod to namespace prod using values-prod.yaml
+
+==> Creating Secret multi-env-app-secrets in prod with a random SECRET_KEY
+secret/multi-env-app-secrets created
+Release "myapp-prod" does not exist. Installing it now.
+NAME: myapp-prod
+LAST DEPLOYED: Tue Oct 20 18:00:09 2026
+NAMESPACE: prod
+STATUS: deployed
+REVISION: 1
+NOTES:
+Multi-Env Config Dashboard has been deployed.
+
+  Release     : myapp-prod (revision 1)
+  Namespace   : prod
+  Environment : production
+  Version     : 1.0.0
+  Replicas    : 3
+
+Open the dashboard:
+  minikube service myapp-prod-multi-env-app -n prod --url
+  kubectl port-forward -n prod svc/myapp-prod-multi-env-app 8080:80
+  then browse to http://localhost:8080
+
+Verify the release:
+  helm test myapp-prod -n prod
+NAME                                       READY   UP-TO-DATE   AVAILABLE   AGE
+deployment.apps/myapp-prod-multi-env-app   3/3     3            3           8s
+
+NAME                               TYPE       CLUSTER-IP    EXTERNAL-IP   PORT(S)        AGE
+service/myapp-prod-multi-env-app   NodePort   10.96.82.39   <none>        80:30084/TCP   8s
+
+NAME                                        DATA   AGE
+configmap/myapp-prod-multi-env-app-config   13     8s
+
+NAME                                            READY   STATUS    RESTARTS   AGE
+pod/myapp-prod-multi-env-app-78c6bddb45-4sqwc   1/1     Running   0          8s
+pod/myapp-prod-multi-env-app-78c6bddb45-5ct52   1/1     Running   0          8s
+pod/myapp-prod-multi-env-app-78c6bddb45-67gvt   1/1     Running   0          8s
+deploy.sh all finished in 35 s

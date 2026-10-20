@@ -1,0 +1,15 @@
+$ kubectl get deploy,svc,cm,pods -n staging -o wide
+NAME                                          READY   UP-TO-DATE   AVAILABLE   AGE   CONTAINERS      IMAGES                SELECTOR
+deployment.apps/myapp-staging-multi-env-app   2/2     2            2           17s   multi-env-app   multi-env-app:1.0.0   app.kubernetes.io/instance=myapp-staging,app.kubernetes.io/name=multi-env-app
+
+NAME                                  TYPE       CLUSTER-IP     EXTERNAL-IP   PORT(S)        AGE   SELECTOR
+service/myapp-staging-multi-env-app   NodePort   10.96.65.200   <none>        80:30083/TCP   17s   app.kubernetes.io/instance=myapp-staging,app.kubernetes.io/name=multi-env-app
+
+NAME                                           DATA   AGE
+configmap/kube-root-ca.crt                     1      17s
+configmap/myapp-staging-multi-env-app-config   13     17s
+
+NAME                                               READY   STATUS    RESTARTS   AGE   IP           NODE                     NOMINATED NODE   READINESS GATES
+pod/myapp-staging-multi-env-app-598477f467-pvrpr   1/1     Running   0          17s   10.244.0.8   evidence-control-plane   <none>           <none>
+pod/myapp-staging-multi-env-app-598477f467-v84qx   1/1     Running   0          17s   10.244.0.7   evidence-control-plane   <none>           <none>
+

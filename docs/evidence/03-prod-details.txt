@@ -1,0 +1,135 @@
+$ kubectl get secret -n prod
+NAME                               TYPE                 DATA   AGE
+multi-env-app-secrets              Opaque               1      9s
+sh.helm.release.v1.myapp-prod.v1   helm.sh/release.v1   1      9s
+
+$ kubectl get configmap myapp-prod-multi-env-app-config -n prod -o yaml
+apiVersion: v1
+data:
+  API_BASE_URL: https://multi-env-app.example.com/api
+  APP_ENV: production
+  APP_NAME: Multi-Env Config Dashboard
+  APP_VERSION: 1.0.0
+  CACHE_TTL_SECONDS: "300"
+  DATABASE_HOST: postgres.prod.svc.cluster.local
+  DEBUG_MODE: "false"
+  FEATURE_BETA_BANNER: "false"
+  HELM_CHART_VERSION: 1.0.0
+  HELM_RELEASE: myapp-prod
+  LOG_LEVEL: WARNING
+  MAX_CONNECTIONS: "200"
+  REPLICA_COUNT: "3"
+kind: ConfigMap
+metadata:
+  annotations:
+    meta.helm.sh/release-name: myapp-prod
+    meta.helm.sh/release-namespace: prod
+  creationTimestamp: "2026-10-20T18:00:09Z"
+  labels:
+    app.kubernetes.io/environment: production
+    app.kubernetes.io/instance: myapp-prod
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: multi-env-app
+    app.kubernetes.io/version: 1.0.0
+    helm.sh/chart: multi-env-app-1.0.0
+  name: myapp-prod-multi-env-app-config
+  namespace: prod
+  resourceVersion: "636"
+  uid: dc020805-76b2-4a1e-9668-a10158838038
+
+$ kubectl describe deployment myapp-prod-multi-env-app -n prod
+Name:                   myapp-prod-multi-env-app
+Namespace:              prod
+CreationTimestamp:      Tue, 20 Oct 2026 18:00:09 +0000
+Labels:                 app.kubernetes.io/environment=production
+                        app.kubernetes.io/instance=myapp-prod
+                        app.kubernetes.io/managed-by=Helm
+                        app.kubernetes.io/name=multi-env-app
+                        app.kubernetes.io/version=1.0.0
+                        helm.sh/chart=multi-env-app-1.0.0
+Annotations:            deployment.kubernetes.io/revision: 1
+                        meta.helm.sh/release-name: myapp-prod
+                        meta.helm.sh/release-namespace: prod
+Selector:               app.kubernetes.io/instance=myapp-prod,app.kubernetes.io/name=multi-env-app
+Replicas:               3 desired | 3 updated | 3 total | 3 available | 0 unavailable
+StrategyType:           RollingUpdate
+MinReadySeconds:        0
+RollingUpdateStrategy:  0 max unavailable, 1 max surge
+Pod Template:
+  Labels:       app.kubernetes.io/environment=production
+                app.kubernetes.io/instance=myapp-prod
+                app.kubernetes.io/managed-by=Helm
+                app.kubernetes.io/name=multi-env-app
+                app.kubernetes.io/version=1.0.0
+                helm.sh/chart=multi-env-app-1.0.0
+  Annotations:  checksum/config: a36e621c071f2c2bd77b55dd9aff5a6ff345417abb758870d2f060df7b50e7cb
+  Containers:
+   multi-env-app:
+    Image:      multi-env-app:1.0.0
+    Port:       5000/TCP (http)
+    Host Port:  0/TCP (http)
+    Limits:
+      cpu:     500m
+      memory:  256Mi
+    Requests:
+      cpu:      100m
+      memory:   128Mi
+    Liveness:   http-get http://:http/health delay=5s timeout=1s period=10s #success=1 #failure=3
+    Readiness:  http-get http://:http/ready delay=3s timeout=1s period=5s #success=1 #failure=3
+    Environment Variables from:
+      myapp-prod-multi-env-app-config  ConfigMap  Optional: false
+      multi-env-app-secrets            Secret     Optional: false
+    Environment:
+      PORT:           5000
+      POD_NAME:        (v1:metadata.name)
+      POD_NAMESPACE:   (v1:metadata.namespace)
+      NODE_NAME:       (v1:spec.nodeName)
+    Mounts:           <none>
+  Volumes:            <none>
+  Node-Selectors:     <none>
+  Tolerations:        <none>
+Conditions:
+  Type           Status  Reason
+  ----           ------  ------
+  Available      True    MinimumReplicasAvailable
+  Progressing    True    NewReplicaSetAvailable
+OldReplicaSets:  <none>
+NewReplicaSet:   myapp-prod-multi-env-app-78c6bddb45 (3/3 replicas created)
+Events:
+  Type    Reason             Age   From                   Message
+  ----    ------             ----  ----                   -------
+  Normal  ScalingReplicaSet  9s    deployment-controller  Scaled up replica set myapp-prod-multi-env-app-78c6bddb45 from 0 to 3
+
+$ helm get values myapp-prod -n prod
+USER-SUPPLIED VALUES:
+app:
+  name: Multi-Env Config Dashboard
+config:
+  API_BASE_URL: https://multi-env-app.example.com/api
+  CACHE_TTL_SECONDS: "300"
+  DATABASE_HOST: postgres.prod.svc.cluster.local
+  DEBUG_MODE: "false"
+  FEATURE_BETA_BANNER: "false"
+  LOG_LEVEL: WARNING
+  MAX_CONNECTIONS: "200"
+environment: production
+existingSecret: multi-env-app-secrets
+image:
+  pullPolicy: IfNotPresent
+replicaCount: 3
+resources:
+  limits:
+    cpu: 500m
+    memory: 256Mi
+  requests:
+    cpu: 100m
+    memory: 128Mi
+service:
+  nodePort: 30084
+  type: NodePort
+strategy:
+  rollingUpdate:
+    maxSurge: 1
+    maxUnavailable: 0
+  type: RollingUpdate
+

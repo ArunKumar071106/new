@@ -1,0 +1,19 @@
+$ kubectl get namespaces
+NAME                 STATUS   AGE
+default              Active   69s
+dev                  Active   35s
+kube-node-lease      Active   69s
+kube-public          Active   69s
+kube-system          Active   69s
+local-path-storage   Active   65s
+prod                 Active   8s
+staging              Active   16s
+test                 Active   25s
+
+$ helm list -A
+NAME         	NAMESPACE	REVISION	UPDATED                                	STATUS  	CHART              	APP VERSION
+myapp-dev    	dev      	1       	2026-10-20 17:59:42.452911214 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-prod   	prod     	1       	2026-10-20 18:00:09.62778087 +0000 UTC 	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-staging	staging  	1       	2026-10-20 18:00:01.175493087 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
+myapp-test   	test     	1       	2026-10-20 17:59:52.823982161 +0000 UTC	deployed	multi-env-app-1.0.0	1.0.0      
+

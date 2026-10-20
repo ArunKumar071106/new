@@ -1,0 +1,36 @@
+
+==> Testing environment 'dev' (release myapp-dev, namespace dev)
+  PASS  helm release status is deployed
+  PASS  replicas ready (1/1)
+  PASS  APP_ENV is 'development' (got 'development')
+  PASS  REPLICA_COUNT in ConfigMap matches deployment (1)
+  PASS  /health returns ok
+  PASS  helm test myapp-dev
+
+==> Testing environment 'test' (release myapp-test, namespace test)
+  PASS  helm release status is deployed
+  PASS  replicas ready (1/1)
+  PASS  APP_ENV is 'testing' (got 'testing')
+  PASS  REPLICA_COUNT in ConfigMap matches deployment (1)
+  PASS  /health returns ok
+  PASS  helm test myapp-test
+
+==> Testing environment 'staging' (release myapp-staging, namespace staging)
+  PASS  helm release status is deployed
+  PASS  replicas ready (2/2)
+  PASS  APP_ENV is 'staging' (got 'staging')
+  PASS  REPLICA_COUNT in ConfigMap matches deployment (2)
+  PASS  /health returns ok
+  PASS  helm test myapp-staging
+
+==> Testing environment 'prod' (release myapp-prod, namespace prod)
+  PASS  helm release status is deployed
+  PASS  replicas ready (3/3)
+  PASS  APP_ENV is 'production' (got 'production')
+  PASS  REPLICA_COUNT in ConfigMap matches deployment (3)
+  PASS  /health returns ok
+  PASS  production DEBUG_MODE is False
+  PASS  production SECRET_KEY comes from a Kubernetes Secret
+  PASS  helm test myapp-prod
+
+Result: 26 passed, 0 failed
