@@ -10,6 +10,8 @@ A DevOps mini-project that deploys **one** containerised Flask application to **
 
 ![Production dashboard](docs/screenshots/dashboard-prod.png)
 
+**Project report:** [`docs/report/Multi-Environment_Helm_Project_Report.pdf`](docs/report/Multi-Environment_Helm_Project_Report.pdf) (editable: [`.docx`](docs/report/Multi-Environment_Helm_Project_Report.docx)) – the full B.Tech. report with figures taken from a real kind cluster, the test and experiment results, and the complete source code in the appendices. Its raw evidence is in [`docs/evidence/`](docs/evidence/).
+
 **Demo video:** [`docs/demo-video.mp4`](docs/demo-video.mp4) – 2 minutes, 1080p, silent with no captions so you can narrate it live. Scenes: architecture → chart files and dev-vs-prod differences → pytest, Helm validation and schema rejections → rendered ConfigMap → Docker build and the four environments running → the four dashboards → CI deployment to Kubernetes with live tests, upgrade and rollback → all four dashboards side by side.
 
 ---
@@ -158,6 +160,7 @@ Inside every namespace Helm creates the same three objects:
 │   ├── test-environments.sh          # live checks against the running cluster
 │   ├── upgrade-rollback-demo.sh      # upgrade -> history -> rollback
 │   ├── docker-demo.sh                # all 4 environments in plain Docker (no Kubernetes)
+│   ├── capture-evidence.sh           # records the evidence quoted in the report (needs a cluster)
 │   └── cleanup.sh
 ├── tests/
 │   ├── conftest.py
@@ -165,10 +168,14 @@ Inside every namespace Helm creates the same three objects:
 │   └── test_helm_config.py           # per-environment values + rendered manifest tests
 ├── docs/
 │   ├── architecture.md / .svg / .png
-│   ├── project-report.md             # material for the academic report
+│   ├── report/                       # the finished project report (.docx and .pdf)
+│   ├── evidence/                     # output recorded on a kind cluster by capture-evidence.sh
+│   ├── project-report.md             # earlier outline of the report
 │   ├── test-results.md               # actual test output
 │   └── screenshots/                  # dashboard screenshots per environment
-├── .github/workflows/helm-validation.yml
+├── .github/workflows/
+│   ├── helm-validation.yml           # tests, lint, kubeconform, image, kind deployment
+│   └── capture-evidence.yml          # runs capture-evidence.sh on kind and commits docs/evidence/
 ├── Dockerfile
 ├── .dockerignore
 ├── requirements-dev.txt
@@ -418,7 +425,7 @@ The full output is in [`docs/test-results.md`](docs/test-results.md). In summary
 | Schema rejects invalid values | sandbox and GitHub Actions | 5/5 rejected |
 | Docker build, non-root user, HEALTHCHECK, endpoints | sandbox and GitHub Actions | passed (`healthy`, uid 10001) |
 | `scripts/docker-demo.sh up` (4 environments in Docker) | sandbox | all 4 containers `healthy`, each reports its own environment |
-| Deploy all 4 environments to a real Kubernetes cluster (kind, K8s v1.31) | GitHub Actions | all releases `deployed`, pods `Running` (1/1/2/3 replicas) |
+| Deploy all 4 environments to a real Kubernetes cluster (kind v0.31.0, Kubernetes v1.35.0) | GitHub Actions | all releases `deployed`, pods `Running` (1/1/2/3 replicas) |
 | Live environment checks + `helm test` | GitHub Actions on kind | 26 passed, 0 failed |
 | Upgrade 1.0.0 → 1.1.0, then rollback to revision 1 | GitHub Actions on kind | version 1.1.0 after upgrade, 1.0.0 after rollback |
 

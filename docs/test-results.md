@@ -4,7 +4,7 @@ Actual output from the test runs made while building this project (20 October 20
 Two places were used:
 
 - **Development sandbox**: Linux, Python 3.13, Helm 3.16 (built from source), kubeconform 0.6.7, Docker 29.9. No Kubernetes cluster could run there (nested containers are not supported).
-- **GitHub Actions** (`.github/workflows/helm-validation.yml`, run #1 on branch `ccr-6fca26d4-n2tv4m`): ubuntu-latest, Python 3.12, Helm v3.16.2, kubeconform v0.6.7, and a **kind** Kubernetes v1.31 cluster. All 4 jobs passed.
+- **GitHub Actions** (`.github/workflows/helm-validation.yml`, run #1 on branch `ccr-6fca26d4-n2tv4m`): ubuntu-latest, Python 3.12, Helm v3.16.2, kubeconform v0.6.7, and a **kind** v0.31.0 cluster running Kubernetes v1.35.0 (node image `kindest/node:v1.35.0`). All 4 jobs passed.
 
 ## 1. pytest – 62 tests (sandbox; identical result in GitHub Actions: `62 passed in 1.17s`)
 

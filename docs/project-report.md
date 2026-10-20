@@ -5,6 +5,8 @@
 **Department:** Artificial Intelligence and Data Science
 **College:** AAA College of Engineering and Technology, Sivakasi
 
+**The finished report is [`report/Multi-Environment_Helm_Project_Report.pdf`](report/Multi-Environment_Helm_Project_Report.pdf) (editable: `.docx`). This file is only the earlier outline.**
+
 This file collects material you can adapt for each chapter of the report. The numbers and outputs are taken from the actual test runs in [`test-results.md`](test-results.md).
 
 ---
@@ -79,7 +81,7 @@ See [`architecture.md`](architecture.md) and the diagram [`architecture.png`](ar
 | Rendering and schema tests | pytest + Helm | 15 tests | Passed |
 | Chart lint and Kubernetes schema | `helm lint --strict`, kubeconform | 4 environments × 4 resources | Valid |
 | Container smoke test | Docker | health, API, dashboard, non-root user | Passed |
-| Live deployment tests | `test-environments.sh`, `helm test` on kind (K8s 1.31) | 26 checks | 26 passed, 0 failed |
+| Live deployment tests | `test-environments.sh`, `helm test` on kind (Kubernetes v1.35.0) | 26 checks | 26 passed, 0 failed |
 | Upgrade and rollback | `upgrade-rollback-demo.sh` | 1.0.0 → 1.1.0 → 1.0.0 | Passed |
 
 Full output: [`test-results.md`](test-results.md).
