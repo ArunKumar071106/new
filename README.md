@@ -331,6 +331,7 @@ Replace `<env>` with `dev`, `test`, `staging` or `prod`.
 | Server-side dry run | `helm upgrade --install myapp-<env> ./helm/multi-env-app -n <env> -f ./helm/multi-env-app/values-<env>.yaml --dry-run=server` |
 | Install / upgrade | `helm upgrade --install myapp-<env> ./helm/multi-env-app -n <env> -f ./helm/multi-env-app/values-<env>.yaml --atomic --wait` |
 | Change one value | `helm upgrade myapp-dev ./helm/multi-env-app -n dev -f ./helm/multi-env-app/values-dev.yaml --set config.LOG_LEVEL=INFO` |
+| Change one numeric value (strings in the ConfigMap, so use `--set-string`) | `helm upgrade myapp-dev ./helm/multi-env-app -n dev -f ./helm/multi-env-app/values-dev.yaml --set-string config.MAX_CONNECTIONS=25` |
 | Upgrade the displayed version | `helm upgrade myapp-dev ./helm/multi-env-app -n dev -f ./helm/multi-env-app/values-dev.yaml --set app.version=1.1.0` |
 | Deploy a new image tag | `minikube image build -t multi-env-app:1.1.0 .` then `helm upgrade ... --set image.tag=1.1.0` |
 | Release history | `helm history myapp-<env> -n <env>` |

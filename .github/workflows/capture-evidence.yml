@@ -1,0 +1,56 @@
+name: Capture report evidence
+
+# Deploys all four environments to a throw-away kind cluster, records command
+# output and dashboard screenshots with scripts/capture-evidence.sh and commits
+# them to docs/evidence/ on the same branch. Run it from the Actions tab, or by
+# changing one of the two files listed under "paths".
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - ".github/workflows/capture-evidence.yml"
+      - "scripts/capture-evidence.sh"
+
+permissions:
+  contents: write
+
+env:
+  HELM_VERSION: v3.16.2
+  IMAGE: multi-env-app:1.0.0
+
+jobs:
+  capture:
+    name: Capture evidence on kind
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: azure/setup-helm@v4
+        with:
+          version: ${{ env.HELM_VERSION }}
+
+      - name: Create kind cluster
+        uses: helm/kind-action@v1
+        with:
+          cluster_name: evidence
+
+      - name: Build the image and load it into kind
+        run: |
+          docker build -t "$IMAGE" .
+          kind load docker-image "$IMAGE" --name evidence
+          docker pull busybox:1.36
+          kind load docker-image busybox:1.36 --name evidence
+
+      - name: Capture evidence
+        run: ./scripts/capture-evidence.sh
+
+      - name: Commit evidence
+        if: always()
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add docs/evidence
+          git commit -m "ci: record report evidence [skip ci]" || echo "nothing to commit"
+          git pull --rebase origin "${GITHUB_REF_NAME}" || true
+          git push origin "HEAD:${GITHUB_REF_NAME}"
