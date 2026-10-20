@@ -1,0 +1,128 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 760" width="1200" height="760" font-family="Segoe UI, Roboto, Arial, sans-serif">
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#475569"/>
+    </marker>
+    <style>
+      .box { fill: #ffffff; stroke: #64748b; stroke-width: 1.5; rx: 10; }
+      .title { font-size: 15px; font-weight: 600; fill: #0f172a; }
+      .text { font-size: 12.5px; fill: #334155; }
+      .small { font-size: 11.5px; fill: #475569; }
+      .head { font-size: 13px; font-weight: 700; fill: #ffffff; }
+      .flow { stroke: #475569; stroke-width: 1.6; fill: none; marker-end: url(#arrow); }
+      .dash { stroke-dasharray: 6 4; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="760" fill="#f8fafc"/>
+  <text x="600" y="34" text-anchor="middle" font-size="21" font-weight="700" fill="#0f172a">Multi-Environment Configuration Management with Helm - Architecture</text>
+
+  <!-- Developer / source -->
+  <rect class="box" x="30" y="70" width="250" height="190"/>
+  <text class="title" x="155" y="96" text-anchor="middle">1. Source repository (Git)</text>
+  <text class="text" x="48" y="124">app/  Flask + Bootstrap dashboard</text>
+  <text class="text" x="48" y="146">Dockerfile</text>
+  <text class="text" x="48" y="168">helm/multi-env-app/  (one chart)</text>
+  <text class="small" x="64" y="188">values.yaml  (shared defaults)</text>
+  <text class="small" x="64" y="206">values-dev / test / staging / prod.yaml</text>
+  <text class="small" x="64" y="224">values.schema.json  (rules)</text>
+  <text class="text" x="48" y="248">tests/ , scripts/</text>
+
+  <!-- CI -->
+  <rect class="box" x="30" y="300" width="250" height="200"/>
+  <text class="title" x="155" y="326" text-anchor="middle">2. GitHub Actions (CI)</text>
+  <text class="text" x="48" y="354">pytest: app + config tests</text>
+  <text class="text" x="48" y="376">helm lint --strict (x4 envs)</text>
+  <text class="text" x="48" y="398">helm template + kubeconform</text>
+  <text class="text" x="48" y="420">docker build + smoke test</text>
+  <text class="text" x="48" y="442">kind cluster: deploy all envs,</text>
+  <text class="text" x="48" y="462">live checks, helm test,</text>
+  <text class="text" x="48" y="482">upgrade + rollback</text>
+
+  <!-- Helm engine -->
+  <rect class="box" x="340" y="120" width="250" height="300"/>
+  <text class="title" x="465" y="146" text-anchor="middle">3. Helm (template engine)</text>
+  <text class="text" x="358" y="176">values.yaml</text>
+  <text class="text" x="358" y="196">  + values-&lt;env&gt;.yaml</text>
+  <text class="text" x="358" y="216">  + --set overrides</text>
+  <line x1="358" y1="228" x2="572" y2="228" stroke="#cbd5e1"/>
+  <text class="text" x="358" y="250">templates/</text>
+  <text class="small" x="374" y="270">configmap.yaml</text>
+  <text class="small" x="374" y="288">deployment.yaml</text>
+  <text class="small" x="374" y="306">service.yaml</text>
+  <text class="small" x="374" y="324">tests/test-connection.yaml</text>
+  <line x1="358" y1="338" x2="572" y2="338" stroke="#cbd5e1"/>
+  <text class="text" x="358" y="360">Release per environment with</text>
+  <text class="text" x="358" y="380">revision history:</text>
+  <text class="small" x="374" y="400">install / upgrade / rollback</text>
+
+  <!-- Docker image -->
+  <rect class="box" x="340" y="470" width="250" height="110"/>
+  <text class="title" x="465" y="496" text-anchor="middle">Docker image</text>
+  <text class="text" x="358" y="524">multi-env-app:1.0.0</text>
+  <text class="small" x="358" y="546">python:3.12-slim + gunicorn, non-root</text>
+  <text class="small" x="358" y="566">same image promoted to every env</text>
+
+  <!-- Minikube cluster -->
+  <rect x="650" y="62" width="520" height="640" rx="14" fill="#eef2ff" stroke="#6366f1" stroke-width="1.8"/>
+  <text class="title" x="910" y="88" text-anchor="middle">4. Kubernetes cluster (Minikube)</text>
+
+  <!-- dev -->
+  <rect x="672" y="104" width="476" height="130" rx="10" fill="#ffffff" stroke="#198754" stroke-width="1.6"/>
+  <rect x="672" y="104" width="476" height="26" rx="10" fill="#198754"/>
+  <text class="head" x="688" y="122">namespace: dev   release: myapp-dev   NodePort 30081</text>
+  <text class="text" x="688" y="152">ConfigMap: env=development, LOG_LEVEL=DEBUG, DEBUG=true</text>
+  <text class="text" x="688" y="174">Deployment: 1 replica   resources: 25m / 64Mi</text>
+  <text class="text" x="688" y="196">Service (NodePort) -&gt; Pod :5000</text>
+  <text class="small" x="688" y="218">Beta banner ON</text>
+
+  <!-- test -->
+  <rect x="672" y="248" width="476" height="130" rx="10" fill="#ffffff" stroke="#0dcaf0" stroke-width="1.6"/>
+  <rect x="672" y="248" width="476" height="26" rx="10" fill="#0aa2c0"/>
+  <text class="head" x="688" y="266">namespace: test   release: myapp-test   NodePort 30082</text>
+  <text class="text" x="688" y="296">ConfigMap: env=testing, LOG_LEVEL=INFO, DEBUG=false</text>
+  <text class="text" x="688" y="318">Deployment: 1 replica   resources: 50m / 64Mi</text>
+  <text class="text" x="688" y="340">Service (NodePort) -&gt; Pod :5000</text>
+  <text class="small" x="688" y="362">Beta banner ON</text>
+
+  <!-- staging -->
+  <rect x="672" y="392" width="476" height="130" rx="10" fill="#ffffff" stroke="#ffc107" stroke-width="1.6"/>
+  <rect x="672" y="392" width="476" height="26" rx="10" fill="#d39e00"/>
+  <text class="head" x="688" y="410">namespace: staging   release: myapp-staging   NodePort 30083</text>
+  <text class="text" x="688" y="440">ConfigMap: env=staging, LOG_LEVEL=INFO, DEBUG=false</text>
+  <text class="text" x="688" y="462">Deployment: 2 replicas   resources: 100m / 96Mi</text>
+  <text class="text" x="688" y="484">Service (NodePort) -&gt; Pods :5000</text>
+  <text class="small" x="688" y="506">Production-like flags</text>
+
+  <!-- prod -->
+  <rect x="672" y="536" width="476" height="150" rx="10" fill="#ffffff" stroke="#dc3545" stroke-width="1.6"/>
+  <rect x="672" y="536" width="476" height="26" rx="10" fill="#dc3545"/>
+  <text class="head" x="688" y="554">namespace: prod   release: myapp-prod   NodePort 30084</text>
+  <text class="text" x="688" y="584">ConfigMap: env=production, LOG_LEVEL=WARNING, DEBUG=false</text>
+  <text class="text" x="688" y="606">Secret: multi-env-app-secrets (SECRET_KEY, created at deploy time)</text>
+  <text class="text" x="688" y="628">Deployment: 3 replicas, maxUnavailable 0   resources: 100m / 128Mi</text>
+  <text class="text" x="688" y="650">Service (NodePort) -&gt; Pods :5000</text>
+  <text class="small" x="688" y="672">Rolling updates with zero downtime</text>
+
+  <!-- User -->
+  <rect class="box" x="30" y="560" width="250" height="140"/>
+  <text class="title" x="155" y="586" text-anchor="middle">5. User / Presenter</text>
+  <text class="text" x="48" y="614">Browser -&gt; minikube service URL</text>
+  <text class="text" x="48" y="636">  or kubectl port-forward</text>
+  <text class="text" x="48" y="658">Dashboard shows name, env,</text>
+  <text class="text" x="48" y="680">version and live config</text>
+
+  <!-- arrows -->
+  <path class="flow" d="M155,260 L155,298"/>
+  <path class="flow" d="M280,165 L338,220"/>
+  <path class="flow" d="M280,180 C 310,350 310,480 338,520"/>
+  <path class="flow" d="M590,200 L670,170"/>
+  <path class="flow" d="M590,250 L670,310"/>
+  <path class="flow" d="M590,300 L670,455"/>
+  <path class="flow" d="M590,350 L670,600"/>
+  <path class="flow dash" d="M590,525 C 630,525 630,420 670,420"/>
+  <path class="flow dash" d="M280,630 C 470,700 560,690 670,640"/>
+  <text class="small" x="465" y="112" text-anchor="middle">helm upgrade --install -f values-&lt;env&gt;.yaml</text>
+  <text class="small" x="410" y="690">HTTP (NodePort / port-forward)</text>
+  <text class="small" x="595" y="545">image</text>
+</svg>

@@ -19,9 +19,9 @@ jobs:
     name: Unit & configuration tests (pytest)
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@v6
         with:
           python-version: "3.12"
 
@@ -39,7 +39,7 @@ jobs:
     name: Helm lint / template / kubeconform
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: azure/setup-helm@v4
         with:
@@ -64,7 +64,7 @@ jobs:
     name: Docker build & smoke test
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Build image
         run: docker build -t "$IMAGE" .
@@ -83,7 +83,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: [python-tests, helm-validate, docker-build]
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - uses: azure/setup-helm@v4
         with:
