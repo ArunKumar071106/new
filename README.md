@@ -169,6 +169,7 @@ Inside every namespace Helm creates the same three objects:
 ├── docs/
 │   ├── architecture.md / .svg / .png
 │   ├── report/                       # the finished project report (.docx and .pdf)
+│   ├── presentation/                 # first-review slides (.pptx, college template)
 │   ├── evidence/                     # output recorded on a kind cluster by capture-evidence.sh
 │   ├── project-report.md             # earlier outline of the report
 │   ├── test-results.md               # actual test output
