@@ -10,7 +10,7 @@ A DevOps mini-project that deploys **one** containerised Flask application to **
 
 ![Production dashboard](docs/screenshots/dashboard-prod.png)
 
-**Project report:** [`docs/report/Multi-Environment_Helm_Project_Report.pdf`](docs/report/Multi-Environment_Helm_Project_Report.pdf) (editable: [`.docx`](docs/report/Multi-Environment_Helm_Project_Report.docx)) – the full B.Tech. report with figures taken from a real kind cluster, the test and experiment results, and the complete source code in the appendices. Its raw evidence is in [`docs/evidence/`](docs/evidence/).
+**Project report:** [`docs/report/Multi-Environment_Helm_Project_Report.pdf`](docs/report/Multi-Environment_Helm_Project_Report.pdf) (editable: [`.docx`](docs/report/Multi-Environment_Helm_Project_Report.docx)) – the full B.Tech. report (PDF: 64 pages, equal 1-inch left and right margins) with figures taken from a real kind cluster, the test and experiment results, and the core source files in the appendices (Appendix G lists the files that are not printed). Its raw evidence is in [`docs/evidence/`](docs/evidence/).
 
 **Demo video:** [`docs/demo-video.mp4`](docs/demo-video.mp4) – 2 minutes, 1080p, silent with no captions so you can narrate it live. Scenes: architecture → chart files and dev-vs-prod differences → pytest, Helm validation and schema rejections → rendered ConfigMap → Docker build and the four environments running → the four dashboards → CI deployment to Kubernetes with live tests, upgrade and rollback → all four dashboards side by side.
 
