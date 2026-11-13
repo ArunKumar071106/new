@@ -8,7 +8,7 @@
     "target_faces": 40000,
     "smooth_sigma": 1.4,
     "texture_res": 2048,
-    "bottom_mode": "flat",
+    "bottom_mode": "open",
     "mask_tolerance_px": 2,
     "consistency_threshold": 0.72,
     "segmentation_model": "u2net"
@@ -644,19 +644,20 @@
       25.83,
       25.9
     ],
-    "mode": "flat"
+    "open_cap_triangles_removed": 2700,
+    "mode": "open"
   },
   "texture": {
-    "texels_used": 2417365,
-    "observed_surface_fraction": 0.8515451456361545,
-    "inferred_surface_fraction": 0.14845485436384542,
+    "texels_used": 2470661,
+    "observed_surface_fraction": 0.9246461528535074,
+    "inferred_surface_fraction": 0.0753538471464926,
     "dominant_view_share": {
-      "front": 0.20427324793732018,
-      "back": 0.21870052722695993,
-      "left": 0.2023298095240065,
-      "right": 0.1908346484705454,
-      "top": 0.0313701075344435,
-      "elevated": 0.01740945202731073
+      "front": 0.2234163246192011,
+      "back": 0.23865961376328035,
+      "left": 0.21915552153856802,
+      "right": 0.20594367256373902,
+      "top": 0.033842765154750085,
+      "elevated": 0.018883205749392572
     }
   },
   "scale": {
@@ -664,8 +665,8 @@
     "note": "metric scale is assumed from object_height_cm; photos alone cannot determine absolute size"
   },
   "export": {
-    "bytes": 1400572,
-    "texture_bytes": 315732
+    "bytes": 1321944,
+    "texture_bytes": 324709
   },
   "validation": {
     "valid": true,
@@ -678,29 +679,30 @@
     "texture_mime": [
       "image/jpeg"
     ],
-    "vertices": 21812,
-    "triangles": 40000,
-    "watertight": true,
+    "vertices": 20192,
+    "triangles": 37296,
+    "watertight": false,
     "bounds_m": [
       [
-        -0.027102438732981682,
+        -0.027368275448679924,
         0.0,
-        -0.02742958813905716
+        -0.027698632329702377
       ],
       [
-        0.027102438732981682,
+        0.027368275448679924,
         0.10999999940395355,
-        0.02742958813905716
+        0.027698632329702377
       ]
     ],
     "size_m": {
-      "x": 0.054204877465963364,
+      "x": 0.05473655089735985,
       "y": 0.10999999940395355,
-      "z": 0.05485917627811432
+      "z": 0.055397264659404755
     }
   },
   "limitations": [
-    "Underside never photographed: 14.8% of the surface (mostly the base) has inferred geometry (flat) and colour diffused from neighbouring observed surface.",
+    "Underside never photographed: left open (no invented bottom); the material is double-sided so the inside of the walls renders if seen from below.",
+    "7.5% of the remaining surface was not seen by any photo; its colour is diffused from neighbouring observed surface.",
     "Visual hulls cannot represent concavities; cavities such as the inside of an open container are filled in.",
     "No EXIF focal length: a typical phone focal length was assumed (focal_ratio); perspective strength and camera elevation are estimated jointly and may be biased.",
     "Absolute size comes from object_height_cm, not from the photos.",
@@ -708,23 +710,23 @@
   ],
   "log": [
     "[   0.0s]   2% load: reading images (EXIF orientation applied, aspect ratios preserved)",
-    "[   1.9s]   5% segment: front",
-    "[   6.6s]   8% segment: back",
-    "[   9.8s]  11% segment: left",
-    "[  13.1s]  14% segment: right",
-    "[  16.1s]  17% segment: top",
-    "[  19.8s]  20% segment: elevated",
-    "[  28.1s]  25% analyse: quality, same-object check, feature overlap, lighting",
-    "[  29.2s]  30% pose: turntable model for front/back/left/right (silhouette coherence)",
+    "[   2.4s]   5% segment: front",
+    "[  21.5s]   8% segment: back",
+    "[  24.2s]  11% segment: left",
+    "[  27.0s]  14% segment: right",
+    "[  29.4s]  17% segment: top",
+    "[  32.3s]  20% segment: elevated",
+    "[  39.1s]  25% analyse: quality, same-object check, feature overlap, lighting",
+    "[  40.4s]  30% pose: turntable model for front/back/left/right (silhouette coherence)",
     "  turntable coarse search: coherence=0.779",
     "  turntable refined: coherence=0.943",
-    "[  50.2s]  42% pose: dense rotation-angle scan (silhouettes + label prior)",
+    "[  54.8s]  42% pose: dense rotation-angle scan (silhouettes + label prior)",
     "  back: angle 175 deg (shift +0, posterior=0.943, colour err=17.9)",
     "  left: angle -96 deg (shift +5, posterior=0.944, colour err=18.8)",
     "  right: angle 99 deg (shift +0, posterior=0.944, colour err=19.0)",
     "  turntable coarse search: coherence=0.944",
     "  turntable refined: coherence=0.945",
-    "[  62.3s]  50% pose: top: grid search + photo-consistency + refinement",
+    "[  63.4s]  50% pose: top: grid search + photo-consistency + refinement",
     "    top candidate az=75 el=80: IoU=0.912 colour err=20.0",
     "    top candidate az=90 el=88: IoU=0.904 colour err=18.6",
     "    top candidate az=60 el=80: IoU=0.906 colour err=20.2",
@@ -732,7 +734,7 @@
     "    top candidate az=90 el=80: IoU=0.908 colour err=19.3",
     "    top candidate az=-30 el=70: IoU=0.893 colour err=22.4",
     "  top: refined IoU=0.912",
-    "[  65.1s]  50% pose: elevated: grid search + photo-consistency + refinement",
+    "[  65.4s]  50% pose: elevated: grid search + photo-consistency + refinement",
     "    elevated candidate az=0 el=55: IoU=0.898 colour err=19.8",
     "    elevated candidate az=140 el=55: IoU=0.890 colour err=20.1",
     "    elevated candidate az=120 el=55: IoU=0.882 colour err=19.2",
@@ -740,21 +742,22 @@
     "    elevated candidate az=20 el=55: IoU=0.881 colour err=17.6",
     "    elevated candidate az=40 el=55: IoU=0.868 colour err=16.5",
     "  elevated: refined IoU=0.899",
-    "[  68.5s]  57% consistency: re-projecting the hull of the other views into each photo",
-    "[  70.8s]  62% carve: visual hull from ['front', 'back', 'left', 'right', 'top', 'elevated'] at 192^3",
+    "[  68.2s]  57% consistency: re-projecting the hull of the other views into each photo",
+    "[  70.0s]  62% carve: visual hull from ['front', 'back', 'left', 'right', 'top', 'elevated'] at 192^3",
     "  occupied voxels: 366127 / 1322688, voxel = 0.82 mm",
     "  base plane: removed 27.2 mm visual-hull skirt below the base",
-    "[  71.1s]  70% mesh: marching cubes, Taubin smoothing, decimation",
-    "  mesh: 19998 vertices, 40000 triangles, watertight=True",
-    "[  71.5s]  76% texture: UV unwrap + bake from 6 photos into 2048px atlas",
-    "  UV atlas: 21812 vertices after seam split, 2048px",
-    "  baked front: covers 23.5% of texels",
-    "  baked back: covers 27.6% of texels",
-    "  baked left: covers 25.2% of texels",
-    "  baked right: covers 23.1% of texels",
-    "  baked top: covers 11.1% of texels",
-    "  baked elevated: covers 21.9% of texels",
-    "[  90.2s]  93% export: writing GLB",
-    "[  90.4s]  97% validate: re-loading and checking the GLB"
+    "[  70.2s]  70% mesh: marching cubes, Taubin smoothing, decimation",
+    "  open base: removed 2700 bottom-cap triangles (underside never photographed)",
+    "  mesh: 18724 vertices, 37296 triangles, watertight=False",
+    "[  70.7s]  76% texture: UV unwrap + bake from 6 photos into 2048px atlas",
+    "  UV atlas: 20192 vertices after seam split, 2048px",
+    "  baked front: covers 25.7% of texels",
+    "  baked back: covers 30.0% of texels",
+    "  baked left: covers 27.2% of texels",
+    "  baked right: covers 25.0% of texels",
+    "  baked top: covers 11.9% of texels",
+    "  baked elevated: covers 23.9% of texels",
+    "[  87.5s]  93% export: writing GLB",
+    "[  87.6s]  97% validate: re-loading and checking the GLB"
   ]
 }

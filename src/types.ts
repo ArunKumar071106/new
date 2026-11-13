@@ -94,7 +94,7 @@ export interface JobStatus {
 
 export interface ReconstructionOptions {
   object_height_cm: number;
-  bottom_mode: 'flat' | 'hull';
+  bottom_mode: 'open' | 'flat' | 'hull';
   grid_res: number;
   texture_res: number;
   target_faces: number;

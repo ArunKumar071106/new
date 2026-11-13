@@ -56,13 +56,14 @@ export default function ReconstructionStatus(p: Props) {
           <select
             value={p.options.bottom_mode}
             disabled={running}
-            onChange={(e) => p.onOptions({ ...p.options, bottom_mode: e.target.value as 'flat' | 'hull' })}
+            onChange={(e) => p.onOptions({ ...p.options, bottom_mode: e.target.value as ReconstructionOptions['bottom_mode'] })}
             className="w-full rounded-lg border border-slate-300 bg-white px-2.5 py-1.5 dark:border-slate-700 dark:bg-slate-900"
           >
-            <option value="flat">Infer flat base (recommended)</option>
-            <option value="hull">Raw visual hull (no inference)</option>
+            <option value="open">Leave open (nothing invented)</option>
+            <option value="flat">Close with inferred flat base</option>
+            <option value="hull">Raw visual hull</option>
           </select>
-          <span className="mt-1 block text-xs text-slate-500">No bottom photo exists, so its geometry is inferred.</span>
+          <span className="mt-1 block text-xs text-slate-500">No photo shows the bottom; by default it is left open.</span>
         </label>
         <label className="text-sm">
           <span className="mb-1 block font-medium">Quality</span>
@@ -178,7 +179,11 @@ function ReportSummary({ r }: { r: ReconstructionReport }) {
     <div className="space-y-4 rounded-xl border border-slate-200 p-4 text-sm dark:border-slate-800">
       <div className="flex flex-wrap gap-2">
         <Pill ok={v.valid}>{v.valid ? 'GLB valid' : `GLB invalid: ${v.errors.join(', ')}`}</Pill>
-        <Pill ok={v.watertight}>{v.watertight ? 'Watertight mesh' : 'Mesh has holes'}</Pill>
+        {r.base.mode === 'open' ? (
+          <Pill ok={true}>Open base (unseen bottom not invented)</Pill>
+        ) : (
+          <Pill ok={v.watertight}>{v.watertight ? 'Watertight mesh' : 'Mesh has holes'}</Pill>
+        )}
         <Pill ok={true}>{v.triangles.toLocaleString()} triangles</Pill>
         <Pill ok={true}>
           {(s.x * 100).toFixed(1)} x {(s.y * 100).toFixed(1)} x {(s.z * 100).toFixed(1)} cm

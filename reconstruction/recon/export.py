@@ -12,12 +12,13 @@ from PIL import Image
 from .texture import TexturedMesh
 
 
-def export_glb(tm: TexturedMesh, path: str, jpeg_quality: int = 88, name: str = "ReconstructedObject") -> dict:
+def export_glb(tm: TexturedMesh, path: str, jpeg_quality: int = 88, name: str = "ReconstructedObject",
+               double_sided: bool = False) -> dict:
     buf = io.BytesIO()
     Image.fromarray(tm.texture).save(buf, format="JPEG", quality=jpeg_quality, optimize=True)
     tex = Image.open(io.BytesIO(buf.getvalue()))  # keeps format == "JPEG" so trimesh embeds JPEG
     material = trimesh.visual.material.PBRMaterial(
-        name="reconstructed", baseColorTexture=tex, metallicFactor=0.0, roughnessFactor=0.85, doubleSided=False)
+        name="reconstructed", baseColorTexture=tex, metallicFactor=0.0, roughnessFactor=0.85, doubleSided=double_sided)
     visual = trimesh.visual.TextureVisuals(uv=tm.uvs, material=material)
     mesh = trimesh.Trimesh(tm.vertices, tm.faces, vertex_normals=tm.normals, visual=visual, process=False)
     scene = trimesh.Scene()

@@ -4,7 +4,7 @@ import { errorText } from './imageAnalysis';
 
 export const DEFAULT_OPTIONS: ReconstructionOptions = {
   object_height_cm: 11,
-  bottom_mode: 'flat',
+  bottom_mode: 'open',
   grid_res: 192,
   texture_res: 2048,
   target_faces: 40000,

@@ -28,7 +28,7 @@ from recon.analysis import analyse  # noqa: E402
 from recon.carve import carve, grid_for_box  # noqa: E402
 from recon.export import export_glb, validate_glb  # noqa: E402
 from recon.imageio import load_view  # noqa: E402
-from recon.mesh import infer_base, occupancy_to_mesh  # noqa: E402
+from recon.mesh import infer_base, occupancy_to_mesh, open_base  # noqa: E402
 from recon.photo import apply_gain, colour_gains, to_lab  # noqa: E402
 from recon.pose import PoseEstimator  # noqa: E402
 from recon.segment import complete_mask, repair_with_prediction, segment  # noqa: E402
@@ -45,7 +45,9 @@ class Options:
     target_faces: int = 40000
     smooth_sigma: float = 1.4  # Gaussian smoothing of the occupancy field (voxels) before meshing
     texture_res: int = 2048
-    bottom_mode: str = "flat"  # "flat": infer a flat base | "hull": keep raw visual-hull underside
+    # "open": cut the visual-hull skirt at the detected base and leave the unseen underside open
+    #         (nothing invented) | "flat": close it with an inferred flat cap | "hull": raw visual hull
+    bottom_mode: str = "open"
     mask_tolerance_px: int = 2  # silhouette dilation at work resolution, tolerates small pose error
     consistency_threshold: float = 0.72  # below this a view is used for texture only
     segmentation_model: str = "u2net"
@@ -180,15 +182,22 @@ def run(paths: dict[str, str], out_glb: str, report_path: str | None = None, opt
         raise RuntimeError("visual hull is empty or tiny: camera poses or masks are inconsistent")
 
     base = infer_base(occ3d, grid)
-    if opts.bottom_mode == "flat":
+    if opts.bottom_mode not in ("open", "flat", "hull"):
+        raise ValueError(f"bottom_mode must be open, flat or hull, not {opts.bottom_mode!r}")
+    if opts.bottom_mode in ("open", "flat"):
         occ3d[:, : base["base_index"], :] = False
     P.log(f"  base plane: removed {base['skirt_height_m'] * 1000:.1f} mm visual-hull skirt below the base"
-          if opts.bottom_mode == "flat" else "  base: raw visual hull kept")
+          if opts.bottom_mode != "hull" else "  base: raw visual hull kept")
 
     # 7. mesh -------------------------------------------------------------
     P(0.70, "mesh", "marching cubes, Taubin smoothing, decimation")
     mesh = occupancy_to_mesh(occ3d, grid, smooth_sigma=opts.smooth_sigma, target_faces=opts.target_faces,
                              taubin_iters=15)
+    if opts.bottom_mode == "open":
+        base_y = grid.lo[1] + base["base_index"] * grid.voxel[1]
+        mesh, removed = open_base(mesh, base_y, float(grid.voxel[1]))
+        base["open_cap_triangles_removed"] = removed
+        P.log(f"  open base: removed {removed} bottom-cap triangles (underside never photographed)")
     P.log(f"  mesh: {len(mesh.vertices)} vertices, {len(mesh.faces)} triangles, watertight={mesh.is_watertight}")
 
     # 8. texture ----------------------------------------------------------
@@ -214,7 +223,7 @@ def run(paths: dict[str, str], out_glb: str, report_path: str | None = None, opt
 
     P(0.93, "export", "writing GLB")
     os.makedirs(os.path.dirname(os.path.abspath(out_glb)), exist_ok=True)
-    exp = export_glb(tm, out_glb)
+    exp = export_glb(tm, out_glb, double_sided=opts.bottom_mode == "open")
     P(0.97, "validate", "re-loading and checking the GLB")
     val = validate_glb(out_glb)
 
@@ -273,10 +282,16 @@ def _plausible_range(row: dict, st, n) -> list[float]:
 
 
 def _limitations(tex_stats, cons, carve_views, opts) -> list[str]:
+    base_note = {
+        "open": "Underside never photographed: left open (no invented bottom); the material is double-sided "
+                "so the inside of the walls renders if seen from below.",
+        "flat": "Underside never photographed: closed with an inferred flat cap.",
+        "hull": "Underside never photographed: raw visual-hull shape kept (includes a cone-shaped skirt).",
+    }[opts.bottom_mode]
     out = [
-        f"Underside never photographed: {tex_stats['inferred_surface_fraction'] * 100:.1f}% of the surface "
-        f"(mostly the base) has inferred geometry ({opts.bottom_mode}) and colour diffused from neighbouring "
-        "observed surface.",
+        base_note,
+        f"{tex_stats['inferred_surface_fraction'] * 100:.1f}% of the remaining surface was not seen by any photo; "
+        "its colour is diffused from neighbouring observed surface.",
         "Visual hulls cannot represent concavities; cavities such as the inside of an open container are "
         "filled in.",
         "No EXIF focal length: a typical phone focal length was assumed (focal_ratio); perspective strength "

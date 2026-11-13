@@ -56,3 +56,18 @@ def occupancy_to_mesh(occ: np.ndarray, grid: Grid, smooth_sigma: float = 1.0, ta
         m = trimesh.Trimesh(v, f, process=True)
     m.fix_normals()
     return m
+
+
+def open_base(mesh: trimesh.Trimesh, base_y: float, voxel: float) -> tuple[trimesh.Trimesh, int]:
+    """Delete the bottom cap created by cutting the hull at the base plane, leaving the
+    unphotographed underside open instead of inventing a surface for it."""
+    n = mesh.face_normals
+    cy = mesh.triangles_center[:, 1]
+    cap = (cy < base_y + 2.5 * voxel) & (n[:, 1] < -0.5)
+    keep = ~cap
+    m = trimesh.Trimesh(mesh.vertices, mesh.faces[keep], process=False)
+    m.remove_unreferenced_vertices()
+    parts = m.split(only_watertight=False)
+    if len(parts) > 1:
+        m = max(parts, key=lambda p: p.area)
+    return m, int(cap.sum())
