@@ -42,7 +42,7 @@ npm run validate:glb                # Khronos glTF-Validator on the result
 
 .venv/bin/python reconstruction/pipeline.py \
   --front f.jpg --back b.jpg --left l.jpg --right r.jpg --top t.jpg --elevated e.jpg \
-  --out out/model.glb --object-height-cm 11 --bottom-mode flat --grid-res 192 --texture-res 2048
+  --out out/model.glb --object-height-cm 11 --bottom-mode open --grid-res 192 --texture-res 2048
 ```
 
 The first run downloads the U²-Net segmentation model (176 MB) to `~/.u2net`.
@@ -122,17 +122,17 @@ SfM is viable.
 | Rotation angles | `recon/pose.py` | A round object's silhouette barely changes as it rotates, so the angle is chosen by **MAP**: silhouette coherence plus a Gaussian prior (σ = 25°) around the user's perspective label. The plausible range is reported |
 | Consistency | `pipeline.py` | Re-projects the hull of the *other* views into each photo. Inconsistent masks are repaired with hull-guided GrabCut; views below an agreement threshold are used for texture only |
 | Carve | `recon/carve.py` | Voxel visual hull (192³, about 0.8 mm voxels for this object). Out-of-frame points take the nearest border pixel, so a cut-off photo cannot slice the object |
-| Base | `recon/mesh.py` | Cameras that look down leave a cone-shaped "skirt" under the object. The real base is found where the slice radius stops shrinking quickly; below it, a flat base is inferred (`--bottom-mode hull` keeps the raw hull instead) |
-| Mesh | `recon/mesh.py` | Gaussian-smoothed occupancy, marching cubes, Taubin smoothing, quadric decimation (40k triangles). Watertight |
+| Base | `recon/mesh.py` | Cameras that look down leave a cone-shaped "skirt" under the object. The real base is found where the slice radius stops shrinking quickly, and the skirt is cut there. The default `--bottom-mode open` leaves the unseen underside **open** (nothing invented; the material is double-sided). `flat` closes it with an inferred cap; `hull` keeps the raw hull |
+| Mesh | `recon/mesh.py` | Gaussian-smoothed occupancy, marching cubes, Taubin smoothing, quadric decimation (~40k triangles). Watertight except for the deliberately open base |
 | Texture | `recon/texture.py` | xatlas UV atlas. Every texel is projected into all six photos and blended by visibility (ray-marched occlusion), viewing angle and distance from the silhouette edge. Views are white-balanced against the white flock. Unseen surface is filled by colour diffusion and reported |
 | Export | `recon/export.py` | GLB with an embedded JPEG texture and PBR material, in metres, +Y up, front facing +Z, origin at the centre of the base. Re-loaded and structurally validated |
 
 ### Result on the sample photos
 
-- 40,000 triangles, watertight, 2048² JPEG texture, **1.4 MB GLB**
+- 37,296 triangles, open base (unseen underside not invented), 2048² JPEG texture, **1.3 MB GLB**
 - **Khronos glTF-Validator: 0 errors, 0 warnings**
-- Size 5.4 × 11.0 × 5.5 cm. The height is the assumed 11 cm, since absolute scale is set by the user (see below)
-- About 84% of the surface is textured from the photos. About 16%, mostly the base, is inferred
+- Size 5.5 × 11.0 × 5.5 cm. The height is the assumed 11 cm, since absolute scale is set by the user (see below)
+- About 92.5% of the surface is textured from the photos. The other 7.5% (small areas no photo saw) gets colour diffused from its neighbours
 - Silhouette agreement per view (IoU): front 0.90, back 0.86, top 0.90, elevated 0.89, left 0.78, right 0.77
 
 Every run writes a JSON report next to the GLB (`*.report.json`). It contains all metrics,
@@ -140,7 +140,7 @@ estimated cameras, angle ambiguity ranges, the processing log and a list of limi
 
 ### Limitations (stated, not hidden)
 
-- **Underside:** never photographed, so its geometry (flat base) and colour (diffused from neighbouring surface) are inferred.
+- **Underside:** never photographed, so by default it is left open rather than invented. Seen from below, you look into the inside of the walls. In AR the model stands on the surface, so this isn't visible.
 - **Concavities:** a visual hull cannot represent cavities. The open top of the bucket around the bear is filled in.
 - **Few viewing directions:** only about four horizontal views exist, so cross-sections are somewhat polygonal and silhouette-cone intersections leave creases.
 - **Rotation angles:** for near-symmetric objects, silhouettes allow roughly ±50° for the side views. The label prior picks a value consistent with the photos (for example, the bucket's handle lugs face the camera in the left and right shots), but small texture ghosting can remain where views meet.
