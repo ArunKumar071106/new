@@ -1,0 +1,760 @@
+{
+  "options": {
+    "object_height_cm": 11.0,
+    "focal_ratio": 0.75,
+    "work_size": 1024,
+    "tex_source_size": 2048,
+    "grid_res": 192,
+    "target_faces": 40000,
+    "smooth_sigma": 1.4,
+    "texture_res": 2048,
+    "bottom_mode": "flat",
+    "mask_tolerance_px": 2,
+    "consistency_threshold": 0.72,
+    "segmentation_model": "u2net"
+  },
+  "status": "ok",
+  "analysis": {
+    "per_view": {
+      "front": {
+        "original_size": [
+          4080,
+          3060
+        ],
+        "aspect_ratio": 1.3333,
+        "mask_source": "rembg:u2net + colour completion (+1.4% area)",
+        "object_area_fraction": 0.2384,
+        "object_bbox_px": [
+          360,
+          67,
+          718,
+          767
+        ],
+        "sharpness_laplacian_var": 59.2,
+        "mean_luminance": 149.4,
+        "highlight_clip_fraction": 0.0793,
+        "touches_border": true,
+        "warnings": [
+          "8% of the object is overexposed (detail lost in highlights)",
+          "object touches the image border (may be cut off); geometry beyond the frame is not carved by this view"
+        ]
+      },
+      "back": {
+        "original_size": [
+          4080,
+          3060
+        ],
+        "aspect_ratio": 1.3333,
+        "mask_source": "rembg:u2net + colour completion (+1.0% area)",
+        "object_area_fraction": 0.2321,
+        "object_bbox_px": [
+          418,
+          38,
+          767,
+          745
+        ],
+        "sharpness_laplacian_var": 72.6,
+        "mean_luminance": 171.8,
+        "highlight_clip_fraction": 0.0696,
+        "touches_border": false,
+        "warnings": [
+          "7% of the object is overexposed (detail lost in highlights)"
+        ]
+      },
+      "left": {
+        "original_size": [
+          4080,
+          3060
+        ],
+        "aspect_ratio": 1.3333,
+        "mask_source": "rembg:u2net",
+        "object_area_fraction": 0.2336,
+        "object_bbox_px": [
+          411,
+          0,
+          789,
+          725
+        ],
+        "sharpness_laplacian_var": 92.6,
+        "mean_luminance": 161.8,
+        "highlight_clip_fraction": 0.0452,
+        "touches_border": true,
+        "warnings": [
+          "object touches the image border (may be cut off); geometry beyond the frame is not carved by this view"
+        ]
+      },
+      "right": {
+        "original_size": [
+          4080,
+          3060
+        ],
+        "aspect_ratio": 1.3333,
+        "mask_source": "rembg:u2net",
+        "object_area_fraction": 0.2005,
+        "object_bbox_px": [
+          400,
+          46,
+          736,
+          722
+        ],
+        "sharpness_laplacian_var": 7.3,
+        "mean_luminance": 181.1,
+        "highlight_clip_fraction": 0.135,
+        "touches_border": false,
+        "warnings": [
+          "object region looks blurry / out of focus",
+          "13% of the object is overexposed (detail lost in highlights)"
+        ]
+      },
+      "top": {
+        "original_size": [
+          3060,
+          4080
+        ],
+        "aspect_ratio": 0.75,
+        "mask_source": "rembg:u2net + colour completion (+27.7% area)",
+        "object_area_fraction": 0.1167,
+        "object_bbox_px": [
+          204,
+          348,
+          551,
+          697
+        ],
+        "sharpness_laplacian_var": 400.1,
+        "mean_luminance": 162.0,
+        "highlight_clip_fraction": 0.0871,
+        "touches_border": false,
+        "warnings": [
+          "9% of the object is overexposed (detail lost in highlights)",
+          "segmentation model missed 28% of the object; recovered by colour-model completion"
+        ]
+      },
+      "elevated": {
+        "original_size": [
+          4080,
+          3060
+        ],
+        "aspect_ratio": 1.3333,
+        "mask_source": "rembg:u2net + colour completion (+3.3% area)",
+        "object_area_fraction": 0.1479,
+        "object_bbox_px": [
+          408,
+          175,
+          747,
+          678
+        ],
+        "sharpness_laplacian_var": 417.4,
+        "mean_luminance": 129.0,
+        "highlight_clip_fraction": 0.0295,
+        "touches_border": false,
+        "warnings": []
+      }
+    },
+    "same_object": {
+      "pairwise_similarity": {
+        "front-back": 0.511,
+        "front-left": 0.541,
+        "front-right": 0.508,
+        "front-top": 0.553,
+        "front-elevated": 0.55,
+        "back-left": 0.534,
+        "back-right": 0.518,
+        "back-top": 0.506,
+        "back-elevated": 0.487,
+        "left-right": 0.441,
+        "left-top": 0.441,
+        "left-elevated": 0.498,
+        "right-top": 0.488,
+        "right-elevated": 0.432,
+        "top-elevated": 0.549
+      },
+      "mean_similarity": {
+        "front": 0.533,
+        "back": 0.511,
+        "left": 0.491,
+        "right": 0.477,
+        "top": 0.507,
+        "elevated": 0.503
+      },
+      "outliers": [],
+      "verdict": "consistent"
+    },
+    "overlap": {
+      "object_keypoints": {
+        "front": 362,
+        "back": 318,
+        "left": 657,
+        "right": 73,
+        "top": 449,
+        "elevated": 397
+      },
+      "pairs": {
+        "front-back": {
+          "inliers": 484,
+          "on_object": 0
+        },
+        "front-left": {
+          "inliers": 427,
+          "on_object": 0
+        },
+        "front-right": {
+          "inliers": 485,
+          "on_object": 0
+        },
+        "front-top": {
+          "inliers": 10,
+          "on_object": 5
+        },
+        "front-elevated": {
+          "inliers": 12,
+          "on_object": 3
+        },
+        "back-left": {
+          "inliers": 1409,
+          "on_object": 0
+        },
+        "back-right": {
+          "inliers": 971,
+          "on_object": 1
+        },
+        "back-top": {
+          "inliers": 9,
+          "on_object": 4
+        },
+        "back-elevated": {
+          "inliers": 11,
+          "on_object": 0
+        },
+        "left-right": {
+          "inliers": 1075,
+          "on_object": 0
+        },
+        "left-top": {
+          "inliers": 9,
+          "on_object": 2
+        },
+        "left-elevated": {
+          "inliers": 9,
+          "on_object": 0
+        },
+        "right-top": {
+          "inliers": 7,
+          "on_object": 0
+        },
+        "right-elevated": {
+          "inliers": 10,
+          "on_object": 3
+        },
+        "top-elevated": {
+          "inliers": 20,
+          "on_object": 4
+        }
+      },
+      "matches_on_object": 22,
+      "matches_on_background": 4926,
+      "feature_sfm_viable": false,
+      "explanation": "Too few geometrically-consistent feature matches on the object itself (most matches lie on the background, which suggests the object was turned while the camera stayed still); using silhouette-based reconstruction instead."
+    },
+    "lighting": {
+      "white_balance_gains_bgr": {
+        "front": [
+          1.0,
+          1.0,
+          1.0
+        ],
+        "back": [
+          1.004,
+          1.028,
+          0.997
+        ],
+        "left": [
+          1.039,
+          1.075,
+          1.018
+        ],
+        "right": [
+          0.961,
+          0.96,
+          0.967
+        ],
+        "top": [
+          1.004,
+          0.982,
+          0.964
+        ],
+        "elevated": [
+          1.099,
+          1.126,
+          1.039
+        ]
+      },
+      "inconsistent": []
+    },
+    "missing_information": [
+      "No photograph shows the underside: base geometry and texture will be inferred.",
+      "Silhouettes cannot capture concavities (e.g. the inside of an open container)."
+    ]
+  },
+  "method": "silhouette-based multi-view reconstruction (visual hull) with silhouette-coherence pose estimation, photo-consistency disambiguation and multi-view texture baking",
+  "segmentation": {
+    "front": "rembg:u2net + colour completion (+1.4% area)",
+    "back": "rembg:u2net + colour completion (+1.0% area)",
+    "left": "rembg:u2net",
+    "right": "rembg:u2net",
+    "top": "rembg:u2net + colour completion (+27.7% area)",
+    "elevated": "rembg:u2net + colour completion (+3.3% area)"
+  },
+  "poses": {
+    "focal_ratio_assumed": 0.75,
+    "turntable": {
+      "elevation_deg": 30.96463811279311,
+      "roll_deg": 1.4359565957766833,
+      "angles_deg": {
+        "front": 0.0,
+        "back": 176.09143165203713,
+        "left": -95.21450867539677,
+        "right": 99.07609916610515
+      }
+    },
+    "free": {
+      "top": {
+        "azimuth_deg": 74.99727850771427,
+        "elevation_deg": 80.03433112336172,
+        "roll_deg": -0.31441971903290783
+      },
+      "elevated": {
+        "azimuth_deg": -2.8830037447885357,
+        "elevation_deg": 53.98643633821575,
+        "roll_deg": -15.566726767711607
+      }
+    },
+    "angle_ambiguity": {
+      "back": {
+        "chosen_deg": 175.06573340681888,
+        "silhouette_plausible_range_deg": [
+          130.06573340681888,
+          225.06573340681888
+        ]
+      },
+      "left": {
+        "chosen_deg": -96.47501582469604,
+        "silhouette_plausible_range_deg": [
+          -151.47501582469604,
+          -46.475015824696044
+        ]
+      },
+      "right": {
+        "chosen_deg": 99.07829678113671,
+        "silhouette_plausible_range_deg": [
+          44.078296781136714,
+          149.07829678113671
+        ]
+      }
+    },
+    "cameras_object_frame": {
+      "front": {
+        "f": 768.0,
+        "cx": 511.5,
+        "cy": 383.5,
+        "R": [
+          [
+            0.9996859602428178,
+            0.021488185851168615,
+            -0.012893361168489869
+          ],
+          [
+            0.025059546951121954,
+            -0.857215724945094,
+            0.5143473729042088
+          ],
+          [
+            0.0,
+            -0.5145089491696742,
+            -0.8574850093292112
+          ]
+        ],
+        "C": [
+          -0.008565233888277492,
+          0.06872972177788268,
+          0.10384222131326229
+        ],
+        "width": 1024,
+        "height": 768
+      },
+      "back": {
+        "f": 768.0,
+        "cx": 511.5,
+        "cy": 383.5,
+        "R": [
+          [
+            -0.9964819175601395,
+            0.021488185851168615,
+            0.08100645557295452
+          ],
+          [
+            -0.06006148694736941,
+            -0.857215724945094,
+            -0.5114428792079597
+          ],
+          [
+            0.05845002789852534,
+            -0.5145089491696742,
+            0.8554905817500149
+          ]
+        ],
+        "C": [
+          6.14400934961353e-05,
+          0.06872972177788268,
+          -0.10471577235669516
+        ],
+        "width": 1024,
+        "height": 768
+      },
+      "left": {
+        "f": 768.0,
+        "cx": 511.5,
+        "cy": 383.5,
+        "R": [
+          [
+            -0.10369621876213375,
+            0.021488185851168615,
+            -0.9943768662249044
+          ],
+          [
+            0.5099411723729352,
+            -0.857215724945094,
+            -0.07170217308961524
+          ],
+          [
+            -0.8539362358708945,
+            -0.5145089491696742,
+            0.0779323186551351
+          ]
+        ],
+        "C": [
+          0.10601777250147193,
+          0.06872972177788268,
+          0.008982932606542768
+        ],
+        "width": 1024,
+        "height": 768
+      },
+      "right": {
+        "f": 768.0,
+        "cx": 511.5,
+        "cy": 383.5,
+        "R": [
+          [
+            -0.1449646846346473,
+            0.021488185851168615,
+            0.9892034664706766
+          ],
+          [
+            -0.5118606347275224,
+            -0.857215724945094,
+            -0.056390526892330504
+          ],
+          [
+            0.8467490365067533,
+            -0.5145089491696742,
+            0.13526496367944824
+          ]
+        ],
+        "C": [
+          -0.11148880979161847,
+          0.06872972177788268,
+          -0.024679649887625155
+        ],
+        "width": 1024,
+        "height": 768
+      },
+      "top": {
+        "f": 768.0,
+        "cx": 383.5,
+        "cy": 511.5,
+        "R": [
+          [
+            0.26408162824280934,
+            -0.0009496789026263211,
+            -0.9644998661143549
+          ],
+          [
+            0.9499045857826998,
+            -0.17305545268730171,
+            0.2602558130074917
+          ],
+          [
+            -0.16715912040216066,
+            -0.9849116246675003,
+            -0.04479866137733327
+          ]
+        ],
+        "C": [
+          0.013966851364928678,
+          0.13137083390295373,
+          0.008964376602474339
+        ],
+        "width": 768,
+        "height": 1024
+      },
+      "elevated": {
+        "f": 768.0,
+        "cx": 511.5,
+        "cy": 383.5,
+        "R": [
+          [
+            0.9511813811599126,
+            -0.15778970085295077,
+            0.26524779064010584
+          ],
+          [
+            -0.30721230675573313,
+            -0.5664089287477704,
+            0.7647231682201242
+          ],
+          [
+            0.029573277000401094,
+            -0.8088778249770106,
+            -0.5872325651289428
+          ]
+        ],
+        "C": [
+          -0.016315732647675253,
+          0.11785288893227837,
+          0.07765889685151728
+        ],
+        "width": 1024,
+        "height": 768
+      }
+    }
+  },
+  "consistency": {
+    "front": {
+      "iou": 0.896,
+      "mask_explained": 0.966,
+      "predicted_outside_mask": 0.075
+    },
+    "back": {
+      "iou": 0.856,
+      "mask_explained": 0.958,
+      "predicted_outside_mask": 0.11
+    },
+    "left": {
+      "iou": 0.781,
+      "mask_explained": 0.891,
+      "predicted_outside_mask": 0.136
+    },
+    "right": {
+      "iou": 0.774,
+      "mask_explained": 0.99,
+      "predicted_outside_mask": 0.22
+    },
+    "top": {
+      "iou": 0.904,
+      "mask_explained": 0.945,
+      "predicted_outside_mask": 0.046
+    },
+    "elevated": {
+      "iou": 0.885,
+      "mask_explained": 0.927,
+      "predicted_outside_mask": 0.049
+    }
+  },
+  "views_used_for_carving": [
+    "front",
+    "back",
+    "left",
+    "right",
+    "top",
+    "elevated"
+  ],
+  "views_texture_only": [],
+  "masks_repaired": [],
+  "texture_confidence": {
+    "front": 0.989345509893455,
+    "back": 0.8904392959229729,
+    "left": 0.7019677340503544,
+    "right": 0.685451131635035,
+    "top": 1.0,
+    "elevated": 0.963066509711595
+  },
+  "base": {
+    "base_index": 37,
+    "raw_bottom_index": 4,
+    "skirt_height_m": 0.027187162011237664,
+    "radius_profile_mm_from_bottom": [
+      1.39,
+      2.08,
+      2.67,
+      3.42,
+      3.94,
+      4.58,
+      5.32,
+      5.82,
+      6.51,
+      7.14,
+      7.69,
+      8.31,
+      8.9,
+      9.49,
+      10.08,
+      10.69,
+      11.26,
+      11.86,
+      12.41,
+      13.0,
+      13.58,
+      14.12,
+      14.72,
+      15.3,
+      15.8,
+      16.4,
+      16.94,
+      17.46,
+      18.04,
+      18.55,
+      19.07,
+      19.63,
+      20.14,
+      20.57,
+      21.12,
+      21.59,
+      21.98,
+      22.4,
+      22.77,
+      23.06,
+      23.42,
+      23.7,
+      24.0,
+      24.26,
+      24.42,
+      24.6,
+      24.73,
+      24.82,
+      24.96,
+      25.01,
+      25.13,
+      25.22,
+      25.3,
+      25.35,
+      25.44,
+      25.54,
+      25.61,
+      25.68,
+      25.83,
+      25.9
+    ],
+    "mode": "flat"
+  },
+  "texture": {
+    "texels_used": 2417365,
+    "observed_surface_fraction": 0.8515451456361545,
+    "inferred_surface_fraction": 0.14845485436384542,
+    "dominant_view_share": {
+      "front": 0.20427324793732018,
+      "back": 0.21870052722695993,
+      "left": 0.2023298095240065,
+      "right": 0.1908346484705454,
+      "top": 0.0313701075344435,
+      "elevated": 0.01740945202731073
+    }
+  },
+  "scale": {
+    "object_height_m": 0.11,
+    "note": "metric scale is assumed from object_height_cm; photos alone cannot determine absolute size"
+  },
+  "export": {
+    "bytes": 1400572,
+    "texture_bytes": 315732
+  },
+  "validation": {
+    "valid": true,
+    "errors": [],
+    "attributes": [
+      "NORMAL",
+      "POSITION",
+      "TEXCOORD_0"
+    ],
+    "texture_mime": [
+      "image/jpeg"
+    ],
+    "vertices": 21812,
+    "triangles": 40000,
+    "watertight": true,
+    "bounds_m": [
+      [
+        -0.027102438732981682,
+        0.0,
+        -0.02742958813905716
+      ],
+      [
+        0.027102438732981682,
+        0.10999999940395355,
+        0.02742958813905716
+      ]
+    ],
+    "size_m": {
+      "x": 0.054204877465963364,
+      "y": 0.10999999940395355,
+      "z": 0.05485917627811432
+    }
+  },
+  "limitations": [
+    "Underside never photographed: 14.8% of the surface (mostly the base) has inferred geometry (flat) and colour diffused from neighbouring observed surface.",
+    "Visual hulls cannot represent concavities; cavities such as the inside of an open container are filled in.",
+    "No EXIF focal length: a typical phone focal length was assumed (focal_ratio); perspective strength and camera elevation are estimated jointly and may be biased.",
+    "Absolute size comes from object_height_cm, not from the photos.",
+    "Lower silhouette agreement for ['left', 'right']: geometry there is less certain."
+  ],
+  "log": [
+    "[   0.0s]   2% load: reading images (EXIF orientation applied, aspect ratios preserved)",
+    "[   1.9s]   5% segment: front",
+    "[   6.6s]   8% segment: back",
+    "[   9.8s]  11% segment: left",
+    "[  13.1s]  14% segment: right",
+    "[  16.1s]  17% segment: top",
+    "[  19.8s]  20% segment: elevated",
+    "[  28.1s]  25% analyse: quality, same-object check, feature overlap, lighting",
+    "[  29.2s]  30% pose: turntable model for front/back/left/right (silhouette coherence)",
+    "  turntable coarse search: coherence=0.779",
+    "  turntable refined: coherence=0.943",
+    "[  50.2s]  42% pose: dense rotation-angle scan (silhouettes + label prior)",
+    "  back: angle 175 deg (shift +0, posterior=0.943, colour err=17.9)",
+    "  left: angle -96 deg (shift +5, posterior=0.944, colour err=18.8)",
+    "  right: angle 99 deg (shift +0, posterior=0.944, colour err=19.0)",
+    "  turntable coarse search: coherence=0.944",
+    "  turntable refined: coherence=0.945",
+    "[  62.3s]  50% pose: top: grid search + photo-consistency + refinement",
+    "    top candidate az=75 el=80: IoU=0.912 colour err=20.0",
+    "    top candidate az=90 el=88: IoU=0.904 colour err=18.6",
+    "    top candidate az=60 el=80: IoU=0.906 colour err=20.2",
+    "    top candidate az=75 el=88: IoU=0.902 colour err=19.9",
+    "    top candidate az=90 el=80: IoU=0.908 colour err=19.3",
+    "    top candidate az=-30 el=70: IoU=0.893 colour err=22.4",
+    "  top: refined IoU=0.912",
+    "[  65.1s]  50% pose: elevated: grid search + photo-consistency + refinement",
+    "    elevated candidate az=0 el=55: IoU=0.898 colour err=19.8",
+    "    elevated candidate az=140 el=55: IoU=0.890 colour err=20.1",
+    "    elevated candidate az=120 el=55: IoU=0.882 colour err=19.2",
+    "    elevated candidate az=-20 el=55: IoU=0.883 colour err=20.2",
+    "    elevated candidate az=20 el=55: IoU=0.881 colour err=17.6",
+    "    elevated candidate az=40 el=55: IoU=0.868 colour err=16.5",
+    "  elevated: refined IoU=0.899",
+    "[  68.5s]  57% consistency: re-projecting the hull of the other views into each photo",
+    "[  70.8s]  62% carve: visual hull from ['front', 'back', 'left', 'right', 'top', 'elevated'] at 192^3",
+    "  occupied voxels: 366127 / 1322688, voxel = 0.82 mm",
+    "  base plane: removed 27.2 mm visual-hull skirt below the base",
+    "[  71.1s]  70% mesh: marching cubes, Taubin smoothing, decimation",
+    "  mesh: 19998 vertices, 40000 triangles, watertight=True",
+    "[  71.5s]  76% texture: UV unwrap + bake from 6 photos into 2048px atlas",
+    "  UV atlas: 21812 vertices after seam split, 2048px",
+    "  baked front: covers 23.5% of texels",
+    "  baked back: covers 27.6% of texels",
+    "  baked left: covers 25.2% of texels",
+    "  baked right: covers 23.1% of texels",
+    "  baked top: covers 11.1% of texels",
+    "  baked elevated: covers 21.9% of texels",
+    "[  90.2s]  93% export: writing GLB",
+    "[  90.4s]  97% validate: re-loading and checking the GLB"
+  ]
+}

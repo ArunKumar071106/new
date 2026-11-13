@@ -1,0 +1,35 @@
+{
+  "name": "reconstruction-ar-studio",
+  "private": true,
+  "version": "1.0.0",
+  "type": "module",
+  "description": "Six-photo 3D reconstruction (visual hull + multi-view texturing) with a Three.js viewer and WebXR AR placement",
+  "scripts": {
+    "dev": "vite --host",
+    "dev:https": "HTTPS=1 vite --host",
+    "api": ".venv/bin/python -m uvicorn reconstruction.server:app --host 127.0.0.1 --port 8000",
+    "build": "tsc -b && vite build",
+    "preview": "vite preview --host",
+    "typecheck": "tsc -b",
+    "validate:glb": "node scripts/validate-glb.mjs public/models/reconstructed-object.glb",
+    "reconstruct:sample": ".venv/bin/python reconstruction/pipeline.py --front public/samples/bear/front.webp --back public/samples/bear/back.webp --left public/samples/bear/left.webp --right public/samples/bear/right.webp --top public/samples/bear/top.webp --elevated public/samples/bear/elevated.webp --out public/models/reconstructed-object.glb"
+  },
+  "dependencies": {
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "three": "0.170.0"
+  },
+  "devDependencies": {
+    "@types/react": "18.3.12",
+    "@types/react-dom": "18.3.1",
+    "@types/three": "0.170.0",
+    "@vitejs/plugin-basic-ssl": "1.1.0",
+    "@vitejs/plugin-react": "4.3.4",
+    "autoprefixer": "10.4.20",
+    "gltf-validator": "2.0.0-dev.3.10",
+    "postcss": "8.4.49",
+    "tailwindcss": "3.4.17",
+    "typescript": "5.6.3",
+    "vite": "5.4.11"
+  }
+}
