@@ -76,7 +76,7 @@ class GLBWriter:
 
     def material(self, name, base=None, base_factor=(1, 1, 1, 1), normal=None, normal_scale=1.0,
                  orm=None, rough=1.0, metal=0.0, occl_strength=1.0, sheen=None,
-                 alpha_mode=None, alpha_cutoff=0.5, double_sided=False):
+                 alpha_mode=None, alpha_cutoff=0.5, double_sided=False, transmission=None, ior=None):
         pbr = {"baseColorFactor": list(base_factor), "metallicFactor": metal, "roughnessFactor": rough}
         if base is not None:
             pbr["baseColorTexture"] = {"index": base}
@@ -91,9 +91,18 @@ class GLBWriter:
             m["alphaMode"] = alpha_mode
             if alpha_mode == "MASK":
                 m["alphaCutoff"] = alpha_cutoff
+        ext = {}
         if sheen:
-            m["extensions"] = {"KHR_materials_sheen": sheen}
+            ext["KHR_materials_sheen"] = sheen
             self.ext_used.add("KHR_materials_sheen")
+        if transmission:
+            ext["KHR_materials_transmission"] = transmission
+            self.ext_used.add("KHR_materials_transmission")
+        if ior is not None:
+            ext["KHR_materials_ior"] = {"ior": ior}
+            self.ext_used.add("KHR_materials_ior")
+        if ext:
+            m["extensions"] = ext
         self.j["materials"].append(m)
         return len(self.j["materials"]) - 1
 
@@ -117,6 +126,26 @@ class GLBWriter:
         self.j["meshes"].append({"name": name, "primitives": out})
         mi = len(self.j["meshes"]) - 1
         self.j["nodes"].append({"name": name, "mesh": mi})
+        return len(self.j["nodes"]) - 1
+
+    def mesh_only(self, name, prims):
+        """Store a mesh without creating a node (for reuse by several nodes)."""
+        n0 = len(self.j["nodes"])
+        self.mesh(name, prims)
+        self.j["nodes"].pop(n0)
+        return len(self.j["meshes"]) - 1
+
+    def node(self, name, mesh, translation=None, rotation=None, scale=None):
+        """Node referencing an existing mesh; translation in mm (written in m),
+        rotation as an (x, y, z, w) quaternion."""
+        nd = {"name": name, "mesh": int(mesh)}
+        if translation is not None:
+            nd["translation"] = [float(t) * 0.001 for t in translation]
+        if rotation is not None:
+            nd["rotation"] = [float(r) for r in rotation]
+        if scale is not None:
+            nd["scale"] = [float(s) for s in scale]
+        self.j["nodes"].append(nd)
         return len(self.j["nodes"]) - 1
 
     def group(self, name, children):

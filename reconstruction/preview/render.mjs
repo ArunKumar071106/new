@@ -13,6 +13,7 @@ const VIEWS = {
   '06_three_quarter': [35, 38, 0.30, 0.07, 28],
   'closeup_face':     [12, 12, 0.17, 0.085, 28],
 };
+if (process.env.VIEWS) { const v = JSON.parse(process.env.VIEWS); for (const k of Object.keys(VIEWS)) delete VIEWS[k]; Object.assign(VIEWS, v); }
 fs.mkdirSync(out, {recursive:true});
 const browser = await chromium.launch({args:['--use-gl=angle','--use-angle=swiftshader','--enable-unsafe-swiftshader']});
 const page = await browser.newPage({viewport:{width:1600,height:1200}, deviceScaleFactor:+scale});
