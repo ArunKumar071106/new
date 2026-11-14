@@ -8,6 +8,7 @@ parametric surfaces with real thickness.
 import numpy as np
 from geom import (nrm, smin, smax, sd_ellipsoid, sd_capsule, sd_sphere, rot_axis,
                   smoothstep, sdf_normals)
+from geom import Noise3
 from dims import (BUCKET, bucket_r_body, bucket_r_out, HEAD_C, HEAD_R, HEAD_ROLL_DEG,
                   BODY_C, BODY_R, HAT_N, HAT_R, HAT_CROWN_R, HAT_CROWN_H, HAT_THICK)
 
@@ -84,6 +85,9 @@ def bear_parts(p):
     return head, muzzle, ear, body, arms
 
 
+_BN1, _BN2 = Noise3(101), Noise3(202)
+
+
 def bear_sdf(p):
     head, muzzle, ear, body, arms = bear_parts(p)
     d = smin(head, muzzle, 3.0)
@@ -91,7 +95,8 @@ def bear_sdf(p):
     d = smin(d, body, 6.0)
     for a in arms:
         d = smin(d, a, 2.5)
-    return d
+    # hand-moulded foam figure: gentle, irregular undulation of the surface
+    return d + 0.24 * _BN1(p / 7.5) + 0.07 * _BN2(p / 2.4)
 
 
 BEAR_BOX = (np.array([-28.5, 34.0, -20.5]), np.array([28.5, 120.5, 23.0]))
@@ -264,6 +269,13 @@ def bow_geometry(knot_center, push=None):
         bulge = 0.9 * (1 - Sg ** 2) * np.sin(np.pi * xi) ** 0.8
         z = z + np.sign(np.sin(TH)) * bulge * np.abs(np.sin(TH)) ** 0.3
         P = np.stack([x, y, z], -1)
+        # soft, irregular puckering of the ribbon and slightly wavy selvedges
+        nz = Noise3(300 + int(side * 7))
+        layer = np.sign(np.sin(TH))
+        q = np.stack([x / 2.4, y / 2.4, layer * 1.7], -1).reshape(-1, 3)
+        fade = np.abs(np.sin(TH)) ** 0.5 * xi ** 0.5
+        P[..., 2] += 0.30 * nz(q).reshape(x.shape) * fade
+        P[..., 1] += 0.20 * nz(q * 0.7 + 5.0).reshape(x.shape) * np.abs(Sg) ** 2 * fade
         # raise wings slightly, mirror to the side, and wrap round the neck
         Rz = rot_axis([0, 0, 1], np.radians(w["tilt"]))
         P = P @ Rz.T
@@ -305,6 +317,9 @@ def bow_geometry(knot_center, push=None):
 # =============================================================================
 # Flower + leaves (moulded plastic, SDF)
 # =============================================================================
+_FN1, _FN2 = Noise3(401), Noise3(402)
+
+
 class Flower:
     def __init__(self, base, axis, length=10.5):
         self.base = np.asarray(base, float)
@@ -339,7 +354,12 @@ class Flower:
         c = np.abs(np.cos(3 * th))
         return self.L * (0.80 + 0.20 * c ** 0.45)
 
+    def warp(self, p):
+        q = p / 1.8
+        return p + 0.22 * np.stack([_FN1(q), _FN2(q + 3.3), _FN1(q + 7.1)], 1)
+
     def parts(self, p):
+        p = self.warp(p)
         w, rho, th = self.local(p)
         eps = 0.02
         rp = self.prof(w)

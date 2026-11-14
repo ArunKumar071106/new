@@ -176,12 +176,28 @@ def drop_fragments(V, F, min_faces=50):
     """Topology repair after decimation: weld, drop tiny (edge-connected)
     slivers, and close small boundary loops with a centroid fan."""
     import trimesh
+    V, F = weld(V, F, 1e-4)              # vertices the projection put on the same spot
+    V, F = clean(V, F)
     m = trimesh.Trimesh(V, F, process=True)
+    # zero-volume fins (two opposite faces on the same three vertices)
+    key = np.sort(np.asarray(m.faces), axis=1)
+    _, inv, cnt = np.unique(key, axis=0, return_inverse=True, return_counts=True)
+    m = trimesh.Trimesh(m.vertices, np.asarray(m.faces)[cnt[inv.ravel()] == 1], process=False)
     parts = m.split(only_watertight=False)
     m = trimesh.util.concatenate([p for p in parts if len(p.faces) >= min_faces])
     m.merge_vertices()
     V, F = np.asarray(m.vertices, float), np.asarray(m.faces, np.int64)
     V, F = fill_small_holes(V, F)
+    for _ in range(3):                    # separate sheets that touch along a pinched edge
+        e = np.sort(np.concatenate([F[:, [0, 1]], F[:, [1, 2]], F[:, [2, 0]]]), axis=1)
+        ue, cnt = np.unique(e, axis=0, return_counts=True)
+        bad = ue[cnt > 2]
+        if not len(bad):
+            break
+        bv = np.unique(bad)
+        F = F[~np.isin(F, bv).any(1)]
+        V, F = clean(V, F)
+        V, F = fill_small_holes(V, F)
     return clean(V, F)
 
 

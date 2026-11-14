@@ -1,6 +1,6 @@
 {
  "Bucket": {
-  "tris": 43574,
+  "tris": 43560,
   "watertight": true,
   "winding_consistent": true,
   "components": 1
@@ -12,7 +12,7 @@
   "components": 1
  },
  "Bear_Body": {
-  "tris": 71992,
+  "tris": 71994,
   "watertight": true,
   "winding_consistent": true,
   "components": 1
@@ -66,7 +66,7 @@
   "components": 1
  },
  "Flower_and_Leaves": {
-  "tris": 16982,
+  "tris": 16978,
   "watertight": true,
   "winding_consistent": true,
   "components": 1

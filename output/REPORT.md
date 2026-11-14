@@ -1,14 +1,14 @@
 # Reconstruction report — flocked teddy bear in pink "Lover Grass" gift bucket
 
-**Deliverable:** `output/teddy_bear_bucket.glb`
+**Deliverables:** `output/teddy_bear_bucket.glb` (master) and `output/teddy_bear_bucket_optimized.glb` (8.32 MB, Meshopt-compressed, same model; see `OPTIMIZATION_REPORT.md`)
 
 | | |
 |---|---|
-| File size | 15.05 MB (15,053,816 bytes), single self-contained binary glTF 2.0 |
-| Triangles / vertices | 201,808 triangles / 121,502 vertices |
+| File size | 13.68 MB master / 8.32 MB optimized, each a single self-contained binary glTF 2.0 |
+| Triangles / vertices | 201,792 triangles / 116,542 vertices |
 | Meshes | 9 named nodes, 12 primitives, 8 PBR materials, 19 embedded textures |
 | Texture resolution | 2048² for the bear and the hat crown, 1024² for everything else (bucket, sticker, hat underside, bow, flower) |
-| Real-world size | 64.3 × 123.2 × 61.0 mm (W × H × D), Y-up, metres in file, base at y = 0 |
+| Real-world size | 65.0 × 123.1 × 61.0 mm (W × H × D), Y-up, metres in file, base at y = 0 |
 | Validation | Khronos glTF-Validator: **0 errors, 0 warnings, 0 infos, 0 hints** (`validation_report.json`) |
 | Loads in | three.js r170 GLTFLoader (used for every preview in `previews/`). It uses only core glTF plus `KHR_materials_sheen`, which Blender ≥ 3.x, three.js and `<model-viewer>` all support |
 
@@ -58,6 +58,41 @@ reconstruction**, not an automatic photogrammetric scan:
    Procedural maps were baked in 3D surface space, so there are no UV seams.
    Ambient occlusion is a separate occlusion map, not baked into the colour.
 
+## Realism pass
+
+The first version was dimensionally right but looked computer-generated: plaster-like
+flocking, perfectly smooth mathematical shapes, rigid fabric and spotless surfaces. A
+second pass changed the following (`previews/realism_before_after.jpg` shows the result
+under identical lighting):
+
+- **Flocked bear:**
+  - The normal map is now a soft, dense fibre grain instead of pitted stucco.
+  - Stronger, lower-roughness sheen gives the velvet glow at grazing angles seen in the
+    photos.
+  - The colour has uneven flock density, plus faint grey-brown dust that settles in the
+    creases under the bow and arms (driven by ambient occlusion).
+  - The shape has a gentle irregular undulation (±0.3 mm) like a hand-finished foam
+    figure, instead of perfect ellipsoids.
+- **Bucket plastic:** fingerprint smudges (patches of duller gloss), sparse fine
+  horizontal handling scratches, and a little dust in the bottom of the bucket.
+- **Ribbon bow:**
+  - Fabric puckering and slightly wavy selvedges. The two ribbon layers stay joined at
+    the fold and at the knot.
+  - Hand-printed polka dots with jittered position, size and ink density.
+  - Fibre mottling and a stronger fabric sheen.
+- **Hat:** the brim is gently wavy instead of a flat disc. The underside has felt fibres
+  and the binding's running stitch.
+- **Flower:** rippled petals and leaves with unchanged plastic thickness, faint veins,
+  a lighter deep-magenta throat instead of a near-black one, and frosted tips with
+  higher roughness.
+- **Eye and nose beads:** glassy brown-black with a slightly softer highlight instead of
+  flat pure black.
+- **Preview lighting:** a warm key light and a soft sky/ground fill replace the flat
+  grey studio. The look of the GLB itself in other viewers depends on their lighting.
+
+The handle tabs, sticker, hat-crown photo texture, dimensions and part layout are
+unchanged. Overall width grew by 0.65 mm because of the hat brim's new waviness.
+
 ## Mesh quality (`mesh_integrity.json`)
 
 - Bucket, bear, flower and leaves, bow (2 wings + knot) and beads: each one
@@ -73,7 +108,8 @@ reconstruction**, not an automatic photogrammetric scan:
 
 `previews/01_front … 06_three_quarter.jpg` are rendered from the same
 viewpoints as the six reference photos, plus `closeup_face.jpg`.
-`previews/comparison_photo_vs_model.jpg` puts each photo beside its render.
+`previews/comparison_photo_vs_model.jpg` puts each photo beside its render, and
+`previews/realism_before_after.jpg` compares the first version with the realism pass.
 
 What matches well:
 - bucket taper and rim band

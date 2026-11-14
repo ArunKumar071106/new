@@ -2,22 +2,19 @@
 
 | | Original | Optimized |
 |---|---|---|
-| File | `teddy_bear_bucket.glb` (left untouched, SHA-256 `2403e129…fe345e8`, same before and after) | `teddy_bear_bucket_optimized.glb` |
-| File size | **15,053,816 bytes (15.05 MB)** | **9,499,800 bytes (9.50 MB)** |
-| Reduction | | **−5.55 MB, 36.9% smaller** |
-| Triangles | 201,808 | 201,808 (no simplification) |
-| Vertices | 121,502 | 121,502 |
+| File | `teddy_bear_bucket.glb` (input, never modified by the optimiser) | `teddy_bear_bucket_optimized.glb` |
+| File size | **13,682,460 bytes (13.68 MB)** | **8,320,596 bytes (8.32 MB)** |
+| Reduction | | **−5.36 MB, 39.2% smaller** |
+| Triangles | 201,792 | 201,792 (no simplification) |
+| Vertices | 116,542 | 116,542 |
 | Meshes / primitives / materials | 9 / 12 / 8 | 9 / 12 / 8 |
-| Textures | 19 (8.07 MB) | 19 (8.07 MB), byte-for-byte identical |
-| Geometry data | ≈ 6.9 MB | ≈ 1.35 MB |
-| Gzip over HTTP (`gzip -9`) | 13.08 MB | 8.94 MB |
+| Textures | 19 (6.94 MB) | 19 (6.94 MB), byte-for-byte identical |
+| Geometry data | ≈ 6.74 MB | ≈ 1.38 MB |
+| Gzip over HTTP (`gzip -9`) | 11.77 MB | 7.76 MB |
 | Validator (Khronos glTF-Validator 2.0.0-dev.3.10) | 0 errors, 0 warnings | 0 errors, 0 warnings |
 
-**About the "24 MB / 279K triangles" figure.** That was an intermediate build. It was
-replaced before delivery by the 15.05 MB / 201,808-triangle file, which already had a
-lighter hat mesh, 16-bit indices and 1024² bucket textures. This optimisation starts from
-that delivered file. Counted from the 24.13 MB intermediate build, the total reduction is
-60.6%.
+These figures are for the current model, after the realism pass (see `REPORT.md`). Measured
+from the first 24.13 MB / 279K-triangle draft, the total reduction is 65.5%.
 
 ## What was done
 
@@ -40,9 +37,9 @@ point by point.
 
 | Check | Result |
 |---|---|
-| Overall extents (W × H × D) | original 64.3424 × 123.1514 × 61.0096 mm → optimized 64.3427 × 123.1514 × 61.0103 mm |
+| Overall extents (W × H × D) | original 64.9922 × 123.1118 × 61.0096 mm → optimized 64.9924 × 123.1118 × 61.0103 mm |
 | Bounding box min / max | matches to within 0.0007 mm on every axis |
-| Largest vertex deviation, any mesh | **1.07 µm** (0.001 mm), on the bear body; the beads move by 0.09 µm |
+| Largest vertex deviation, any mesh | **1.09 µm** (0.001 mm) |
 | Per-mesh triangle and vertex counts | identical for all 12 primitives |
 | Scale and units | unchanged: metres, Y-up, base at y = 0 |
 
@@ -54,26 +51,24 @@ face close-up, at 1600×1200, with identical lighting. Rendering the original tw
 
 | View | PSNR | SSIM | Largest pixel difference |
 |---|---|---|---|
-| 01_front | 59.0 dB | 0.9998 | 75 |
-| 02_left_side | 60.2 dB | 0.9998 | 60 |
-| 03_back | 62.2 dB | 0.9999 | 36 |
-| 04_right_side | 61.2 dB | 0.9999 | 58 |
-| 05_top | 62.5 dB | 0.9999 | 64 |
-| 06_three_quarter | 59.5 dB | 0.9999 | 63 |
-| closeup_face | 54.4 dB | 0.9997 | 86 |
+| 01_front | 59.2 dB | 0.9998 | 54 |
+| 02_left_side | 60.9 dB | 0.9999 | 49 |
+| 03_back | 62.6 dB | 0.9999 | 31 |
+| 04_right_side | 61.0 dB | 0.9998 | 55 |
+| 05_top | 62.2 dB | 0.9999 | 54 |
+| 06_three_quarter | 59.7 dB | 0.9999 | 51 |
+| closeup_face | 55.3 dB | 0.9997 | 58 |
 
 Above about 45 dB, a render is visually indistinguishable from the original. The few
 larger single-pixel differences come from tiny specular glints on the glossy black beads
 and from anti-aliasing at silhouette edges, caused by the 12-bit normals.
-`previews/optimization_before_after.jpg` shows the two side by side with the difference
-amplified ×10.
 
 ## Compatibility testing
 
 - **three.js r170** `GLTFLoader` with `setMeshoptDecoder(MeshoptDecoder)`: loads, all
   8 materials present, bounding box as above.
 - **Google `<model-viewer>` 3.5.0**: loads and reports dimensions of
-  0.064343 × 0.123151 × 0.061010 m, with all 8 materials. It needs its Meshopt decoder,
+  0.064992 × 0.123112 × 0.061010 m, with all 8 materials. It needs its Meshopt decoder,
   which loads by default from jsDelivr, or from a local copy via
   `ModelViewerElement.meshoptDecoderLocation`.
 - **Blender** ≥ 3.6 imports `EXT_meshopt_compression`. Older versions cannot read it;
@@ -94,7 +89,7 @@ amplified ×10.
   To cut GPU memory for mobile AR, KTX2 can be added later, for example with
   `gltf-transform uastc` on normal maps and `gltf-transform etc1s` on ORM maps.
 - **WebP was tested and rejected**, on measurement:
-  - **Colour and AO/roughness/metal maps:** WebP made them larger (9.50 → 10.54 MB),
+  - **Colour and AO/roughness/metal maps:** WebP made them larger (in the first test, 9.50 → 10.54 MB),
     because the original full-chroma JPEGs are already compact.
   - **Normal maps:** WebP was the only place it saved space (down to 7.86 MB), but lossy
     WebP always halves colour (chroma) resolution. On normal maps that corrupts the

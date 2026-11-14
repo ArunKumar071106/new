@@ -40,13 +40,13 @@ NOISE2 = Noise3(23)
 
 # ----------------------------------------------------------------- colours (sRGB, from photos)
 C_BUCKET = np.array([0.925, 0.680, 0.795])
-C_BEAR = np.array([0.945, 0.930, 0.905])
+C_BEAR = np.array([0.950, 0.936, 0.910])
 C_HAT = np.array([0.80, 0.70, 0.86])
 C_HAT_UNDER = np.array([0.935, 0.905, 0.945])
 C_RIBBON = np.array([0.72, 0.655, 0.875])
 C_DOT = np.array([0.935, 0.895, 0.845])
 C_PETAL = np.array([0.86, 0.12, 0.50])
-C_PETAL_IN = np.array([0.60, 0.05, 0.29])
+C_PETAL_IN = np.array([0.74, 0.10, 0.37])
 C_PETAL_EDGE = np.array([0.96, 0.62, 0.80])
 C_STAMEN = np.array([0.98, 0.72, 0.18])
 C_STEM = np.array([0.62, 0.70, 0.20])
@@ -68,8 +68,9 @@ def sdf_part(name, sdf, box, h, target, texsize, shader, scene_sdf, normal_stren
     TAN = G.tangents(V2, N2, UV, F2)
     log(f"{name}: baking {texsize}^2 textures")
     bk = G.Baker(V2, N2, TAN, UV, F2, texsize)
-    out = shader(bk)
     ao = G.ao_from_sdf(scene_sdf, bk.P, bk.N) if scene_sdf is not None else np.ones(len(bk.P))
+    bk.ao = ao
+    out = shader(bk)
     alb = bk.to_image(out["albedo"])
     orm = bk.to_image(pack_orm(ao, out["rough"], out["metal"]))
     nmap = bk.normal_from_height(out["height"], normal_strength) if out.get("height") else None
@@ -139,6 +140,10 @@ def main():
     xl, yl, n = PT.hat_frame()
     prof, n_top = PT.hat_profile()
     HV, HF, Hseg, _ = PT.revolve(prof, 72 if q else 128)
+    _r = np.linalg.norm(HV[:, :2], axis=1)
+    _a = np.arctan2(HV[:, 1], HV[:, 0])
+    _t = np.clip((_r - PT.HAT_CROWN_R) / (HAT_R - PT.HAT_CROWN_R), 0, 1) ** 1.6
+    HV[:, 2] += _t * (0.55 * np.sin(2 * _a + 0.7) + 0.30 * np.sin(3 * _a + 2.1) + 0.15 * np.sin(5 * _a + 0.4))
     e_out = nrm(np.array([1.0, 0, 0]) - n * n[0])
     def hat_world(t):
         O = PT.HEAD_C + n * t + e_out * 5.0
@@ -213,15 +218,22 @@ def main():
 
     # ------------------------------------------------------------ bucket
     def bucket_shader(bk):
-        P = bk.P
+        P, ao = bk.P, bk.ao
         n1 = NOISE.fbm(P / 9.0, 3)
-        alb = np.clip(C_BUCKET * (1 + 0.012 * n1[:, None]), 0, 1)
-        # faint handling scuffs: elongated, mostly horizontal streaks
-        sc = NOISE2.fbm(P * np.array([1 / 0.5, 1 / 7.0, 1 / 0.5]), 3)
-        rough = 0.30 + 0.05 * NOISE.fbm(P / 2.5, 2) + 0.16 * smoothstep(0.25, 0.6, sc)
+        alb = C_BUCKET * (1 + 0.014 * n1[:, None])
+        alb = alb * (1 - 0.06 * np.clip(1 - ao, 0, 1)[:, None] * np.array([0.9, 1.0, 1.1]))
+        # fingerprints / smudges: soft blotches of duller gloss
+        smudge = smoothstep(0.12, 0.5, NOISE.fbm(P / 3.2, 4)) * smoothstep(-0.1, 0.45, NOISE2.fbm(P / 14.0, 2))
+        # fine handling scratches: thin, long, mostly horizontal lines
+        ridge = 1 - np.abs(NOISE2(P * np.array([1 / 0.45, 1 / 9.0, 1 / 0.45]) + 3.1))
+        scratch = smoothstep(0.965, 0.995, ridge) * smoothstep(0.1, 0.5, NOISE(P / 6.0 + 7.7))
+        rough = 0.24 + 0.04 * NOISE.fbm(P / 2.5, 2) + 0.16 * smudge + 0.22 * scratch
+        alb = alb * (1 + 0.025 * scratch[:, None])
         def height(Q):
-            return 0.010 * NOISE(Q / 0.28) + 0.006 * NOISE2(Q / 0.11)
-        return dict(albedo=alb, rough=np.clip(rough, 0.2, 0.6), metal=np.zeros(len(P)), height=height)
+            r = 1 - np.abs(NOISE2(Q * np.array([1 / 0.45, 1 / 9.0, 1 / 0.45]) + 3.1))
+            s = smoothstep(0.965, 0.995, r) * smoothstep(0.1, 0.5, NOISE(Q / 6.0 + 7.7))
+            return 0.008 * NOISE(Q / 0.35) + 0.004 * NOISE2(Q / 0.12) - 0.006 * s
+        return dict(albedo=np.clip(alb, 0, 1), rough=np.clip(rough, 0.18, 0.7), metal=np.zeros(len(P)), height=height)
     prim, tex = sdf_part("bucket", PT.bucket_sdf, PT.BUCKET_BOX, 0.5 if q else 0.2,
                          8000 if q else 46000, TEX_S, bucket_shader, scene_sdf, 1.0)
     m_bucket = W.material("Bucket_PinkPlastic",
@@ -276,29 +288,32 @@ def main():
 
     # ------------------------------------------------------------ bear
     def bear_shader(bk):
-        P = bk.P
-        n1 = NOISE.fbm(P / 7.0, 3)
-        n2 = NOISE2.fbm(P / 1.6, 2)
-        alb = C_BEAR * (1 + 0.018 * n1[:, None] + 0.010 * n2[:, None])
-        # very slight warm discolouration on the lower body (handled toy)
-        alb = alb * (1 - 0.02 * smoothstep(70, 45, P[:, 1]))[:, None] * np.array([1, 0.995, 0.985])
-        rough = 0.86 + 0.06 * NOISE(P / 0.9)
+        P, ao = bk.P, bk.ao
+        blotch = NOISE.fbm(P / 4.5, 3)            # uneven flock density
+        speck = NOISE2(P / 0.33)                  # fibre clumps
+        alb = C_BEAR * (1 + 0.022 * blotch[:, None] + 0.012 * speck[:, None])
+        # handled toy: faint grey-brown dust in the creases (neck, under arms)
+        dust = np.clip(1 - ao, 0, 1) ** 1.4
+        alb = alb * (1 - dust[:, None] * np.array([0.085, 0.095, 0.120]))
+        alb = alb * (1 - 0.025 * smoothstep(72, 46, P[:, 1]))[:, None] * np.array([1, 0.994, 0.982])
+        rough = 0.95 + 0.04 * NOISE(P / 1.1)
         def height(Q):
-            return (0.055 * NOISE(Q / 0.16) + 0.020 * NOISE2(Q / 0.10) +
-                    0.060 * NOISE.fbm(Q / 0.8, 2))
-        return dict(albedo=np.clip(alb, 0, 1), rough=np.clip(rough, 0.7, 1), metal=np.zeros(len(P)), height=height)
+            # short dense fibres: soft grain with no plaster-like pits
+            return (0.016 * NOISE(Q / 0.11) + 0.012 * NOISE2(Q / 0.24) +
+                    0.025 * NOISE.fbm(Q / 0.9, 2))
+        return dict(albedo=np.clip(alb, 0, 1), rough=np.clip(rough, 0.85, 1), metal=np.zeros(len(P)), height=height)
     prim, tex = sdf_part("bear", PT.bear_sdf, PT.BEAR_BOX, 0.55 if q else 0.24,
                          10000 if q else 72000, TEX, bear_shader, scene_sdf, 1.0)
     m_bear = W.material("Bear_WhiteFlocking", base=W.texture(tex["albedo"], quality=92),
                         normal=W.texture(tex["normal"], quality=80),
                         orm=W.texture(tex["orm"], quality=90),
-                        sheen={"sheenColorFactor": [0.85, 0.84, 0.82], "sheenRoughnessFactor": 0.42})
+                        sheen={"sheenColorFactor": [1.0, 0.985, 0.96], "sheenRoughnessFactor": 0.36})
     prim["material"] = m_bear
     nodes.append(W.mesh("Bear_Body", [prim]))
     stats["parts"]["Bear_Body"] = len(prim["F"])
 
     # ------------------------------------------------------------ beads
-    m_bead = W.material("Bead_BlackGloss", base_factor=(0.012, 0.010, 0.011, 1.0), rough=0.07, metal=0.0)
+    m_bead = W.material("Bead_BlackGloss", base_factor=(0.016, 0.011, 0.009, 1.0), rough=0.11, metal=0.0)
     for name, (c, nn, r) in beads.items():
         BV, BN, BF = uv_sphere(c, r, nn, squash=0.92, nu=24 if q else 48, nv=12 if q else 24)
         nodes.append(W.mesh("Bead_" + name, [dict(V=BV, N=BN, F=BF, material=m_bead)]))
@@ -318,14 +333,22 @@ def main():
     m_hat = W.material("Hat_SatinGlitter", base=W.texture(halb, quality=92, clamp=True),
                        normal=W.texture(hnorm, quality=93, clamp=True),
                        orm=W.texture(horm, quality=93, clamp=True))
-    # underside felt
+    # underside felt with the binding's running stitch near the edge
     yy, xx = np.mgrid[0:TEX_S, 0:TEX_S] / TEX_S * 2 * HAT_R
     Q = np.stack([xx, yy, np.zeros_like(xx)], -1).reshape(-1, 3)
-    fel = (0.6 * NOISE(Q / 0.18) + 0.4 * NOISE2(Q / 0.07)).reshape(TEX_S, TEX_S)
-    ualb = np.clip(C_HAT_UNDER * (1 + 0.02 * NOISE.fbm(Q / 4, 2).reshape(TEX_S, TEX_S)[..., None]), 0, 1)
+    fel = (0.6 * NOISE(Q / 0.16) + 0.4 * NOISE2(Q / 0.06)).reshape(TEX_S, TEX_S)
+    rr_ = np.hypot(xx - HAT_R, yy - HAT_R)
+    ang_ = np.arctan2(yy - HAT_R, xx - HAT_R)
+    rs = 0.925 * HAT_R
+    stitch = smoothstep(0.16, 0.06, np.abs(rr_ - rs)) * smoothstep(0.15, 0.45, np.sin(ang_ * rs / 0.55 * np.pi))
+    blot = NOISE.fbm(Q / 3.5, 3).reshape(TEX_S, TEX_S)
+    ualb = C_HAT_UNDER * (1 + 0.025 * blot[..., None] + 0.02 * fel[..., None])
+    ualb = ualb * (1 - stitch[..., None]) + np.array([0.80, 0.74, 0.88]) * stitch[..., None]
+    ualb = np.clip(ualb, 0, 1)
+    fel = fel + 2.5 * stitch
     m_hatu = W.material("Hat_UndersideFelt", base=W.texture(ualb, quality=90),
-                        normal=W.texture(G.normal_map_from_height_image(fel, 0.6), quality=90),
-                        rough=0.92, sheen={"sheenColorFactor": [0.8, 0.78, 0.85], "sheenRoughnessFactor": 0.5})
+                        normal=W.texture(G.normal_map_from_height_image(fel, 0.7), quality=90),
+                        rough=0.95, sheen={"sheenColorFactor": [0.95, 0.93, 0.98], "sheenRoughnessFactor": 0.4})
     HN = G.vertex_normals(HW, HF)
     hl = HW - HAT_O
     HUV = np.stack([0.5 + (hl @ xl) / (2 * HAT_R * 1.0), 0.5 - (hl @ yl) / (2 * HAT_R * 1.0)], 1)
@@ -348,22 +371,26 @@ def main():
     ribs = ribs ** 0.6
     selv = smoothstep(0.7, 0.0, np.minimum(ym, PT.BOW_WIDTH_MM - ym))
     dots = np.zeros_like(xm)
+    rng_d = np.random.default_rng(17)
+    wob = NOISE(np.stack([np.sin(2 * np.pi * uu) * 6, np.cos(2 * np.pi * uu) * 6, ym / 0.35], -1).reshape(-1, 3)).reshape(T, T)
     for row, yc in enumerate(np.arange(2.5, PT.BOW_WIDTH_MM, 5.0)):
         off = 3.0 if row % 2 else 0.0
-        for xc in np.arange(off, PT.BOW_TILE_MM + 6, 6.0):
+        for xc in np.arange(off, PT.BOW_TILE_MM, 6.0):
+            jx, jy, jr = rng_d.normal(0, 0.22), rng_d.normal(0, 0.18), rng_d.normal(0, 0.07)
+            op = rng_d.uniform(0.75, 1.0)
             for xw in (xc - PT.BOW_TILE_MM, xc, xc + PT.BOW_TILE_MM):
-                r = np.sqrt((xm - xw) ** 2 + (ym - yc) ** 2)
-                dots = np.maximum(dots, smoothstep(1.05, 0.85, r))
+                r = np.sqrt((xm - xw - jx) ** 2 + (ym - yc - jy) ** 2) * (1 + 0.07 * wob)
+                dots = np.maximum(dots, op * smoothstep(1.02 + jr, 0.70 + jr, r))
     tile_noise = NOISE(np.stack([np.sin(2 * np.pi * uu) * 3, np.cos(2 * np.pi * uu) * 3, ym / 0.6], -1).reshape(-1, 3)).reshape(T, T)
-    balb = C_RIBBON * (0.94 + 0.08 * ribs)[..., None] * (1 + 0.02 * tile_noise[..., None])
-    dots = dots * 0.6
+    balb = C_RIBBON * (0.94 + 0.08 * ribs)[..., None] * (1 + 0.03 * tile_noise[..., None] + 0.02 * wob[..., None])
+    dots = dots * 0.62 * (0.9 + 0.1 * ribs)
     balb = balb * (1 - dots[..., None]) + C_DOT * (0.96 + 0.05 * ribs)[..., None] * dots[..., None]
     bh = ribs * 1.0 + selv * 0.6 + 0.15 * tile_noise
     bnorm = G.normal_map_from_height_image(bh, 1.4)
     borm = pack_orm(0.85 + 0.15 * ribs, 0.58 + 0.12 * (1 - ribs), np.zeros_like(ribs))
     m_bow = W.material("Bow_GrosgrainRibbon", base=W.texture(np.clip(balb, 0, 1), quality=92),
                        normal=W.texture(bnorm, quality=93), orm=W.texture(borm, quality=92),
-                       sheen={"sheenColorFactor": [0.75, 0.70, 0.9], "sheenRoughnessFactor": 0.45})
+                       sheen={"sheenColorFactor": [0.85, 0.80, 0.98], "sheenRoughnessFactor": 0.38})
     bow = PT.bow_geometry(knot_c, push=push_out(PT.bear_sdf, PT.RIBBON_T / 2 + 0.12))
     bprims = []
     for name, V_, UV_, F_ in bow:
@@ -376,24 +403,30 @@ def main():
     def flower_shader(bk):
         P = bk.P
         reg = flower.region(P)
-        w, rho, th = flower.local(P)
+        w, rho, th = flower.local(flower.warp(P))
         rp = flower.prof(w)
         inner = rho < rp
-        tip = smoothstep(flower.petal_len(th) - 1.6, flower.petal_len(th) - 0.1, w)
-        c = np.where(inner[:, None], C_PETAL_IN + (C_PETAL - C_PETAL_IN) * smoothstep(2, 9, w)[:, None], C_PETAL)
-        c = c * (1 - tip[:, None] * 0.75) + C_PETAL_EDGE * tip[:, None] * 0.75
+        L = flower.petal_len(th)
+        tip = smoothstep(L - 1.8, L - 0.1, w)
+        throat = smoothstep(1.0, 7.5, w)
+        vein = 0.5 + 0.5 * np.cos(th * 22 + 0.6 * NOISE(P / 0.8))
+        c_out = C_PETAL * (0.93 + 0.07 * throat)[:, None] * (1 - 0.06 * vein * (1 - tip))[:, None]
+        c_in = C_PETAL_IN + (C_PETAL - C_PETAL_IN) * throat[:, None]
+        c = np.where(inner[:, None], c_in, c_out)
+        c = c * (1 - tip[:, None] * 0.7) + C_PETAL_EDGE * tip[:, None] * 0.7
         cols = [c, np.broadcast_to(C_STAMEN, c.shape), np.broadcast_to(C_STEM, c.shape),
                 np.broadcast_to(C_LEAF1, c.shape), np.broadcast_to(C_LEAF2, c.shape)]
         alb = np.choose(reg[:, None], cols)
-        alb = alb * (1 + 0.03 * NOISE(P / 0.6))[:, None]
-        rough = np.where(reg == 0, 0.38, 0.48) + 0.04 * NOISE2(P / 0.4)
+        alb = alb * (1 + 0.035 * NOISE(P / 0.6) + 0.02 * NOISE2(P / 2.5))[:, None]
+        rough = np.where(reg == 0, 0.34 + 0.18 * tip, 0.45) + 0.05 * NOISE2(P / 0.4)
         def height(Q):
-            return 0.006 * NOISE(Q / 0.15)
+            return 0.006 * NOISE(Q / 0.15) + 0.004 * NOISE2(Q / 0.05)
         return dict(albedo=np.clip(alb, 0, 1), rough=rough, metal=np.zeros(len(P)), height=height)
     prim, tex = sdf_part("flower", flower.sdf, flower.box(), 0.16 if q else 0.075,
                          6000 if q else 17000, TEX_S, flower_shader, scene_sdf, 1.0)
     m_fl = W.material("Flower_PlasticMagentaYellow", base=W.texture(tex["albedo"], quality=93),
-                      normal=W.texture(tex["normal"], quality=92), orm=W.texture(tex["orm"], quality=92))
+                      normal=W.texture(tex["normal"], quality=92), orm=W.texture(tex["orm"], quality=92),
+                      occl_strength=0.55)
     prim["material"] = m_fl
     nodes.append(W.mesh("Flower_and_Leaves", [prim]))
     stats["parts"]["Flower_and_Leaves"] = len(prim["F"])
