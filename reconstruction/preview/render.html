@@ -1,0 +1,46 @@
+<!doctype html>
+<html><head><meta charset="utf-8"><title>render</title>
+<style>html,body{margin:0;background:#f3f1ee;overflow:hidden}canvas{display:block}</style>
+<script type="importmap">{"imports":{"three":"./node_modules/three/build/three.module.js","three/addons/":"./node_modules/three/examples/jsm/"}}</script>
+</head><body>
+<script type="module">
+import * as THREE from 'three';
+import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
+import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+const P = new URLSearchParams(location.search);
+const W = +(P.get('w')||1600), H = +(P.get('h')||1200);
+const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
+renderer.setSize(W,H); renderer.setPixelRatio(1);
+renderer.toneMapping = THREE.NeutralToneMapping; renderer.toneMappingExposure = 1.0;
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.shadowMap.enabled = true; renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+document.body.appendChild(renderer.domElement);
+const scene = new THREE.Scene(); scene.background = new THREE.Color(P.get('bg')||'#f3f1ee');
+const pmrem = new THREE.PMREMGenerator(renderer);
+scene.environment = pmrem.fromScene(new RoomEnvironment(), 0.03).texture;
+scene.environmentIntensity = 0.85;
+const sun = new THREE.DirectionalLight(0xffffff, 1.6);
+sun.position.set(0.25,0.5,0.35); sun.castShadow = true;
+sun.shadow.mapSize.set(2048,2048); sun.shadow.radius = 6; sun.shadow.bias=-0.0004; sun.shadow.normalBias=0.002;
+Object.assign(sun.shadow.camera,{left:-.15,right:.15,top:.15,bottom:-.15,near:0.05,far:1.5});
+scene.add(sun);
+const ground = new THREE.Mesh(new THREE.PlaneGeometry(2,2), new THREE.ShadowMaterial({opacity:0.22}));
+ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
+const camera = new THREE.PerspectiveCamera(28, W/H, 0.005, 5);
+window.stats = null;
+new GLTFLoader().load(P.get('model'), g => {
+  g.scene.traverse(o=>{ if(o.isMesh){o.castShadow=true;o.receiveShadow=true;} });
+  scene.add(g.scene);
+  let tris=0, verts=0; g.scene.traverse(o=>{ if(o.isMesh){ tris += o.geometry.index.count/3; verts += o.geometry.attributes.position.count; }});
+  const box = new THREE.Box3().setFromObject(g.scene);
+  window.stats = {tris, verts, box:[box.min.toArray(), box.max.toArray()],
+    meshes: g.scene.children.length, materials: (()=>{const s=new Set(); g.scene.traverse(o=>{if(o.isMesh)s.add(o.material.name)}); return [...s];})()};
+  window.ready = true;
+}, undefined, e => { window.loadError = String(e); });
+window.view = (az, el, dist, ty, fov) => {
+  const t = new THREE.Vector3(0, ty, 0); camera.fov = fov; camera.updateProjectionMatrix();
+  const a = az*Math.PI/180, e = el*Math.PI/180;
+  camera.position.set(t.x + dist*Math.sin(a)*Math.cos(e), t.y + dist*Math.sin(e), t.z + dist*Math.cos(a)*Math.cos(e));
+  camera.lookAt(t); renderer.render(scene, camera); return true;
+};
+</script></body></html>

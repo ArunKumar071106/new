@@ -1,0 +1,29 @@
+{
+  "parts": {
+    "Bucket": 43574,
+    "Sticker_Heart": 9644,
+    "Bear_Body": 71992,
+    "Bead_eye_right": 2208,
+    "Bead_eye_left": 2208,
+    "Bead_nose": 2208,
+    "Hat": 32256,
+    "Bow_wing_right": 8640,
+    "Bow_wing_left": 8640,
+    "Bow_knot": 3456,
+    "Flower_and_Leaves": 16982
+  },
+  "sticker": {
+    "arc_width_mm": 42.79178885630499,
+    "height_mm": 34.7683284457478,
+    "h_min": 11.02052785923754,
+    "h_max": 45.78885630498534,
+    "s_min": -20.903225806451612,
+    "s_max": 21.888563049853374
+  },
+  "file_bytes": 15053816,
+  "triangles": 201808,
+  "texture_sizes": {
+    "bucket/bear/hat": 2048,
+    "sticker/bow/flower/hat-underside": 1024
+  }
+}

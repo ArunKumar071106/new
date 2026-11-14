@@ -1,0 +1,74 @@
+{
+ "Bucket": {
+  "tris": 43574,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Sticker_Heart": {
+  "tris": 9644,
+  "watertight": false,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bear_Body": {
+  "tris": 71992,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bead_eye_right": {
+  "tris": 2208,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bead_eye_left": {
+  "tris": 2208,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bead_nose": {
+  "tris": 2208,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Hat": {
+  "tris": 23936,
+  "watertight": false,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Hat_1": {
+  "tris": 8320,
+  "watertight": false,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bow": {
+  "tris": 8640,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bow_1": {
+  "tris": 8640,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Bow_2": {
+  "tris": 3456,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ },
+ "Flower_and_Leaves": {
+  "tris": 16982,
+  "watertight": true,
+  "winding_consistent": true,
+  "components": 1
+ }
+}
