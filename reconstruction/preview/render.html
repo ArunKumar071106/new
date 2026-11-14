@@ -7,6 +7,7 @@
 import * as THREE from 'three';
 import { GLTFLoader } from 'three/addons/loaders/GLTFLoader.js';
 import { RoomEnvironment } from 'three/addons/environments/RoomEnvironment.js';
+import { MeshoptDecoder } from 'three/addons/libs/meshopt_decoder.module.js';
 const P = new URLSearchParams(location.search);
 const W = +(P.get('w')||1600), H = +(P.get('h')||1200);
 const renderer = new THREE.WebGLRenderer({antialias:true, preserveDrawingBuffer:true});
@@ -28,7 +29,7 @@ const ground = new THREE.Mesh(new THREE.PlaneGeometry(2,2), new THREE.ShadowMate
 ground.rotation.x=-Math.PI/2; ground.receiveShadow=true; scene.add(ground);
 const camera = new THREE.PerspectiveCamera(28, W/H, 0.005, 5);
 window.stats = null;
-new GLTFLoader().load(P.get('model'), g => {
+new GLTFLoader().setMeshoptDecoder(MeshoptDecoder).load(P.get('model'), g => {
   g.scene.traverse(o=>{ if(o.isMesh){o.castShadow=true;o.receiveShadow=true;} });
   scene.add(g.scene);
   let tris=0, verts=0; g.scene.traverse(o=>{ if(o.isMesh){ tris += o.geometry.index.count/3; verts += o.geometry.attributes.position.count; }});
